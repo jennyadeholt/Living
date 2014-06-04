@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello hey, funkar det?</string>
+    <string name="app_name">Living</string>
+
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Save title</string>
+    <string name="settings_button_text">Settings</string>
+
+
+    <string-array name="actions">
+        <item>Lista</item>
+        <item>Karta</item>
+        <item>Sökningar</item>
+        <item>Favoriter</item>
+        <item>Inställningar</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+</resources>
