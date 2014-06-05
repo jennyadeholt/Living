@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawerLayout"
@@ -19,9 +20,6 @@
             android:dividerHeight="0dp"
             android:background="#111"/>
 </android.support.v4.widget.DrawerLayout>
-
-
-
 
 
 

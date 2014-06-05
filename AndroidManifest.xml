@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jd.living" android:versionCode="1" android:versionName="1.0.0">
+          package="com.jd.living"
+          android:versionCode="1"
+          android:versionName="1.0.0">
 
     <uses-sdk android:minSdkVersion="18"
               android:targetSdkVersion="19"/>
@@ -37,9 +39,6 @@
         <fragment android:name=".activity.map.ResultMapFragment_" />
         <fragment android:name=".activity.map.TestFragment_" />
 
-
-
-
         <activity android:name=".activity.detail.DetailsView_" />
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>
@@ -60,4 +59,3 @@
     </application>
 
 </manifest>
-
