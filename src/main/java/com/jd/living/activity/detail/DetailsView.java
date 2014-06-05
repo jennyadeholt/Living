@@ -7,14 +7,16 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,7 +24,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -33,8 +35,8 @@ import com.jd.living.server.ListingsDatabase;
 /**
  * Created by jennynilsson on 2014-06-03.
  */
-@EActivity(R.layout.detail_view)
-public class DetailsView extends FragmentActivity {
+@EFragment(R.layout.details_view)
+public class DetailsView extends Fragment {
 
     @Bean
     ListingsDatabase database;
@@ -61,60 +63,30 @@ public class DetailsView extends FragmentActivity {
     @ViewById
     ImageView thumbnail;
 
-
-    @ViewById
-    View mapView;
-
     private GoogleMap map;
-    private SupportMapFragment mapFragment;
+    private MapFragment mapFragment;
     private Listing listing;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         Log.d("Living", "onResume");
-        int id = getIntent().getIntExtra("id", -1);
+        int id = getActivity().getIntent().getIntExtra("id", -1);
         listing = database.getListing(id);
         if (listing != null) {
             updateUI(listing);
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        Log.d("Living", "onNewIntent");
-        int id = getIntent().getIntExtra("id", -1);
-        listing = database.getListing(id);
-        if (listing != null) {
-            updateUI(listing);
-        }
-    }
 
     @AfterViews
     public void init(){
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         map = mapFragment.getMap();
         map.setMyLocationEnabled(true);
     }
 
-    public void goToHomepage(View v){
-        String url = listing.getUrl();
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://" + url;
-        }
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-
     private void updateUI(Listing listing) {
-
 
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
@@ -122,7 +94,6 @@ public class DetailsView extends FragmentActivity {
         room.setText(listing.getRooms() + " rum");
         rent.setText(listing.getRent() + " kr/månad");
         price.setText(listing.getListPrice() + " kr");
-
 
         LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -141,16 +112,6 @@ public class DetailsView extends FragmentActivity {
 
         getImage(listing);
 
-    }
-
-    @ItemClick
-    void imageItemClicked() {
-        /**
-         if (!url.startsWith("http://") && !url.startsWith("https://")) {
-         url = "http://" + url;
-         }
-         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-         */
     }
 
     @Background

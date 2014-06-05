@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.widget.ListView;
 
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsView_;
+import com.jd.living.activity.detail.DetailsActivity_;
 import com.jd.living.model.Listing;
 
 
@@ -31,7 +31,7 @@ public class SearchList extends ListFragment {
 
     @ItemClick
     void listItemClicked(Listing listing) {
-        Intent intent = new Intent(getActivity(), DetailsView_.class);
+        Intent intent = new Intent(getActivity(), DetailsActivity_.class);
         intent.putExtra("id", listing.getBooliId());
         startActivity(intent);
     }

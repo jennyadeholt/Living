@@ -2,38 +2,27 @@ package com.jd.living.activity;
 
 import org.androidannotations.annotations.EActivity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.res.Configuration;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jd.living.R;
 import com.jd.living.activity.list.SearchList_;
 import com.jd.living.activity.map.ResultMapFragment_;
-import com.jd.living.activity.map.TestFragment_;
 
 @EActivity
-public class MainActivity extends Activity {
-
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mActionTitles;
+public class MainActivity extends DrawerActivity {
 
     private SearchList_ searchList;
+    private ResultMapFragment_ resultMap;
+
+    protected ListView mDrawerList2;
 
     private int currentPosition = -1;
 
@@ -42,39 +31,25 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mTitle = mDrawerTitle = getTitle();
-        mActionTitles = getResources().getStringArray(R.array.actions);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mDrawerList = (ListView) findViewById(R.id.drawerList);
+        searchList = new SearchList_();
+        resultMap = new ResultMapFragment_();
 
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActionTitles));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        FragmentManager fragmentManager = getFragmentManager();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content_frame, (Fragment) resultMap);
+        transaction.add(R.id.content_frame, (Fragment) searchList);
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.drawable.ic_drawer,
-                R.string.drawer_open,
-                R.string.drawer_close) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu();
-            }
+        transaction.commit();
 
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mActionTitles = getResources().getStringArray(R.array.search_actions);
+        setup(savedInstanceState);
 
-        if (savedInstanceState == null) {
-            selectItem(0);
-        }
+        mDrawerList2 = (ListView) findViewById(R.id.bottomList);
+
+        mDrawerList2.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(R.array.optimal_actions)));
+        mDrawerList2.setOnItemClickListener(new DrawerItemClickListener());
+
     }
 
     @Override
@@ -88,77 +63,30 @@ public class MainActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLinearLayout);
         menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
+    @Override
+    protected void selectItem(int position) {
 
         if (currentPosition != position) {
-            Fragment fragment = null;
+            FragmentManager fragmentManager = getFragmentManager();
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (position) {
                 case 0:
-                    fragment = (Fragment) getSearchList();
+                    transaction.hide((Fragment) resultMap);
+                    transaction.show((Fragment) searchList);
                     break;
                 case 1:
-                    fragment = new ResultMapFragment_();
-                    break;
-                case 2:
-                    fragment = new TestFragment_();
+                    transaction.hide((Fragment) searchList);
+                    transaction.show((Fragment) resultMap);
                     break;
             }
-
-            if (fragment != null) {
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-            }
+            transaction.commit();
         }
-
-        // update selected item and title, then close the drawer
-
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mActionTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private SearchList_ getSearchList() {
-        if (searchList == null) {
-            searchList = new SearchList_();
-        }
-        return searchList;
+        super.selectItem(position);
     }
 }

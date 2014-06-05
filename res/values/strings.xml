@@ -10,12 +10,21 @@
     <string name="settings_button_text">Settings</string>
 
 
-    <string-array name="actions">
-        <item>Lista</item>
+    <string-array name="search_actions">
+        <item>Sökresultat</item>
         <item>Karta</item>
+    </string-array>
+
+    <string-array name="optimal_actions">
         <item>Sökningar</item>
         <item>Favoriter</item>
         <item>Inställningar</item>
+    </string-array>
+
+    <string-array name="details_actions">
+        <item>Detaljvy</item>
+        <item>Karta</item>
+        <item>Bilder</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>

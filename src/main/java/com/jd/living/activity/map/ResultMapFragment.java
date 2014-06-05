@@ -8,17 +8,18 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -28,13 +29,14 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsView_;
+import com.jd.living.activity.detail.DetailsActivity_;
 import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
 
 @EFragment(R.layout.map)
-public class ResultMapFragment extends Fragment implements ListingsDatabase.ListingsListener, OnInfoWindowClickListener {
+public class ResultMapFragment extends Fragment implements ListingsDatabase.ListingsListener,
+        OnInfoWindowClickListener, GooglePlayServicesClient.ConnectionCallbacks, GoogleMap.OnMapLoadedCallback {
 
     @FragmentById
     MapFragment resultMap;
@@ -49,68 +51,44 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     private LatLngBounds.Builder bounds;
     private boolean mapReady = false;
+    private LocationClient mLocationClient;
 
     @AfterViews
     public void init(){
 
+        mLocationClient = new LocationClient(getActivity(), this, null);
+
         googleMap = resultMap.getMap();
         googleMap.setMyLocationEnabled(true);
-        googleMap.setOnInfoWindowClickListener(this);
 
+        googleMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnMapLoadedCallback(this);
         database.addListingsListener(this);
     }
 
+    @UiThread
     @Override
     public void onUpdate(List<Listing> listings) {
         bounds = new LatLngBounds.Builder();
-        boolean firstLocation = true;
         for (Listing listing : listings) {
-            double latitude = listing.getLatitude();
-            double longitude = listing.getLongitude();
+            LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
 
-            LatLng target = new LatLng(latitude, longitude);
-            MarkerOptions options = new MarkerOptions()
-                    .position(target)
-                    .title(listing.getAddress())
-                    .snippet(String.valueOf(listing.getBooliId()));
-
-            if (firstLocation && mapReady) {
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(target)      // Sets the center of the map to Mountain View
-                        .zoom(13)                   // Sets the zoom
-                        .bearing(0)                // Sets the orientation of the camera to east
-                        .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                        .build();                   // Creates a CameraPosition from the builder
-
-                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                firstLocation = false;
-
-            }
-
-            googleMap.addMarker(options);
+            googleMap.addMarker(
+                    new MarkerOptions()
+                            .position(target)
+                            .title(listing.getAddress())
+                            .snippet(String.valueOf(listing.getBooliId())));
             bounds.include(target);
         }
 
-        if (!mapReady) {
-            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    mapReady = true;
-                    updateMap();
-                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 15));
-
-                }
-            });
-        } else {
-           updateMap();
+        if (mapReady) {
+            updateMap();
         }
 
     }
 
     private void updateMap() {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 15));
-
-        mapView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -122,12 +100,40 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
             Listing listing = database.getListing(id);
             if (listing != null) {
-                Intent intent = new Intent(getActivity(), DetailsView_.class);
+
+                Intent intent = new Intent(getActivity(), DetailsActivity_.class);
                 intent.putExtra("id", listing.getBooliId());
                 startActivity(intent);
-
             }
         }
 
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        android.location.Location location = mLocationClient.getLastLocation();
+        LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(target)
+                .zoom(13)
+                .bearing(0)
+                .tilt(0)
+                .build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mapReady = true;
+        updateMap();
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onMapLoaded() {
+        mLocationClient.connect();
     }
 }

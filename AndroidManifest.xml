@@ -32,14 +32,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <fragment android:name=".activity.list.SearchList_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
         <fragment android:name=".activity.map.TestFragment_" />
 
-        <activity android:name=".activity.detail.DetailsView_" />
+        <activity android:name=".activity.detail.DetailsActivity_" />
+        <fragment android:name=".activity.detail.DetailsView_" />
+
+
+
+
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
