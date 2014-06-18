@@ -1,4 +1,4 @@
-package com.jd.living.activity.list;
+package com.jd.living.activity.searchList;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -22,11 +22,11 @@ public class SearchList extends ListFragment {
     ListView list;
 
     @Bean
-    Adapter adapter;
+    SearchListAdapter searchListAdapter;
 
     @AfterViews
     public void init() {
-        setListAdapter(adapter);
+        setListAdapter(searchListAdapter);
     }
 
     @ItemClick

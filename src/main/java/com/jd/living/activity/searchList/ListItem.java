@@ -1,4 +1,4 @@
-package com.jd.living.activity.list;
+package com.jd.living.activity.searchList;
 
 import java.io.InputStream;
 import java.net.URL;

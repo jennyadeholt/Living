@@ -17,20 +17,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="45dp"
-              android:padding="5dp"
-              android:background="@drawable/drawer_list_item">
+              android:clickable="false"
+              android:background="@android:color/transparent" >
 
-    <ImageView
-            android:id="@+id/image"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_search"/>
     <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
             android:gravity="center"
             android:text="Search"
             android:paddingLeft="16dp"

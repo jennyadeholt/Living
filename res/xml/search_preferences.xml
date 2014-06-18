@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+            android:title="Area">
+
+        <EditTextPreference
+                android:title="Search area"
+                android:summary="Specify the location of the search"
+                android:inputType="text" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Building type">
+
+        <CheckBoxPreference android:title="@string/building_type_appartment" />
+        <CheckBoxPreference android:title="@string/building_type_house" />
+        <CheckBoxPreference android:title="@string/building_type_complex" />
+        <CheckBoxPreference android:title="@string/building_type_fritid" />
+        <CheckBoxPreference android:title="@string/building_type_farm" />
+
+
+    </PreferenceCategory>
+
+
+     <Preference
+
+
+</PreferenceScreen>

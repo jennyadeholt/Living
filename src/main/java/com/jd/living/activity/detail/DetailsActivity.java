@@ -1,5 +1,8 @@
 package com.jd.living.activity.detail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
@@ -13,7 +16,8 @@ import android.view.View;
 import android.view.Window;
 
 import com.jd.living.R;
-import com.jd.living.activity.DrawerActivity;
+import com.jd.living.activity.searchList.SearchListAction;
+import com.jd.living.drawer.DrawerActivity;
 import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
@@ -41,8 +45,6 @@ public class DetailsActivity extends DrawerActivity {
         details = new DetailsView_();
         map = new DetailsMap_();
         web = new DetailsWebView_();
-
-        mActionTitles = getResources().getStringArray(R.array.details_actions);
 
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -114,5 +116,19 @@ public class DetailsActivity extends DrawerActivity {
             url = "http://" + url;
         }
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    @Override
+    protected List<SearchListAction> getActions() {
+        List<SearchListAction> actionList = new ArrayList<SearchListAction>();
+        actionList.add(SearchListAction.DETAILS);
+        actionList.add(SearchListAction.MAP);
+        actionList.add(SearchListAction.IMAGES);
+        return actionList;
+    }
+
+    @Override
+    protected int getStartPosition() {
+        return 0;
     }
 }

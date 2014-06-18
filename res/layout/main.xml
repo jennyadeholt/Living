@@ -2,6 +2,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
         android:layout_height="match_parent">
 
     <FrameLayout
@@ -10,41 +11,20 @@
             android:layout_height="match_parent" />
 
     <LinearLayout
-            android:id="@+id/drawerView"
+            android:id="@+id/container"
             android:layout_width="240dp"
-            android:background="@drawable/list_item"
+            android:background="@drawable/list_item_default"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:orientation="vertical">
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:padding="10dp"
-                  style="@android:style/TextAppearance.DeviceDefault.Large"
-                  android:text="Senaste sökning"/>
-        <ListView
+       <ListView
                 android:id="@+id/topList"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:choiceMode="singleChoice"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:background="@drawable/list_item"/>
-
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:padding="10dp"
-                  style="@android:style/TextAppearance.DeviceDefault.Large"
-                  android:text="Annat"/>
-        <ListView
-                android:id="@+id/bottomList"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:choiceMode="singleChoice"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:background="@drawable/list_item"/>
-
+                android:divider="@android:color/black"
+                android:dividerHeight="1dp"/>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

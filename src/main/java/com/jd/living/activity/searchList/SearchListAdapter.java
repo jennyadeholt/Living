@@ -1,4 +1,4 @@
-package com.jd.living.activity.list;
+package com.jd.living.activity.searchList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +16,20 @@ import android.widget.ArrayAdapter;
 
 import com.jd.living.R;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
-import com.jd.living.server.BooliServer;
 import com.jd.living.server.ListingsDatabase;
 
 /**
  * Created by jennynilsson on 2014-06-03.
  */
 @EBean
-public class Adapter extends ArrayAdapter<Listing> implements ListingsDatabase.ListingsListener {
+public class SearchListAdapter extends ArrayAdapter<Listing> implements ListingsDatabase.ListingsListener {
 
     @Bean
     ListingsDatabase database;
 
     private List<Listing> listings = new ArrayList<Listing>();
 
-    public Adapter(Context context) {
+    public SearchListAdapter(Context context) {
         super(context, R.layout.list_item);
         Log.d("Living", "Adapter");
     }
