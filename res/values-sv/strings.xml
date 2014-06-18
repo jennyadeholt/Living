@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello hey, funkar det?</string>
+    <string name="app_name">Living</string>
+
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Save title</string>
+    <string name="settings_button_text">Settings</string>
+
+    <string name="new_search">Ny sökning</string>
+    <string name="search_result_header"></string>
+    <string name="search_result_header_2"></string>
+    <string name="search_result">Sökresultat</string>
+    <string name="update_search">Uppdatera sökning</string>
+    <string name="map_result">Karta</string>
+    <string name="favorites">Favoriter</string>
+    <string name="settings">Inställningar</string>
+    <string name="images">Bilder</string>
+    <string name="detail_view">Detaljer</string>
+    <string name="searches">Gamla sökningar</string>
+    <string name="help">Hjälp</string>
+    <string name="about">Om</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
+    <string name="building_type_house">Villa</string>
+    <string name="building_type_appartment">Lägenhet</string>
+    <string name="building_type_complex">Radhus, parhus &amp; kedjehus</string>
+    <string name="building_type_fritid">Fritidshus</string>
+    <string name="building_type_mark">Tomt-mark</string>
+    <string name="building_type_farm">Gård</string>
+
+</resources>

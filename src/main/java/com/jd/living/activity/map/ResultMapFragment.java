@@ -87,6 +87,11 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     }
 
+    @Override
+    public void onSearchStarted() {
+
+    }
+
     private void updateMap() {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 15));
     }
@@ -100,10 +105,10 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
             Listing listing = database.getListing(id);
             if (listing != null) {
-
                 Intent intent = new Intent(getActivity(), DetailsActivity_.class);
                 intent.putExtra("id", listing.getBooliId());
                 startActivity(intent);
+
             }
         }
 

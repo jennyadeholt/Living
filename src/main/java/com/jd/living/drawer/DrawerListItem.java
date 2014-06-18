@@ -4,7 +4,6 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +32,9 @@ public class DrawerListItem extends LinearLayout implements Checkable {
 
     public void bind(SearchListAction action) {
         text.setText(action.getTextRes());
-        image.setImageResource(action.getImageRes());
+        if (action.getImageRes() != -1) {
+            image.setImageResource(action.getImageRes());
+        }
     }
 
     @Override

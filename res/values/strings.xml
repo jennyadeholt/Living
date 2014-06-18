@@ -10,8 +10,8 @@
     <string name="settings_button_text">Settings</string>
 
     <string name="new_search">New search</string>
-    <string name="search_result_header">Latest search</string>
-    <string name="search_result_header_2">Other</string>
+    <string name="search_result_header"></string>
+    <string name="search_result_header_2"></string>
     <string name="search_result">Search result</string>
     <string name="update_search">Update search</string>
     <string name="map_result">Map</string>
@@ -26,9 +26,39 @@
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
+
+    <string name="preferences_type_of_building_title">Building type</string>
+    <string name="preferences_type_of_building">Building types:</string>
+
+    <string-array name="building">
+        <item>@string/building_type_house</item>
+        <item>@string/building_type_appartment</item>
+        <item>@string/building_type_complex</item>
+        <item>@string/building_type_fritid</item>
+        <item>@string/building_type_mark</item>
+        <item>@string/building_type_farm</item>
+    </string-array>
+
+    <string-array name="building_types">
+        <item>villa</item>
+        <item>lägenhet</item>
+        <item>radhus, parhus, kedjehus</item>
+        <item>fritidshus</item>
+        <item>tomt-mark</item>
+        <item>gård</item>
+    </string-array>
+
+    <string-array name="rooms">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
     <string name="building_type_house">Villa</string>
     <string name="building_type_appartment">Lägenhet</string>
-    <string name="building_type_complex">Radhus, parhus, kedjehus</string>
+    <string name="building_type_complex">Radhus, parhus &amp; kedjehus</string>
     <string name="building_type_fritid">Fritidshus</string>
     <string name="building_type_mark">Tomt-mark</string>
     <string name="building_type_farm">Gård</string>

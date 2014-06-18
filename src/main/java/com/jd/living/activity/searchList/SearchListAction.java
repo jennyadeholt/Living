@@ -7,16 +7,18 @@ import com.jd.living.R;
  */
 public enum SearchListAction {
 
-    NEW_SEARCH(R.string.new_search, R.drawable.ic_menu_search, false),
+    NEW_SEARCH(R.string.new_search, R.drawable.ic_menu_add, false),
     RESULT_HEADER(R.string.search_result_header,true),
-    SEARCH_RESULT(R.string.search_result, R.drawable.ic_menu_paste_holo_light, false),
+    SEARCH_RESULT(R.string.search_result, R.drawable.action_search, false),
     MAP(R.string.map_result, R.drawable.ic_menu_mapmode, false),
     SETTINGS_HEADER(R.string.search_result_header_2, true),
-    SEARCHES(R.string.searches, R.drawable.ic_menu_copy_holo_light, false),
+    SEARCHES(R.string.searches, R.drawable.ic_menu_archive, false),
     FAVORITES(R.string.favorites, R.drawable.ic_menu_star, false),
     DETAILS(R.string.detail_view, R.drawable.action_search, false),
     IMAGES(R.string.images, R.drawable.ic_menu_camera, false),
-    SETTINGS(R.string.settings, R.drawable.ic_menu_preferences, false);
+    SETTINGS(R.string.settings, R.drawable.ic_menu_preferences, false),
+    HELP(R.string.help, R.drawable.ic_menu_help, false),
+    ABOUT(R.string.about, R.drawable.ic_menu_attachment, false);
 
     private int textRes;
     private int imageRes;

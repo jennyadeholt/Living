@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,6 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jd.living.R;
 import com.jd.living.activity.searchList.SearchListAction;
@@ -28,7 +31,6 @@ public class DetailsActivity extends DrawerActivity {
     private DetailsMap_ map;
     private DetailsWebView_ web;
 
-    private int currentPosition = -1;
     private Listing listing;
 
     @Bean
@@ -37,6 +39,8 @@ public class DetailsActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        currentPosition = 0;
 
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
@@ -84,29 +88,29 @@ public class DetailsActivity extends DrawerActivity {
     @Override
     protected void selectItem(int position) {
 
-        if (currentPosition != position) {
-            FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            switch (position) {
-                case 0:
-                    transaction.hide((Fragment) web);
-                    transaction.hide((Fragment) map);
-                    transaction.show((Fragment) details);
-                    break;
-                case 1:
-                    transaction.hide((Fragment) web);
-                    transaction.hide((Fragment) details);
-                    transaction.show((Fragment) map);
-                    break;
-                case 2:
-                    transaction.hide((Fragment) map);
-                    transaction.hide((Fragment) details);
-                    transaction.show((Fragment) web);
-                    break;
-            }
-            transaction.commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        switch (position) {
+            case 0:
+                transaction.hide((Fragment) web);
+                transaction.hide((Fragment) map);
+                transaction.show((Fragment) details);
+                break;
+            case 1:
+                transaction.hide((Fragment) web);
+                transaction.hide((Fragment) details);
+                transaction.show((Fragment) map);
+                break;
+            case 2:
+                transaction.hide((Fragment) map);
+                transaction.hide((Fragment) details);
+                transaction.show((Fragment) web);
+                break;
         }
+        transaction.commit();
+        currentPosition = position;
+
         super.selectItem(position);
     }
 
@@ -116,6 +120,14 @@ public class DetailsActivity extends DrawerActivity {
             url = "http://" + url;
         }
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    public void setFavorite(View v) {
+        Toast.makeText(this, "Favoite", Toast.LENGTH_LONG).show();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        ((ImageView) v).setImageResource(R.drawable.btn_rating_star_on_normal_holo_light);
+
     }
 
     @Override
@@ -129,6 +141,6 @@ public class DetailsActivity extends DrawerActivity {
 
     @Override
     protected int getStartPosition() {
-        return 0;
+        return currentPosition;
     }
 }

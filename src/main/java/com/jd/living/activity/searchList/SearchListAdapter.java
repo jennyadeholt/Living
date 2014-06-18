@@ -37,6 +37,7 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
     @AfterInject
     public void init(){
         database.addListingsListener(this);
+        database.launchListingsSearch();
     }
 
     @Override
@@ -79,5 +80,10 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
         Log.d("Living", "Adapter.onUpdate() " + listings.size());
         this.listings = listings;
         update();
+    }
+
+    @Override
+    public void onSearchStarted() {
+
     }
 }

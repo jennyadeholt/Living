@@ -4,13 +4,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,7 +44,7 @@ public class DetailsWebView extends Fragment {
 
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
-                getActivity().setProgress(progress * 1000);
+                //getActivity().setProgress(progress * 1000);
             }
         });
         webView.setWebViewClient(new WebViewClient() {

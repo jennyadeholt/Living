@@ -28,6 +28,8 @@ public class Listing {
 
     private String url;
 
+    private boolean favorite;
+
     private class Source {
         protected String name;
         protected String url;

@@ -3,6 +3,7 @@ package com.jd.living.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 import android.app.Fragment;
@@ -11,26 +12,33 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 import com.jd.living.R;
+import com.jd.living.activity.map.ResultMapFragment_;
 import com.jd.living.activity.searchList.SearchListAction;
 import com.jd.living.activity.searchList.SearchList_;
-import com.jd.living.activity.map.ResultMapFragment_;
 import com.jd.living.activity.settings.SearchPreferences_;
 import com.jd.living.drawer.DrawerActivity;
+import com.jd.living.server.ListingsDatabase;
 
 @EActivity
 public class MainActivity extends DrawerActivity {
 
+    @Bean
+    ListingsDatabase listingsDatabase;
+
     private SearchList_ searchList;
     private SearchPreferences_ newSearch;
     private ResultMapFragment_ resultMap;
-    private int currentPosition = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        currentPosition = 1;
 
         searchList = new SearchList_();
         resultMap = new ResultMapFragment_();
@@ -47,7 +55,6 @@ public class MainActivity extends DrawerActivity {
 
         setup(savedInstanceState);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,32 +75,43 @@ public class MainActivity extends DrawerActivity {
     @Override
     protected void selectItem(int position) {
 
-        if (currentPosition != position) {
-            FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            switch (position) {
-                case 1:
-                    transaction.hide((Fragment) newSearch);
-                    transaction.hide((Fragment) resultMap);
-                    transaction.show((Fragment) searchList);
-                    break;
-                case 2:
-                    transaction.hide((Fragment) newSearch);
-                    transaction.hide((Fragment) searchList);
-                    transaction.show((Fragment) resultMap);
-                    break;
-                case 4:
-                    transaction.hide((Fragment) resultMap);
-                    transaction.hide((Fragment) searchList);
-                    transaction.show((Fragment) newSearch);
-                default:
-                    break;
-            }
-            transaction.commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        switch (position) {
+            case 1:
+                transaction.hide((Fragment) newSearch);
+                transaction.hide((Fragment) resultMap);
+                transaction.show((Fragment) searchList);
+                break;
+            case 2:
+                transaction.hide((Fragment) newSearch);
+                transaction.hide((Fragment) searchList);
+                transaction.show((Fragment) resultMap);
+                break;
+            case 4:
+                transaction.hide((Fragment) resultMap);
+                transaction.hide((Fragment) searchList);
+                transaction.show((Fragment) newSearch);
+                break;
+            default:
+                break;
         }
+        transaction.commit();
+        currentPosition = position;
+
         super.selectItem(position);
     }
+
+    public void doSearch(View v) {
+        listingsDatabase.launchListingsSearch();
+        selectItem(1);
+    }
+
+    public void clearSearch(View v) {
+
+    }
+
 
     @Override
     protected List<SearchListAction> getActions() {
@@ -106,11 +124,13 @@ public class MainActivity extends DrawerActivity {
         actionList.add(SearchListAction.SEARCHES);
         actionList.add(SearchListAction.FAVORITES);
         actionList.add(SearchListAction.SETTINGS);
+        actionList.add(SearchListAction.HELP);
+        actionList.add(SearchListAction.ABOUT);
         return actionList;
     }
 
     @Override
     protected int getStartPosition() {
-        return 4;
+        return currentPosition;
     }
 }

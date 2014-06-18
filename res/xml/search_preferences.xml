@@ -5,25 +5,39 @@
             android:title="Area">
 
         <EditTextPreference
+                android:key="preferences_area_location"
                 android:title="Search area"
-                android:summary="Specify the location of the search"
+                android:defaultValue="Malmö"
                 android:inputType="text" />
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Building type">
-
-        <CheckBoxPreference android:title="@string/building_type_appartment" />
-        <CheckBoxPreference android:title="@string/building_type_house" />
-        <CheckBoxPreference android:title="@string/building_type_complex" />
-        <CheckBoxPreference android:title="@string/building_type_fritid" />
-        <CheckBoxPreference android:title="@string/building_type_farm" />
-
+            android:title="Number of rooms"
+            android:summary="">
+        <ListPreference
+                android:key="preference_min_numbers"
+                android:title="Min number of rooms"
+                android:entries="@array/rooms"
+                android:defaultValue="3"
+                android:entryValues="@array/rooms" />
+        <ListPreference
+                android:key="preference_max_numbers"
+                android:title="Max number of rooms"
+                android:entries="@array/rooms"
+                android:defaultValue="4"
+                android:entryValues="@array/rooms" />
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+            android:title="@string/preferences_type_of_building_title">
 
-     <Preference
-
+        <MultiSelectListPreference
+                android:key="preference_building_type"
+                android:title="@string/preferences_type_of_building"
+                android:entries="@array/building"
+                android:defaultValue="@array/building_types"
+                android:entryValues="@array/building_types" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

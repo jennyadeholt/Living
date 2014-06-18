@@ -39,12 +39,12 @@
 
         <fragment android:name=".activity.searchList.SearchList_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
-        <fragment android:name=".activity.map.TestFragment_" />
 
         <activity android:name=".activity.detail.DetailsActivity_" />
         <fragment android:name=".activity.detail.DetailsView_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />
+        <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
 
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>

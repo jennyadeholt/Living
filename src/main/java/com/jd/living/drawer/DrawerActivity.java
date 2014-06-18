@@ -1,18 +1,11 @@
 package com.jd.living.drawer;
 
 import java.util.List;
-import java.util.ArrayList;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
-import android.animation.Animator;
 import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,15 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -53,6 +38,8 @@ public abstract class DrawerActivity extends Activity {
     protected CharSequence mDrawerTitle;
     protected CharSequence mTitle;
     protected List<SearchListAction> searchListActions;
+
+    protected int currentPosition = 0;
 
     /* The click listner for ListView in the navigation drawer */
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -105,21 +92,15 @@ public abstract class DrawerActivity extends Activity {
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        // if (savedInstanceState == null) {
-        //mDrawerList.setItemChecked(getStartPosition(), true);
-
-
-
-
-        //}
+        if (savedInstanceState == null) {
+            selectItem(getStartPosition());
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d("Living", "onResume");
-       // mDrawerListAdapter.setSelected(getStartPosition());
-        selectItem(getStartPosition());
     }
 
     @Override

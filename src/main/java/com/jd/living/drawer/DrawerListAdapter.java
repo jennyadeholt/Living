@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 
 import com.jd.living.R;
 import com.jd.living.activity.searchList.SearchListAction;
@@ -24,8 +23,6 @@ public class DrawerListAdapter extends ArrayAdapter<SearchListAction> {
 
     public DrawerListAdapter(Context context) {
         super(context, R.layout.drawer_list_item);
-
-        Log.d("Living", "Adapter");
     }
 
     public void setContent(List<SearchListAction> content) {
@@ -34,7 +31,7 @@ public class DrawerListAdapter extends ArrayAdapter<SearchListAction> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("Living", "DrawerListAdapter.getView");
+
         View view = null;
         SearchListAction action = content.get(position);
 
@@ -60,10 +57,8 @@ public class DrawerListAdapter extends ArrayAdapter<SearchListAction> {
             view = header;
         } else if (listItem != null) {
             if (selected == position) {
-                //view.setSelected(true);
                 listItem.setBackgroundResource(R.drawable.list_item_selected);
             } else {
-                //view.setSelected(false);
                 listItem.setBackgroundResource(R.drawable.drawer_list_item);
             }
             listItem.bind(action);

@@ -6,4 +6,5 @@ default.properties
 .idea/
 out/
 gen/
+aa-gen/
 target/

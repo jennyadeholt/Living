@@ -52,6 +52,13 @@
 
             </LinearLayout>
 
+            <ImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_star_off_disabled_focused_holo_light"
+                    android:onClick="setFavorite"
+                    />
 
 
         </LinearLayout>

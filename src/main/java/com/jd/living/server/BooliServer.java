@@ -1,14 +1,13 @@
 package com.jd.living.server;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.jd.living.model.Result;
 
@@ -34,15 +33,21 @@ public class BooliServer {
     }
 
     @Background
-    public void getListings(String search) {
+    public void getListings(String search, String minRoom, String maxRoom, String objectType) {
 
         AuthStore authStore = new AuthStore();
 
-        Result result = restClient.getListings(search,
-                authStore.getCallerId(),
-                authStore.getTime(),
-                authStore.getUnique(),
-                authStore.getHash()).getBody();
+        Result result = restClient.
+                getListings(
+                        search,
+                        authStore.getCallerId(),
+                        authStore.getTime(),
+                        authStore.getUnique(),
+                        authStore.getHash(),
+                        minRoom,
+                        maxRoom,
+                        objectType)
+                .getBody();
 
         notifyListeners(ListingsDatabase.ActionCode.LISTINGS, result);
     }
