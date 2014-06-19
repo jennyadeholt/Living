@@ -48,6 +48,19 @@
         <item>gård</item>
     </string-array>
 
+    <string-array name="build_types_strings">
+        <item>@string/building</item>
+        <item>@string/building_new</item>
+        <item>@string/building_old</item>
+    </string-array>
+
+
+    <string-array name="build_types">
+    <item>null</item>
+    <item>1</item>
+    <item>0</item>
+</string-array>
+
     <string-array name="rooms">
         <item>1</item>
         <item>2</item>
@@ -56,6 +69,7 @@
         <item>5</item>
     </string-array>
 
+    <string name="building_type_none">Inget valt</string>
     <string name="building_type_house">Villa</string>
     <string name="building_type_appartment">Lägenhet</string>
     <string name="building_type_complex">Radhus, parhus &amp; kedjehus</string>

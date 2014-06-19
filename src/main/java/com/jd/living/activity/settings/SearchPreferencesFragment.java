@@ -38,6 +38,7 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         preferences = getPreferenceManager().getSharedPreferences();
         preferences.registerOnSharedPreferenceChangeListener(this);
 
+        setSummaryForList(preferences, "preference_build_type");
         setSummary(preferences, "preferences_area_location");
         checkMinMax(preferences, "");
         setSummaryForBuildingTypes(preferences, "preference_building_type");
@@ -58,6 +59,8 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
            checkMinMax(sharedPreferences, key);
         } else if (key.equals("preference_building_type")) {
             setSummaryForBuildingTypes(sharedPreferences, key);
+        } else if (key.equals("preference_build_type")) {
+            setSummaryForList(sharedPreferences, key);
         }
     }
 
@@ -67,15 +70,15 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         int min = Integer.valueOf(sharedPreferences.getString("preference_min_numbers", ""));
 
         if (min <= max) {
-            setSummary(sharedPreferences, "preference_min_numbers", String.valueOf(min));
-            setSummary(sharedPreferences, "preference_max_numbers", String.valueOf(max));
+            setSummary("preference_min_numbers", String.valueOf(min));
+            setSummary("preference_max_numbers", String.valueOf(max));
         } else if (key.equals("preference_max_numbers")) {
-            setSummary(sharedPreferences, "preference_max_numbers", "Max value needs to be bigger then min");
+            setSummary("preference_max_numbers", "Max value needs to be bigger then min");
         } else if (key.equals("preference_min_numbers")) {
-            setSummary(sharedPreferences, "preference_min_numbers", "Min value needs to be smaller then max");
+            setSummary("preference_min_numbers", "Min value needs to be smaller then max");
         } else {
-            setSummary(sharedPreferences, "preference_max_numbers", "Max value needs to be bigger then min");
-            setSummary(sharedPreferences, "preference_min_numbers", "Min value needs to be smaller then max");
+            setSummary("preference_max_numbers", "Max value needs to be bigger then min");
+            setSummary("preference_min_numbers", "Min value needs to be smaller then max");
         }
         notifyListener(min <= max);
     }
@@ -95,17 +98,35 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
     }
 
     private void setSummary(SharedPreferences sharedPreferences, String key) {
-        setSummary(sharedPreferences, key, sharedPreferences.getString(key, ""));
+        setSummary(key, sharedPreferences.getString(key, ""));
     }
 
-    private void setSummary(SharedPreferences sharedPreferences, String key, String summary) {
-        findPreference(key).setSummary(summary);
+    private void setSummaryForList(SharedPreferences sharedPreferences, String key) {
+
+        String[] names = getResources().getStringArray(R.array.build_types_strings);
+        String[] types = getResources().getStringArray(R.array.build_types);
+
+        String text = names[0];
+        String value = sharedPreferences.getString(key, "");
+
+        for (int i = 1; i < types.length ; i++) {
+            if (value.equals(types[i])){
+                text = names[i];
+                break;
+            }
+
+        }
+        setSummary(key, text);
+    }
+
+    private void setSummary(String key, String summary) {
+          findPreference(key).setSummary(summary);
     }
 
     private void setSummaryForBuildingTypes(SharedPreferences sharedPreferences, String key) {
         Preference pref = findPreference(key);
         Set<String> set = sharedPreferences.getStringSet(key, new HashSet<String>());
-        String text = "None";
+        String text = getString(R.string.building_type_none);
 
         if (!set.isEmpty()) {
             text = "";

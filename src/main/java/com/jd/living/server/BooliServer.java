@@ -33,7 +33,7 @@ public class BooliServer {
     }
 
     @Background
-    public void getListings(String search, String minRoom, String maxRoom, String objectType) {
+    public void getListings(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
 
         AuthStore authStore = new AuthStore();
 
@@ -46,7 +46,9 @@ public class BooliServer {
                         authStore.getHash(),
                         minRoom,
                         maxRoom,
-                        objectType)
+                        objectType,
+                        isNewConstruction
+                )
                 .getBody();
 
         notifyListeners(ListingsDatabase.ActionCode.LISTINGS, result);

@@ -1,6 +1,7 @@
 package com.jd.living.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,9 +11,9 @@ import java.util.List;
 
 public class Result {
 
-    public int totalCount;
-    public int count;
-    public List<Listing> listings;
+    public int totalCount = 0;
+    public int count = 0;
+    public List<Listing> listings = new ArrayList<Listing>();
 
     public Result(){}
 

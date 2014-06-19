@@ -36,7 +36,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     }
 
     public interface ListingsListener {
-        void onUpdate(List<Listing> listings);
+        void onUpdate(Result result);
         void onSearchStarted();
     }
 
@@ -50,7 +50,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     private SharedPreferences preferences;
 
     private boolean searchInprogress = false;
-    private List<Listing> listings = new ArrayList<Listing>();
+    private Result result = new Result();
     private List<ListingsListener> listeners = new ArrayList<ListingsListener>();
 
     @AfterInject
@@ -60,8 +60,9 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public void addListingsListener(ListingsListener listener) {
         listeners.add(listener);
-        if (listings != null) {
-            listener.onUpdate(listings);
+
+        if (!result.listings.isEmpty()) {
+            listener.onUpdate(result);
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
@@ -84,11 +85,13 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
             String minRooms = preferences.getString("preference_min_numbers", "1");
             String maxRooms = preferences.getString("preference_max_numbers", "5");
             String location = preferences.getString("preferences_area_location", "Hörby");
+            String production = preferences.getString("preference_build_type", "null");
+
             Log.d("Living", "" + location + " " + minRooms + " " + maxRooms);
 
             searchInprogress = true;
             notifyListerner(ActionCode.SEARCH_STARTED);
-            server.getListings(location, minRooms, maxRooms, types);
+            server.getListings(location, minRooms, maxRooms, types, production);
         }
     }
 
@@ -96,7 +99,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         for (ListingsListener listener : listeners) {
             switch (action) {
                 case LISTINGS:
-                    listener.onUpdate(listings);
+                    listener.onUpdate(result);
                     break;
                 case SEARCH_STARTED:
                     listener.onSearchStarted();
@@ -108,14 +111,14 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     }
 
     public Listing getListing(int booliId) {
-        Listing result = null;
-        for (Listing listing : listings) {
+        Listing l = null;
+        for (Listing listing : result.listings) {
             if (listing.getBooliId() == booliId ) {
-                result = listing;
+                l = listing;
                 break;
             }
         }
-        return result;
+        return l;
     }
 
     @Override
@@ -125,11 +128,9 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         Log.d("We have a result", "" + result.count);
         switch (action) {
             case LISTINGS:
-                listings = result.listings;
-                break;
             case SOLD:
                 Log.d("We have a result", "" + result.count);
-                listings = result.listings;
+                this.result = result;
                 break;
             default:
                 break;

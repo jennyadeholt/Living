@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello hey, funkar det?</string>
-    <string name="app_name">Living</string>
-
-
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Save title</string>
-    <string name="settings_button_text">Settings</string>
 
     <string name="new_search">Ny sökning</string>
     <string name="search_result_header"></string>
@@ -19,20 +11,34 @@
     <string name="settings">Inställningar</string>
     <string name="images">Bilder</string>
     <string name="detail_view">Detaljer</string>
-    <string name="searches">Gamla sökningar</string>
+    <string name="searches">Sökhistorik</string>
     <string name="help">Hjälp</string>
     <string name="about">Om</string>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="action_websearch">Web search</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="preferences_area_title">Område</string>
+    <string name="preferences_area">Sökområde</string>
 
+    <string name="preferences_type_of_building_title">Byggnad</string>
+
+    <string name="preferences_type_of_building">Bostadstyp</string>
     <string name="building_type_house">Villa</string>
     <string name="building_type_appartment">Lägenhet</string>
     <string name="building_type_complex">Radhus, parhus &amp; kedjehus</string>
     <string name="building_type_fritid">Fritidshus</string>
     <string name="building_type_mark">Tomt-mark</string>
     <string name="building_type_farm">Gård</string>
+
+    <string name="preferences_type_of_production">Nyproduktion</string>
+    <string name="building_new">Visa endast nyproduktion</string>
+    <string name="building_old">Visa inte nyproduktion</string>
+    <string name="building">Visa allt</string>
+
+    <string name="preferences_nbr_of_rooms">Antal rum</string>
+    <string name="preferences_nbr_of_rooms_min">Minst antal rum</string>
+    <string name="preferences_nbr_of_rooms_max">Max antal rum</string>
+
+
+
+    <string name="number_of_objects">%1$d av %2$d visas</string>
 
 </resources>

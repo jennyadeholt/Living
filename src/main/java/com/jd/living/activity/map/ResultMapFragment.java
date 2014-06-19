@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
 import com.jd.living.activity.detail.DetailsActivity_;
 import com.jd.living.model.Listing;
+import com.jd.living.model.Result;
 import com.jd.living.server.ListingsDatabase;
 
 
@@ -68,9 +69,9 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     @UiThread
     @Override
-    public void onUpdate(List<Listing> listings) {
+    public void onUpdate(Result result) {
         bounds = new LatLngBounds.Builder();
-        for (Listing listing : listings) {
+        for (Listing listing : result.listings) {
             LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
 
             googleMap.addMarker(

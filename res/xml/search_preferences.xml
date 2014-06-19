@@ -2,31 +2,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory
-            android:title="Area">
+            android:title="@string/preferences_area_title">
 
         <EditTextPreference
                 android:key="preferences_area_location"
-                android:title="Search area"
+                android:title="@string/preferences_area"
                 android:defaultValue="Malmö"
                 android:inputType="text" />
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Number of rooms"
-            android:summary="">
+            android:title="@string/preferences_nbr_of_rooms">
+
         <ListPreference
                 android:key="preference_min_numbers"
-                android:title="Min number of rooms"
+                android:title="@string/preferences_nbr_of_rooms_min"
                 android:entries="@array/rooms"
                 android:defaultValue="3"
                 android:entryValues="@array/rooms" />
         <ListPreference
                 android:key="preference_max_numbers"
-                android:title="Max number of rooms"
+                android:title="@string/preferences_nbr_of_rooms_max"
                 android:entries="@array/rooms"
                 android:defaultValue="4"
                 android:entryValues="@array/rooms" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -38,6 +37,13 @@
                 android:entries="@array/building"
                 android:defaultValue="@array/building_types"
                 android:entryValues="@array/building_types" />
+
+        <ListPreference
+                android:title="@string/preferences_type_of_production"
+                android:key="preference_build_type"
+                android:entryValues="@array/build_types"
+                android:entries="@array/build_types_strings"
+                android:defaultValue="0" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 
 import com.jd.living.R;
 import com.jd.living.model.Listing;
+import com.jd.living.model.Result;
 import com.jd.living.server.ListingsDatabase;
 
 /**
@@ -76,9 +77,9 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
     }
 
     @Override
-    public void onUpdate(List<Listing> listings) {
-        Log.d("Living", "Adapter.onUpdate() " + listings.size());
-        this.listings = listings;
+    public void onUpdate(Result result) {
+        Log.d("Living", "Adapter.onUpdate() " + result.listings.size());
+        this.listings = result.listings;
         update();
     }
 

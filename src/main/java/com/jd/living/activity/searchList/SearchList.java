@@ -24,6 +24,7 @@ import com.jd.living.R;
 import com.jd.living.activity.detail.DetailsActivity_;
 import com.jd.living.dialog.SpinnerDialogFragment;
 import com.jd.living.model.Listing;
+import com.jd.living.model.Result;
 import com.jd.living.server.ListingsDatabase;
 
 
@@ -66,9 +67,9 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
     }
 
     @Override
-    public void onUpdate(List<Listing> listings) {
+    public void onUpdate(Result result) {
         Log.d("Living", "SearchList.onUpdate");
-        update(listings.size());
+        update(result);
     }
 
     @Override
@@ -78,11 +79,11 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
     }
 
     @UiThread
-    public void update(int searches) {
+    public void update(Result result) {
         if (spinner != null) {
             spinner.dismiss();
         }
-        info.setText("Antal objekt: " + searches);
+        info.setText(getString(R.string.number_of_objects, result.count , result.totalCount));
     }
 }
 
