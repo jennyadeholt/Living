@@ -5,12 +5,11 @@ import java.net.URL;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
@@ -24,20 +23,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
 import com.jd.living.model.Listing;
-import com.jd.living.server.ListingsDatabase;
 
 /**
  * Created by jennynilsson on 2014-06-03.
  */
 @EFragment(R.layout.details_view)
-public class DetailsView extends Fragment {
-
-    @Bean
-    ListingsDatabase database;
+public class DetailsView extends DetailsFragment {
 
     @ViewById
     TextView address;
-
 
     @ViewById
     TextView area;
@@ -57,55 +51,49 @@ public class DetailsView extends Fragment {
     @ViewById
     ImageView thumbnail;
 
-    private GoogleMap map;
-    private MapFragment mapFragment;
-    private Listing listing;
+    @FragmentById
+    MapFragment mapFragment;
+
+    private GoogleMap googleMap;
+    private LatLng target;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("Living", "onResume");
-        int id = getActivity().getIntent().getIntExtra("id", -1);
-        listing = database.getListing(id);
+    protected void onInit(){
+        googleMap = mapFragment.getMap();
+        googleMap.setMyLocationEnabled(true);
+    }
+
+    @Override
+    protected void onUpdate() {
+
+        Log.d("Living", "DetailsView");
         if (listing != null) {
-            updateUI(listing);
+            Log.d("Living", "DetailsView 2");
+            googleMap.clear();
+
+            address.setText(listing.getAddress());
+            area.setText(listing.getArea());
+            living_area.setText(listing.getLivingArea() + " kvm ");
+            room.setText(listing.getRooms() + " rum");
+            rent.setText(listing.getRent() + " kr/månad");
+            price.setText(listing.getListPrice() + " kr");
+
+            target = new LatLng(listing.getLatitude(), listing.getLongitude());
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(target)      // Sets the center of the googleMap to Mountain View
+                    .zoom(13)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
+                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+
+            MarkerOptions marker = new MarkerOptions();
+            marker.position(target);
+            googleMap.addMarker(marker);
+
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            getImage(listing);
         }
-    }
-
-
-    @AfterViews
-    public void init(){
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        map = mapFragment.getMap();
-        map.setMyLocationEnabled(true);
-    }
-
-    private void updateUI(Listing listing) {
-
-        address.setText(listing.getAddress());
-        area.setText(listing.getArea());
-        living_area.setText(listing.getLivingArea() + " kvm ");
-        room.setText(listing.getRooms() + " rum");
-        rent.setText(listing.getRent() + " kr/månad");
-        price.setText(listing.getListPrice() + " kr");
-
-        LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(target)      // Sets the center of the map to Mountain View
-                .zoom(13)                   // Sets the zoom
-                .bearing(0)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
-
-        MarkerOptions marker = new MarkerOptions();
-        marker.position(target);
-        map.addMarker(marker);
-
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-        getImage(listing);
-
     }
 
     @Background

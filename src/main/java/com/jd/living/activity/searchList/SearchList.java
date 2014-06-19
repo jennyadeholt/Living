@@ -47,7 +47,6 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
 
     @AfterViews
     public void init() {
-        Log.d("Living", "SearchList.init");
         listingsDatabase.addListingsListener(this);
         setListAdapter(searchListAdapter);
     }
@@ -60,21 +59,16 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
 
     @ItemClick
     void listItemClicked(Listing listing) {
-        Log.d("Living", "SearchList.listItemClicked");
-        Intent intent = new Intent(getActivity(), DetailsActivity_.class);
-        intent.putExtra("id", listing.getBooliId());
-        startActivity(intent);
+        listingsDatabase.setCurrentId(listing.getBooliId());
     }
 
     @Override
     public void onUpdate(Result result) {
-        Log.d("Living", "SearchList.onUpdate");
         update(result);
     }
 
     @Override
     public void onSearchStarted() {
-        Log.d("Living", "SearchList.onSearchStarted");
         spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
     }
 

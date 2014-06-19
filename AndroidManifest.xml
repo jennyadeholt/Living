@@ -42,6 +42,7 @@
 
         <activity android:name=".activity.detail.DetailsActivity_" />
         <fragment android:name=".activity.detail.DetailsView_" />
+        <fragment android:name=".activity.detail.DetailsMain_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />

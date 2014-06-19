@@ -48,6 +48,9 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
     @Bean
     ListingsDatabase database;
 
+    @Bean
+    ResultInfoWindowAdapter adapter;
+
     private GoogleMap googleMap;
 
     private LatLngBounds.Builder bounds;
@@ -64,6 +67,8 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
         googleMap.setOnInfoWindowClickListener(this);
         googleMap.setOnMapLoadedCallback(this);
+        googleMap.setInfoWindowAdapter(adapter);
+
         database.addListingsListener(this);
     }
 
@@ -78,7 +83,9 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
                     new MarkerOptions()
                             .position(target)
                             .title(listing.getAddress())
+
                             .snippet(String.valueOf(listing.getBooliId())));
+
             bounds.include(target);
         }
 
@@ -99,20 +106,7 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        String s = marker.getSnippet();
-        Log.d("Living", "Marker string " + s);
-        if (!TextUtils.isEmpty(s)) {
-            int id = Integer.parseInt(s);
-
-            Listing listing = database.getListing(id);
-            if (listing != null) {
-                Intent intent = new Intent(getActivity(), DetailsActivity_.class);
-                intent.putExtra("id", listing.getBooliId());
-                startActivity(intent);
-
-            }
-        }
-
+        database.setCurrentId(Integer.valueOf(marker.getSnippet()));
     }
 
     @Override

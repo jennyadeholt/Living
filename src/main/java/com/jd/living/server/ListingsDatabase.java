@@ -40,6 +40,10 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         void onSearchStarted();
     }
 
+    public interface DetailsListener {
+        void onDetailsRequested(int booliId);
+    }
+
     @Bean
     BooliServer server;
 
@@ -50,8 +54,11 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     private SharedPreferences preferences;
 
     private boolean searchInprogress = false;
+    private int currentBooliId = -1;
     private Result result = new Result();
+
     private List<ListingsListener> listeners = new ArrayList<ListingsListener>();
+    private List<DetailsListener> detailsListeners = new ArrayList<DetailsListener>();
 
     @AfterInject
     public void init(){
@@ -65,6 +72,13 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
             listener.onUpdate(result);
         } else if (searchInprogress) {
             listener.onSearchStarted();
+        }
+    }
+
+    public void addDetailsListener(DetailsListener detailsListener) {
+        detailsListeners.add(detailsListener);
+        if (currentBooliId != -1) {
+            detailsListener.onDetailsRequested(currentBooliId);
         }
     }
 
@@ -118,7 +132,21 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
                 break;
             }
         }
+        if (l == null && !result.listings.isEmpty()) {
+            l = result.listings.get(0);
+        }
         return l;
+    }
+
+    public Listing getListing() {
+        return getListing(currentBooliId);
+    }
+
+    public void setCurrentId(int booliId) {
+        currentBooliId = booliId;
+        for (DetailsListener detailsListener : detailsListeners) {
+            detailsListener.onDetailsRequested(currentBooliId);
+        }
     }
 
     @Override
