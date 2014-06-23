@@ -8,7 +8,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;

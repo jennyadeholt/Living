@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
 import com.jd.living.R;
 
@@ -52,7 +51,6 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d("Living", "key " + key);
         if (key.equals("preferences_area_location")) {
             setSummary(sharedPreferences, key);
         } else if (key.equals("preference_min_numbers") || key.equals("preference_max_numbers")) {

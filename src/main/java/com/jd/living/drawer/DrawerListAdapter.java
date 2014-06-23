@@ -6,7 +6,6 @@ import java.util.List;
 import org.androidannotations.annotations.EBean;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;

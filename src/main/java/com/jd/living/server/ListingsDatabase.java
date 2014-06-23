@@ -14,14 +14,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
 
-/**
- * Created by jennynilsson on 2014-06-03.
- */
+
 @EBean(scope = EBean.Scope.Singleton)
 public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
@@ -101,8 +98,6 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
             String location = preferences.getString("preferences_area_location", "Hörby");
             String production = preferences.getString("preference_build_type", "null");
 
-            Log.d("Living", "" + location + " " + minRooms + " " + maxRooms);
-
             searchInprogress = true;
             notifyListerner(ActionCode.SEARCH_STARTED);
             server.getListings(location, minRooms, maxRooms, types, production);
@@ -153,11 +148,9 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     public void onResponse(ActionCode action, Result result) {
 
         searchInprogress = false;
-        Log.d("We have a result", "" + result.count);
         switch (action) {
             case LISTINGS:
             case SOLD:
-                Log.d("We have a result", "" + result.count);
                 this.result = result;
                 break;
             default:

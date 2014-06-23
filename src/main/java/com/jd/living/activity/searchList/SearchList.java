@@ -1,7 +1,5 @@
 package com.jd.living.activity.searchList;
 
-import java.util.List;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -11,9 +9,7 @@ import org.androidannotations.annotations.ViewById;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsActivity_;
-import com.jd.living.dialog.SpinnerDialogFragment;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
 import com.jd.living.server.ListingsDatabase;
@@ -77,7 +71,7 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
         if (spinner != null) {
             spinner.dismiss();
         }
-        info.setText(getString(R.string.number_of_objects, result.count , result.totalCount));
+            info.setText(getString(R.string.number_of_objects, result.count, result.totalCount));
     }
 }
 

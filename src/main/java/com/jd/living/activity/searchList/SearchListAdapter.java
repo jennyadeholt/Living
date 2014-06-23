@@ -9,7 +9,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,7 +31,6 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
 
     public SearchListAdapter(Context context) {
         super(context, R.layout.list_item);
-        Log.d("Living", "Adapter");
     }
 
     @AfterInject
@@ -78,7 +76,7 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
 
     @Override
     public void onUpdate(Result result) {
-        Log.d("Living", "Adapter.onUpdate() " + result.listings.size());
+
         this.listings = result.listings;
         update();
     }

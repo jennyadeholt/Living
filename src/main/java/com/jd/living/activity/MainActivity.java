@@ -7,7 +7,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,48 +18,34 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsMain_;
-import com.jd.living.activity.map.ResultMapFragment_;
 import com.jd.living.activity.searchList.SearchListAction;
-import com.jd.living.activity.searchList.SearchList_;
+import com.jd.living.activity.searchList.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
 import com.jd.living.drawer.DrawerActivity;
 import com.jd.living.server.ListingsDatabase;
 
 @EActivity
-public class MainActivity extends DrawerActivity implements ListingsDatabase.DetailsListener {
+public class MainActivity extends DrawerActivity {
 
     @Bean
     ListingsDatabase listingsDatabase;
 
-    private SearchList_ searchList;
+    private SearchResult_ searchResult;
     private SearchPreferences_ newSearch;
-    private ResultMapFragment_ resultMap;
-    private DetailsMain_ detailsMain;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        listingsDatabase.addDetailsListener(this);
-
         currentPosition = 1;
 
-        searchList = new SearchList_();
-        resultMap = new ResultMapFragment_();
+        searchResult = new SearchResult_();
         newSearch = new SearchPreferences_();
-        detailsMain = new DetailsMain_();
 
-        FragmentManager fragmentManager = getFragmentManager();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content_frame, (Fragment) resultMap);
-        transaction.add(R.id.content_frame, (Fragment) searchList);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.content_frame, (Fragment) searchResult);
         transaction.add(R.id.content_frame, (Fragment) newSearch);
-        transaction.add(R.id.content_frame, (Fragment) detailsMain);
-
         transaction.commit();
 
         setup(savedInstanceState);
@@ -85,26 +70,15 @@ public class MainActivity extends DrawerActivity implements ListingsDatabase.Det
     @Override
     protected void selectItem(int position) {
 
-        FragmentManager fragmentManager = getFragmentManager();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (position) {
             case 1:
-                transaction.hide((Fragment) detailsMain);
                 transaction.hide((Fragment) newSearch);
-                transaction.hide((Fragment) resultMap);
-                transaction.show((Fragment) searchList);
+                transaction.show((Fragment) searchResult);
+                searchResult.onShowSearch();
                 break;
-            case 2:
-                transaction.hide((Fragment) detailsMain);
-                transaction.hide((Fragment) newSearch);
-                transaction.hide((Fragment) searchList);
-                transaction.show((Fragment) resultMap);
-                break;
-            case 4:
-                transaction.hide((Fragment) detailsMain);
-                transaction.hide((Fragment) resultMap);
-                transaction.hide((Fragment) searchList);
+            case 3:
+                transaction.hide((Fragment) searchResult);
                 transaction.show((Fragment) newSearch);
                 break;
             case 5:
@@ -120,6 +94,15 @@ public class MainActivity extends DrawerActivity implements ListingsDatabase.Det
         super.selectItem(position);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (searchResult.isVisible() && searchResult.isDetailsShown()) {
+            searchResult.onShowSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     public void doSearch(View v) {
         listingsDatabase.launchListingsSearch();
         selectItem(1);
@@ -130,7 +113,7 @@ public class MainActivity extends DrawerActivity implements ListingsDatabase.Det
     }
 
     public void goToHomepage(View v){
-        String url = ""; //listing.getUrl();
+        String url = listingsDatabase.getListing().getUrl();
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
@@ -138,18 +121,17 @@ public class MainActivity extends DrawerActivity implements ListingsDatabase.Det
     }
 
     public void setFavorite(View v) {
-        Toast.makeText(this, "Favoite", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Favorite", Toast.LENGTH_LONG).show();
 
         ((ImageView) v).setImageResource(R.drawable.btn_rating_star_on_normal_holo_light);
     }
-
 
     @Override
     protected List<SearchListAction> getActions() {
         List<SearchListAction> actionList = new ArrayList<SearchListAction>();
         actionList.add(SearchListAction.RESULT_HEADER);
         actionList.add(SearchListAction.SEARCH_RESULT);
-        actionList.add(SearchListAction.MAP);
+
         actionList.add(SearchListAction.SETTINGS_HEADER);
         actionList.add(SearchListAction.NEW_SEARCH);
         actionList.add(SearchListAction.SEARCHES);
@@ -163,18 +145,5 @@ public class MainActivity extends DrawerActivity implements ListingsDatabase.Det
     @Override
     protected int getStartPosition() {
         return currentPosition;
-    }
-
-    @Override
-    public void onDetailsRequested(int booliId) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.hide((Fragment) newSearch);
-        transaction.hide((Fragment) resultMap);
-        transaction.hide((Fragment) searchList);
-        transaction.show((Fragment) detailsMain);
-
-        transaction.commit();
     }
 }

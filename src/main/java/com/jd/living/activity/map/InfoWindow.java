@@ -10,7 +10,6 @@ import org.androidannotations.annotations.ViewById;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +50,7 @@ public class InfoWindow extends LinearLayout {
             drawable = Drawable.createFromStream(is, "src name");
             is.close();
         } catch (Exception e) {
-            Log.d("Living", "Error" + e);
+            System.out.println("Error" + e);
         }
 
         setImage(drawable);
@@ -59,7 +58,7 @@ public class InfoWindow extends LinearLayout {
 
     @UiThread
     public void setImage(Drawable drawable) {
-        Log.d("Living", "setImage " + (drawable != null));
+
         if (drawable != null) {
             image.setImageDrawable(drawable);
         }

@@ -1,36 +1,28 @@
 package com.jd.living.activity.detail;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.Fragment;
-import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.jd.living.R;
-import com.jd.living.model.Listing;
-import com.jd.living.server.ListingsDatabase;
 
 @EFragment(R.layout.web)
-public class DetailsWebView extends DetailsFragment {
+public class DetailsWebView extends DetailsInfo {
 
     @ViewById
     WebView webView;
 
     @Override
     protected void onInit() {
-
+        // Do nothing
     }
 
     protected void onUpdate() {
-        Log.d("Living", "DetailsWebView");
         if (listing != null) {
-            Log.d("Living", "DetailsWebView 2");
 
             String url = listing.getUrl() + "/bilder/";
             if (!url.startsWith("http://") && !url.startsWith("https://")) {

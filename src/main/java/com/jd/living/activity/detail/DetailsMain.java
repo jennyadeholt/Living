@@ -4,15 +4,13 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.TabHost;
 
 import com.jd.living.R;
+import com.jd.living.tabhost.DetailsTabContent;
 
 @EFragment(R.layout.details_main)
 public class DetailsMain extends Fragment {
@@ -24,11 +22,6 @@ public class DetailsMain extends Fragment {
     private DetailsMap_ map;
     private DetailsView_ details;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @AfterViews
     public void init(){

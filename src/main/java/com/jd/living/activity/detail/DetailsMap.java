@@ -1,8 +1,9 @@
 package com.jd.living.activity.detail;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
+
+import android.app.Activity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,7 +15,7 @@ import com.jd.living.R;
 
 
 @EFragment(R.layout.details_map_view)
-public class DetailsMap extends DetailsFragment {
+public class DetailsMap extends DetailsInfo {
 
     @FragmentById
     MapFragment detailsMap;

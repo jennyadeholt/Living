@@ -3,7 +3,6 @@ package com.jd.living.activity.detail;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
@@ -11,7 +10,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +26,7 @@ import com.jd.living.model.Listing;
  * Created by jennynilsson on 2014-06-03.
  */
 @EFragment(R.layout.details_view)
-public class DetailsView extends DetailsFragment {
+public class DetailsView extends DetailsInfo {
 
     @ViewById
     TextView address;
@@ -61,14 +59,13 @@ public class DetailsView extends DetailsFragment {
     protected void onInit(){
         googleMap = mapFragment.getMap();
         googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+
     }
 
     @Override
     protected void onUpdate() {
-
-        Log.d("Living", "DetailsView");
         if (listing != null) {
-            Log.d("Living", "DetailsView 2");
             googleMap.clear();
 
             address.setText(listing.getAddress());

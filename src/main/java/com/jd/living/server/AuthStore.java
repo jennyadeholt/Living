@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 public class AuthStore {
 
@@ -37,7 +36,6 @@ public class AuthStore {
     }
 
     public String getHash() {
-        Log.d("Living", "getHash");
         return sha1(getCallerId() + getTime() + getPrivateKey() + getUnique());
     }
 

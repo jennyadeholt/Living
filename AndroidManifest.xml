@@ -38,10 +38,12 @@
         </activity>
 
         <fragment android:name=".activity.searchList.SearchList_" />
+        <fragment android:name=".activity.searchList.SearchResult_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
-        <activity android:name=".activity.detail.DetailsActivity_" />
         <fragment android:name=".activity.detail.DetailsView_" />
+        <fragment android:name=".activity.detail.DetailsMap_" />
+        <fragment android:name=".activity.detail.DetailsWebView_" />
         <fragment android:name=".activity.detail.DetailsMain_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />

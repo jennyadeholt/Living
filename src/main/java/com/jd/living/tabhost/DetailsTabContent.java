@@ -1,4 +1,4 @@
-package com.jd.living.activity.detail;
+package com.jd.living.tabhost;
 
 import android.content.Context;
 import android.view.View;

@@ -9,9 +9,8 @@ import android.app.Fragment;
 import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
-
 @EFragment
-public abstract class DetailsFragment extends Fragment implements ListingsDatabase.DetailsListener {
+public abstract class DetailsInfo extends Fragment implements ListingsDatabase.DetailsListener {
 
     protected Listing listing;
 
