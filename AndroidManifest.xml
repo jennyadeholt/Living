@@ -42,9 +42,8 @@
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
         <fragment android:name=".activity.detail.DetailsView_" />
-        <fragment android:name=".activity.detail.DetailsMap_" />
-        <fragment android:name=".activity.detail.DetailsWebView_" />
-        <fragment android:name=".activity.detail.DetailsMain_" />
+        <activity android:name=".activity.detail.DetailsMap_" />
+        <activity android:name=".activity.detail.DetailsWebView_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />

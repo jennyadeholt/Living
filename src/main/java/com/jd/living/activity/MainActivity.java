@@ -73,13 +73,13 @@ public class MainActivity extends DrawerActivity {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (position) {
             case 1:
-                transaction.hide((Fragment) newSearch);
-                transaction.show((Fragment) searchResult);
+                transaction.hide(newSearch);
+                transaction.show(searchResult);
                 searchResult.onShowSearch();
                 break;
             case 3:
-                transaction.hide((Fragment) searchResult);
-                transaction.show((Fragment) newSearch);
+                transaction.hide(searchResult);
+                transaction.show(newSearch);
                 break;
             case 5:
                 break;
@@ -97,7 +97,7 @@ public class MainActivity extends DrawerActivity {
     @Override
     public void onBackPressed() {
         if (searchResult.isVisible() && searchResult.isDetailsShown()) {
-            searchResult.onShowSearch();
+            selectItem(1);
         } else {
             super.onBackPressed();
         }

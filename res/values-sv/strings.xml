@@ -37,8 +37,24 @@
     <string name="preferences_nbr_of_rooms_min">Minst antal rum</string>
     <string name="preferences_nbr_of_rooms_max">Max antal rum</string>
 
-
-
     <string name="number_of_objects">%1$d av %2$d visas</string>
+
+    <string name="details_adress">Adress:</string>
+    <string name="details_type">Bostadstyp:</string>
+    <string name="details_rent">Hyra:</string>
+    <string name="details_list_price">Pris:</string>
+    <string name="details_rooms">Antal rum:</string>
+    <string name="details_floor">Våning:</string>
+    <string name="details_living_area">Boarea:</string>
+    <string name="details_published">Publiserad:</string>
+    <string name="details_construction_year">Byggnadsår:</string>
+    <string name="details_source">Källa:</string>
+
+    <string name="details_living_area_text">%1$d kvm</string>
+    <string name="details_rent_text">%1$s kr</string>
+    <string name="details_room_text">%1$s rum</string>
+    <string name="details_list_price_text">%1$s kr</string>
+    <string name="details_floor_text">%1$d våningen</string>
+
 
 </resources>

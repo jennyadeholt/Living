@@ -22,6 +22,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
 
     private boolean showDetails = false;
 
+
     @AfterViews
     public void init() {
         listingsDatabase.addDetailsListener(this);
@@ -30,8 +31,8 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
         searchMain = new SearchMain_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.content_frame, (Fragment) detailsView);
-        transaction.add(R.id.content_frame, (Fragment) searchMain);
+        transaction.add(R.id.content_frame, detailsView);
+        transaction.add(R.id.content_frame, searchMain);
         transaction.commit();
 
         onShowSearch();
@@ -61,8 +62,8 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
         showDetails = true;
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide((Fragment) searchMain);
-        transaction.show((Fragment) detailsView);
+        transaction.hide(searchMain);
+        transaction.show(detailsView);
         transaction.commit();
     }
 
@@ -71,8 +72,8 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
             showDetails = false;
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.hide((Fragment) detailsView);
-            transaction.show((Fragment) searchMain);
+            transaction.hide(detailsView);
+            transaction.show(searchMain);
             transaction.commit();
         }
     }

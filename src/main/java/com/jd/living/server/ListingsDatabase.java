@@ -104,6 +104,10 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         }
     }
 
+    public String getNumberOfObjectString() {
+        return (result.listings.indexOf(getListing()) + 1) + "/"  +result.count;
+    }
+
     private void notifyListerner(ActionCode action) {
         for (ListingsListener listener : listeners) {
             switch (action) {
@@ -135,6 +139,28 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public Listing getListing() {
         return getListing(currentBooliId);
+    }
+
+    public void getPreviousListing() {
+        int location = result.listings.indexOf(getListing());
+        if (location == 0) {
+            location = result.listings.size() -1;
+        } else {
+            location--;
+        }
+        Listing listing = result.listings.get(location);
+        setCurrentId(listing.getBooliId());
+    }
+
+    public void getNextListing() {
+        int location = result.listings.indexOf(getListing());
+        if (location == result.listings.size() - 1) {
+            location = 0;
+        } else {
+            location++;
+        }
+        Listing listing = result.listings.get(location);
+        setCurrentId(listing.getBooliId());
     }
 
     public void setCurrentId(int booliId) {

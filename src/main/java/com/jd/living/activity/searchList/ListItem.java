@@ -41,9 +41,19 @@ public class ListItem extends LinearLayout {
 
     public void bind(Listing listing) {
         address.setText(listing.getAddress());
-        info.setText(listing.getRooms() + " rum, " + listing.getLivingArea() + " kvm på " + listing.getFloor() + " våningen");
+
+        String rooms = getContext().getString(R.string.details_room_text, listing.getRooms());
+        String livingArea = getContext().getString(R.string.details_living_area_text, listing.getLivingArea());
+        info.setText(rooms + ", " + livingArea);
+
         area.setText(listing.getArea());
-        price.setText(listing.getListPrice() + " kr, " + listing.getRent() + " kr/månad");
+
+        String listPrice = getContext().getString(R.string.details_list_price_text, listing.getListPrice());
+        if (!listing.getRent().equals("0")) {
+            listPrice += ", " + getContext().getString(R.string.details_rent_text, listing.getRent());
+        }
+
+        price.setText(listPrice);
 
         getImage(listing);
     }

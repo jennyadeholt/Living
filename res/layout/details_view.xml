@@ -1,167 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_height="fill_parent"
-              android:layout_width="fill_parent"
-              android:padding="10dp"
-              android:orientation="vertical"
-              android:background="@drawable/list_item">
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/mainLayout">
 
-    <RelativeLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
             android:padding="10dp"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:background="@drawable/list_item">
 
-        <LinearLayout
-                android:id="@+id/basic_info"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-            <FrameLayout android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_gravity="center"
-                         android:padding="2dp"
-                         android:background="#ffffff">
-                <ImageView
-                        android:id="@+id/thumbnail"
-                        android:layout_width="70dp"
-                        android:layout_height="47dp"
-                        android:src="@drawable/icon" />
-            </FrameLayout>
-
-            <LinearLayout android:layout_width="0dp"
-                          android:layout_weight="2"
-                          android:paddingLeft="10dp"
-                          android:orientation="vertical"
-                          android:layout_gravity="center_vertical"
-                          android:layout_height="wrap_content">
-                <TextView
-                        android:id="@+id/address"
-                        style="@android:style/TextAppearance.DeviceDefault.Medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Östervärnsgatan 9a"/>
-                <TextView
-                        android:id="@+id/area"
-                        style="@android:style/TextAppearance.DeviceDefault.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Östervärn"/>
-
-            </LinearLayout>
-
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
             <ImageView
                     android:id="@+id/favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/btn_star_off_disabled_focused_holo_light"
-                    android:onClick="setFavorite"
+                    android:onClick="setFavorite" />
+
+            <TextView
+                    android:id="@+id/number_of_objects"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1/3"
+                    android:padding="10dp"
+                    android:layout_alignParentRight="true"
                     />
 
+        </RelativeLayout>
 
-        </LinearLayout>
 
-        <TableLayout
-                android:id="@+id/extra_info"
+        <RelativeLayout
                 android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:id="@+id/basic_info"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                <FrameLayout android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:padding="2dp"
+                             android:background="#ffffff">
+                    <ImageView
+                            android:id="@+id/thumbnail"
+                            android:layout_width="70dp"
+                            android:layout_height="47dp"
+                            android:src="@drawable/icon" />
+                </FrameLayout>
+
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="2"
+                              android:paddingLeft="10dp"
+                              android:orientation="vertical"
+                              android:layout_gravity="center_vertical"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/address"
+                            style="@android:style/TextAppearance.DeviceDefault.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Östervärnsgatan 9a"/>
+                    <TextView
+                            android:id="@+id/area"
+                            style="@android:style/TextAppearance.DeviceDefault.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Östervärn"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TableLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="fill_parent"
+                    android:padding="10dp"
+                    android:layout_below="@id/basic_info"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
                 android:padding="10dp"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:layout_below="@id/basic_info"
                 android:layout_height="wrap_content">
 
-            <TableRow
+            <fragment
+                    android:id="@+id/mapFragment"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_margin="10dp"
+                    android:name="com.google.android.gms.maps.MapFragment"/>
+
+            <TextView
+                    android:text="@string/map_result"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-                <TextView
-                        android:text="Pris : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <TextView
-                        android:id="@+id/price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1 990000kr" />
-            </TableRow>
+            <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="200dp"
+                    android:layout_margin="10dp"
+                    android:layout_height="200dp"/>
 
-            <TableRow
+            <TextView
+                    android:text="@string/images"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
 
-                <TextView
-                        android:text="Hyra : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/extra_name" />
 
-                <TextView
-                        android:id="@+id/rent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4536kr/månad" />
-            </TableRow>
-
-            <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <TextView
-                        android:text="Rum : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <TextView
-                        android:id="@+id/room"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3" />
-            </TableRow>
-            <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <TextView
-                        android:text="Yta : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <TextView
-                        android:id="@+id/living_area"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="124kvm" />
-            </TableRow>
-        </TableLayout>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hemsida"
-                android:onClick="goToHomepage"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/basic_info"/>
-
-    </RelativeLayout>
-
-    <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:id="@+id/mapView"
-            android:padding="20dp"
-            android:layout_weight="2">
-
-        <fragment
-                android:id="@+id/mapFragment"
-                android:layout_width="fill_parent"
-                android:layout_below="@id/extra_info"
-                android:layout_height="fill_parent"
-                android:name="com.google.android.gms.maps.MapFragment"/>
-    </FrameLayout>
-
-</LinearLayout>

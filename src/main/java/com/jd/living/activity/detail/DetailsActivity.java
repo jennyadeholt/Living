@@ -2,33 +2,35 @@ package com.jd.living.activity.detail;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EActivity;
 
-import android.app.Fragment;
+import android.app.Activity;
 
 import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
-@EFragment
-public abstract class DetailsInfo extends Fragment implements ListingsDatabase.DetailsListener {
-
-    protected Listing listing;
-
-    protected abstract void onInit();
-    protected abstract void onUpdate();
+@EActivity
+public abstract class DetailsActivity extends Activity implements ListingsDatabase.DetailsListener {
 
     @Bean
     ListingsDatabase listingsDatabase;
 
+    protected Listing listing;
+
+    protected abstract void onUpdate();
+    protected abstract void onInit();
+
     @AfterViews
-    public void init() {
-        listingsDatabase.addDetailsListener(this);
+    public void init(){
         onInit();
     }
 
     @Override
     public void onDetailsRequested(int booliId) {
         listing =  listingsDatabase.getListing(booliId);
-        onUpdate();
+        if (listing != null) {
+            setTitle(listing.getAddress());
+            onUpdate();
+        }
     }
 }

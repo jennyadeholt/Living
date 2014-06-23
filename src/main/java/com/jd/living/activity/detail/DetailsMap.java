@@ -1,5 +1,8 @@
 package com.jd.living.activity.detail;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 
@@ -12,10 +15,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
+import com.jd.living.model.Listing;
+import com.jd.living.server.ListingsDatabase;
 
 
-@EFragment(R.layout.details_map_view)
-public class DetailsMap extends DetailsInfo {
+@EActivity(R.layout.details_map_view)
+public class DetailsMap extends DetailsActivity implements GoogleMap.OnMapLoadedCallback {
 
     @FragmentById
     MapFragment detailsMap;
@@ -24,14 +29,15 @@ public class DetailsMap extends DetailsInfo {
     private LatLng target;
 
     @Override
-    protected void onInit(){
+    public void onInit() {
         googleMap = detailsMap.getMap();
+        googleMap.setOnMapLoadedCallback(this);
         googleMap.setMyLocationEnabled(true);
     }
 
     @Override
     protected void onUpdate() {
-        if (listing != null) {
+
             googleMap.clear();
 
             target = new LatLng(listing.getLatitude(), listing.getLongitude());
@@ -49,6 +55,11 @@ public class DetailsMap extends DetailsInfo {
                     .build();
 
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
+
+    }
+
+    @Override
+    public void onMapLoaded() {
+        listingsDatabase.addDetailsListener(this);
     }
 }

@@ -68,8 +68,8 @@ public class Listing {
         return location.getArea();
     }
 
-    public Source getSource() {
-        return source;
+    public String getSource() {
+        return source.name;
     }
 
     public String getObjectType() {
