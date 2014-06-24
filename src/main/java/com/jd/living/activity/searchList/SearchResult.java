@@ -8,7 +8,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsView_;
+import com.jd.living.activity.details.DetailsViewPagerFragment_;
 import com.jd.living.server.ListingsDatabase;
 
 @EFragment(R.layout.search_main)
@@ -17,7 +17,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     @Bean
     ListingsDatabase listingsDatabase;
 
-    private DetailsView_ detailsView;
+    private DetailsViewPagerFragment_ detailsView;
     private SearchMain_ searchMain;
 
     private boolean showDetails = false;
@@ -27,7 +27,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     public void init() {
         listingsDatabase.addDetailsListener(this);
 
-        detailsView = new DetailsView_();
+        detailsView = new DetailsViewPagerFragment_();
         searchMain = new SearchMain_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

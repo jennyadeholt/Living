@@ -10,8 +10,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,8 +20,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
-import com.jd.living.activity.detail.DetailsMap;
-import com.jd.living.activity.detail.DetailsMap_;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
 import com.jd.living.server.ListingsDatabase;

@@ -1,4 +1,4 @@
-package com.jd.living.activity.detail;
+package com.jd.living.activity.details;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

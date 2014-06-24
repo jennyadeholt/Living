@@ -100,12 +100,13 @@
                 android:layout_below="@id/basic_info"
                 android:layout_height="wrap_content">
 
-            <fragment
+            <com.google.android.gms.maps.MapView
                     android:id="@+id/mapFragment"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
-                    android:name="com.google.android.gms.maps.MapFragment"/>
+                    android:apiKey="AIzaSyDPGgizbgjQe2SeXnZ_8Z_wmd_jM4EXhII"
+                    />
 
             <TextView
                     android:text="@string/map_result"

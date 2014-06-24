@@ -1,20 +1,14 @@
-package com.jd.living.activity.detail;
+package com.jd.living.activity.details;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import android.app.Activity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.jd.living.R;
-import com.jd.living.model.Listing;
-import com.jd.living.server.ListingsDatabase;
 
 @EActivity(R.layout.web)
 public class DetailsWebView extends DetailsActivity {

@@ -1,4 +1,4 @@
-package com.jd.living.activity.detail;
+package com.jd.living.activity.details;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -7,16 +7,18 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.view.GestureDetector;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -26,7 +28,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,9 +37,8 @@ import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
 
-@EFragment(R.layout.details_view)
-public class DetailsView extends Fragment implements ListingsDatabase.DetailsListener, GoogleMap.OnMapClickListener, View.OnTouchListener {
-
+@EFragment
+public class DetailsView extends Fragment implements GoogleMap.OnMapClickListener, View.OnTouchListener {
 
     @ViewById
     View mainLayout;
@@ -60,42 +61,61 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
     @ViewById
     WebView webView;
 
-    @FragmentById
-    MapFragment mapFragment;
-
     @Bean
     ListingsDatabase listingsDatabase;
 
+    private MapView mapView;
     private GoogleMap googleMap;
     private LatLng target;
     protected Listing listing;
 
-    private GestureDetector gestureDetector;
+    private int objectPosition = 0;
+
+    /**
+     * Create a new instance of CountingFragment, providing "objectPosition"
+     * as an argument.
+     */
+
+    static DetailsView newInstance(int num) {
+        DetailsView f = new DetailsView_();
+        Bundle args = new Bundle();
+        args.putInt("objectPosition", num);
+        f.setArguments(args);
+        return f;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d("Living", "onCreateView ");
+        View v = inflater.inflate(R.layout.details_view, container, false);
+        mapView = (MapView) v.findViewById(R.id.mapFragment);
+        mapView.onCreate(savedInstanceState);
+
+        return v;
+    }
 
     @AfterViews
     protected void init(){
+        objectPosition = getArguments() != null ? getArguments().getInt("objectPosition") : 1;
+        Log.d("Living", "init " + objectPosition);
 
-        listingsDatabase.addDetailsListener(this);
-        googleMap = mapFragment.getMap();
+        listing = listingsDatabase.getListingFromList(objectPosition);
+
+        googleMap = mapView.getMap();
+
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnMapClickListener(this);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
 
+
         webView.setOnTouchListener(this);
         mainLayout.setOnTouchListener(this);
-        gestureDetector = new GestureDetector(getActivity(), new GestureListener());
-    }
 
-    @Override
-    public void onDetailsRequested(int booliId) {
-        listing =  listingsDatabase.getListing(booliId);
-        if (listing != null) {
-            getActivity().setTitle(listing.getAddress());
-            setDetails();
-            setMap();
-            setWebView();
-            getImage();
-        }
+        setDetails();
+        setMap();
+        setWebView();
+        getImage();
     }
 
     private void setDetails() {
@@ -105,8 +125,7 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
-        nbrOfObjects.setText(listingsDatabase.getNumberOfObjectString());
-
+        nbrOfObjects.setText((objectPosition + 1) + "/" + listingsDatabase.getNumberOfObject());
 
         addDetails(R.string.details_list_price, getString(R.string.details_list_price_text, listing.getListPrice()));
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
@@ -135,8 +154,6 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
 
     private void setMap() {
         googleMap.clear();
-
-
         target = new LatLng(listing.getLatitude(), listing.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(target)      // Sets the center of the googleMap to Mountain View
@@ -147,8 +164,8 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
 
         MarkerOptions marker = new MarkerOptions();
         marker.position(target);
-        googleMap.addMarker(marker);
 
+        googleMap.addMarker(marker);
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
@@ -173,14 +190,10 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
         }
     }
 
-
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (v.getId() == R.id.webView && event.getAction() == MotionEvent.ACTION_DOWN){
             startActivity(new Intent(getActivity(), DetailsWebView_.class));
-        } else {
-            return gestureDetector.onTouchEvent(event);
         }
         return false;
     }
@@ -208,35 +221,33 @@ public class DetailsView extends Fragment implements ListingsDatabase.DetailsLis
         webView.loadUrl(url);
     }
 
-    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        private static final int SWIPE_THRESHOLD = 100;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
+    public void setSelected() {
+        if (listing != null) {
+            getActivity().setTitle(listing.getAddress());
         }
+    }
 
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            boolean result = false;
-            try {
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            listingsDatabase.getPreviousListing();
-                        } else {
-                            listingsDatabase.getNextListing();
-                        }
-                    }
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return result;
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

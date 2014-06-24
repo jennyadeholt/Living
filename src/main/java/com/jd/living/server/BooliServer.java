@@ -17,6 +17,8 @@ public class BooliServer {
     @RestService
     BooliClient restClient;
 
+    public static final String common = "&callerId={id}&time={time}&unique={unique}&hash={hash}&limit={limit}";
+
     private List<ServerConnectionListener> serverConnectionListeners;
 
     public interface ServerConnectionListener {
@@ -47,7 +49,8 @@ public class BooliServer {
                         minRoom,
                         maxRoom,
                         objectType,
-                        isNewConstruction
+                        isNewConstruction,
+                        500
                 )
                 .getBody();
 

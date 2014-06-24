@@ -41,9 +41,10 @@
         <fragment android:name=".activity.searchList.SearchResult_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
-        <fragment android:name=".activity.detail.DetailsView_" />
-        <activity android:name=".activity.detail.DetailsMap_" />
-        <activity android:name=".activity.detail.DetailsWebView_" />
+        <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
+        <fragment android:name=".activity.details.DetailsView_" />
+        <activity android:name=".activity.details.DetailsMap_" />
+        <activity android:name=".activity.details.DetailsWebView_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
