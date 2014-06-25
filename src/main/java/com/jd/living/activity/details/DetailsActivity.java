@@ -10,7 +10,7 @@ import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
 @EActivity
-public abstract class DetailsActivity extends Activity implements ListingsDatabase.DetailsListener {
+public abstract class DetailsActivity extends Activity {
 
     @Bean
     ListingsDatabase listingsDatabase;
@@ -23,11 +23,9 @@ public abstract class DetailsActivity extends Activity implements ListingsDataba
     @AfterViews
     public void init(){
         onInit();
-    }
+        int booliId = getIntent().getIntExtra("booliId", 1);
+        listing = listingsDatabase.getListing(booliId);
 
-    @Override
-    public void onDetailsRequested(int booliId) {
-        listing =  listingsDatabase.getListing(booliId);
         if (listing != null) {
             setTitle(listing.getAddress());
             onUpdate();

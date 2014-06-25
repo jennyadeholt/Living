@@ -14,13 +14,13 @@ import com.jd.living.model.Result;
 @Accept(MediaType.APPLICATION_JSON)
 public interface BooliClient {
 
-    @Get("/listings?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}" + BooliServer.common)
+    @Get("/listings?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<Result> getListings(String search, String id, long time, String unique, String hash, String minRooms, String maxRooms, String objectType, String isNewConstruction, int limit);
+    ResponseEntity<Result> getListings(String search, String callerId, long time, String unique, String hash, String minRooms, String maxRooms, String objectType, String isNewConstruction, int limit);
 
-    @Get("/listings?{id}" + BooliServer.common)
+    @Get("/listings/{booliId}" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<Result> getListing( String id, long time, String unique, String hash, int limit);
+    ResponseEntity<Result> getListing(int booliId, String callerId, long time, String unique, String hash);
 
     RestTemplate getRestTemplate();
 

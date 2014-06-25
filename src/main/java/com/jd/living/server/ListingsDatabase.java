@@ -52,6 +52,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     private boolean searchInprogress = false;
     private int currentBooliId = -1;
+    private int currentListIndex = -1;
     private Result result = new Result();
 
     private List<ListingsListener> listeners = new ArrayList<ListingsListener>();
@@ -62,7 +63,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         server.addServerConnectionListener(this);
     }
 
-    public void addListingsListener(ListingsListener listener) {
+    public void registerListingsListener(ListingsListener listener) {
         listeners.add(listener);
 
         if (!result.listings.isEmpty()) {
@@ -72,11 +73,15 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         }
     }
 
-    public void addDetailsListener(DetailsListener detailsListener) {
+    public void registerDetailsListener(DetailsListener detailsListener) {
         detailsListeners.add(detailsListener);
         if (currentBooliId != -1) {
             detailsListener.onDetailsRequested(currentBooliId);
         }
+    }
+
+    public void unregisterDetailsListener(DetailsListener detailsListener) {
+        detailsListeners.remove(detailsListener);
     }
 
     public void launchListingsSearch(){
@@ -104,11 +109,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         }
     }
 
-    public String getNumberOfObjectString() {
-        return (result.listings.indexOf(getListing()) + 1) + "/"  + result.count;
-    }
-
-    public int getNumberOfObject() {
+    public int getNumberOfObjects() {
         return result.count;
     }
 
@@ -163,6 +164,11 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         for (DetailsListener detailsListener : detailsListeners) {
             detailsListener.onDetailsRequested(currentBooliId);
         }
+    }
+
+    public void setCurrentIndex(int index) {
+        Listing listing = getListingFromList(index);
+        currentListIndex = getListLocation(listing.getBooliId());
     }
 
     @Override

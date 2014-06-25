@@ -35,43 +35,17 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
 
     @AfterViews
     public void init() {
-        database.addListingsListener(this);
-        database.addDetailsListener(this);
-    }
-
-    @UiThread
-    @Override
-    public void onUpdate(Result result) {
-        NUM_PAGES = database.getNumberOfObject();
-        if (mPagerAdapter == null) {
-            mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-            pager.setAdapter(mPagerAdapter);
-        } else {
-            mPagerAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onSearchStarted() {
-
-    }
-
-
-    @Override
-    public void onDetailsRequested(int booliId) {
-        int position = database.getListLocation(booliId) + (LOOPS_COUNT * NUM_PAGES) / 2;
-
-        if (position != pager.getCurrentItem()) {
-            pager.setCurrentItem(position, false);
-        }
+        database.registerListingsListener(this);
+        database.registerDetailsListener(this);
 
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if (currentPageIndex != i) {
-                    DetailsView view = ((ScreenSlidePagerAdapter) pager.getAdapter()).getItem(i);
+                    DetailsView view =  mPagerAdapter.getItem(i);
                     view.setSelected();
                     currentPageIndex = i;
+                    database.setCurrentIndex(currentPageIndex % NUM_PAGES);
                 }
             }
 
@@ -85,6 +59,31 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
 
             }
         });
+    }
+
+    @UiThread
+    @Override
+    public void onUpdate(Result result) {
+        NUM_PAGES = result.count;
+        if (mPagerAdapter == null) {
+            mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+            pager.setAdapter(mPagerAdapter);
+        } else {
+            currentPageIndex = -1;
+            mPagerAdapter.clearContent();
+            mPagerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onSearchStarted() {
+
+    }
+
+    @Override
+    public void onDetailsRequested(int booliId) {
+        int position = database.getListLocation(booliId) + (LOOPS_COUNT * NUM_PAGES) / 2;
+        pager.setCurrentItem(position, false);
     }
 
     @Override

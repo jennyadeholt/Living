@@ -18,7 +18,6 @@ public class DetailsWebView extends DetailsActivity {
 
     @Override
     public void onInit() {
-        listingsDatabase.addDetailsListener(this);
     }
 
     @Override

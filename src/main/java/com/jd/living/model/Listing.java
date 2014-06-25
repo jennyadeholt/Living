@@ -76,6 +76,14 @@ public class Listing {
         return objectType;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
     public String getRooms() {
         String result = String.valueOf(rooms);
         if (rooms % 1 == 0) {

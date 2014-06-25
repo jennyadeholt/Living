@@ -6,18 +6,15 @@ import java.util.List;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jd.living.R;
+import com.jd.living.activity.favorites.FavoriteDatabase;
+import com.jd.living.activity.favorites.FavoriteList_;
 import com.jd.living.activity.searchList.SearchListAction;
 import com.jd.living.activity.searchList.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
@@ -28,24 +25,28 @@ import com.jd.living.server.ListingsDatabase;
 public class MainActivity extends DrawerActivity {
 
     @Bean
+    FavoriteDatabase favoriteDatabase;
+
+    @Bean
     ListingsDatabase listingsDatabase;
 
     private SearchResult_ searchResult;
     private SearchPreferences_ newSearch;
+    private FavoriteList_ favoriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        currentPosition = 1;
-
         searchResult = new SearchResult_();
         newSearch = new SearchPreferences_();
+        favoriteList = new FavoriteList_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.content_frame, (Fragment) searchResult);
-        transaction.add(R.id.content_frame, (Fragment) newSearch);
+        transaction.add(R.id.content_frame, searchResult);
+        transaction.add(R.id.content_frame, newSearch);
+        transaction.add(R.id.content_frame, favoriteList);
         transaction.commit();
 
         setup(savedInstanceState);
@@ -72,21 +73,25 @@ public class MainActivity extends DrawerActivity {
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (position) {
-            case 1:
+            case 0:
                 transaction.hide(newSearch);
+                transaction.hide(favoriteList);
                 transaction.show(searchResult);
                 searchResult.onShowSearch();
                 break;
-            case 3:
+            case 1:
+                transaction.hide(favoriteList);
                 transaction.hide(searchResult);
                 transaction.show(newSearch);
                 break;
-            case 5:
+            case 3:
+                transaction.hide(newSearch);
+                transaction.hide(searchResult);
+                transaction.show(favoriteList);
                 break;
             default:
                 break;
         }
-
 
         transaction.commit();
         currentPosition = position;
@@ -97,7 +102,7 @@ public class MainActivity extends DrawerActivity {
     @Override
     public void onBackPressed() {
         if (searchResult.isVisible() && searchResult.isDetailsShown()) {
-            selectItem(1);
+            selectItem(0);
         } else {
             super.onBackPressed();
         }
@@ -105,34 +110,17 @@ public class MainActivity extends DrawerActivity {
 
     public void doSearch(View v) {
         listingsDatabase.launchListingsSearch();
-        selectItem(1);
+        selectItem(0);
     }
 
     public void clearSearch(View v) {
 
     }
 
-    public void goToHomepage(View v){
-        String url = listingsDatabase.getListing().getUrl();
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://" + url;
-        }
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-
-    public void setFavorite(View v) {
-        Toast.makeText(this, "Favorite", Toast.LENGTH_LONG).show();
-
-        ((ImageView) v).setImageResource(R.drawable.btn_rating_star_on_normal_holo_light);
-    }
-
     @Override
     protected List<SearchListAction> getActions() {
         List<SearchListAction> actionList = new ArrayList<SearchListAction>();
-        actionList.add(SearchListAction.RESULT_HEADER);
         actionList.add(SearchListAction.SEARCH_RESULT);
-
-        actionList.add(SearchListAction.SETTINGS_HEADER);
         actionList.add(SearchListAction.NEW_SEARCH);
         actionList.add(SearchListAction.SEARCHES);
         actionList.add(SearchListAction.FAVORITES);

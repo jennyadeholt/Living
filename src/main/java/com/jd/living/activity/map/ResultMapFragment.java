@@ -90,6 +90,6 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     @Override
     public void onMapLoaded() {
-        database.addListingsListener(this);
+        database.registerListingsListener(this);
     }
 }

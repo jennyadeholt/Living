@@ -1,10 +1,9 @@
-package com.jd.living.activity.searchList;
+package com.jd.living.activity.favorites;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.ListFragment;
@@ -18,12 +17,10 @@ import android.widget.TextView;
 
 import com.jd.living.R;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
-import com.jd.living.server.ListingsDatabase;
 
 
 @EFragment
-public class SearchList extends ListFragment implements ListingsDatabase.ListingsListener {
+public class FavoriteList extends ListFragment implements FavoriteDatabase.FavoriteListener {
 
     @ViewById
     ListView list;
@@ -32,17 +29,20 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
     TextView info;
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    FavoriteDatabase favoriteDatabase;
 
     @Bean
-    SearchListAdapter searchListAdapter;
-
-    private ProgressDialog spinner;
+    FavoriteListAdapter favoriteListAdapter;
 
     @AfterViews
     public void init() {
-        listingsDatabase.registerListingsListener(this);
-        setListAdapter(searchListAdapter);
+        favoriteDatabase.addFavoriteListener(this);
+        setListAdapter(favoriteListAdapter);
+
+        info.setText(
+                getString(R.string.number_of_objects,
+                        favoriteDatabase.getFavorites().size(),
+                        favoriteDatabase.getFavorites().size()));
     }
 
     @Override
@@ -52,25 +52,19 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
 
     @ItemClick
     void listItemClicked(Listing listing) {
-        listingsDatabase.setCurrentId(listing.getBooliId());
+
     }
 
     @Override
-    public void onUpdate(Result result) {
-        update(result);
+    public void addedFavorite(Listing listing) {
+        info.setText(
+                getString(R.string.number_of_objects,
+                        favoriteDatabase.getFavorites().size(),
+                        favoriteDatabase.getFavorites().size()));
     }
 
     @Override
-    public void onSearchStarted() {
-        spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
-    }
+    public void removedFavorite(Listing listing) {
 
-    @UiThread
-    public void update(Result result) {
-        if (spinner != null) {
-            spinner.dismiss();
-        }
-        info.setText(getString(R.string.number_of_objects, result.count, result.totalCount));
     }
 }
-

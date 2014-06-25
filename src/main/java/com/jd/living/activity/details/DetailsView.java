@@ -33,12 +33,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
+import com.jd.living.activity.favorites.FavoriteDatabase;
 import com.jd.living.model.Listing;
 import com.jd.living.server.ListingsDatabase;
 
 
 @EFragment
-public class DetailsView extends Fragment implements GoogleMap.OnMapClickListener, View.OnTouchListener {
+public class DetailsView extends Fragment implements GoogleMap.OnMapClickListener {
 
     @ViewById
     View mainLayout;
@@ -59,27 +60,28 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
     ImageView thumbnail;
 
     @ViewById
+    ImageView favorite;
+
+    @ViewById
     WebView webView;
 
     @Bean
     ListingsDatabase listingsDatabase;
 
+    @Bean
+    FavoriteDatabase favoriteDatabase;
+
     private MapView mapView;
     private GoogleMap googleMap;
     private LatLng target;
-    protected Listing listing;
+    private Listing listing;
 
-    private int objectPosition = 0;
-
-    /**
-     * Create a new instance of CountingFragment, providing "objectPosition"
-     * as an argument.
-     */
+    private int objectIndex = 0;
 
     static DetailsView newInstance(int num) {
         DetailsView f = new DetailsView_();
         Bundle args = new Bundle();
-        args.putInt("objectPosition", num);
+        args.putInt("objectIndex", num);
         f.setArguments(args);
         return f;
     }
@@ -97,10 +99,10 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
 
     @AfterViews
     protected void init(){
-        objectPosition = getArguments() != null ? getArguments().getInt("objectPosition") : 1;
-        Log.d("Living", "init " + objectPosition);
+        objectIndex = getArguments() != null ? getArguments().getInt("objectIndex") : 1;
+        Log.d("Living", "init " + objectIndex);
 
-        listing = listingsDatabase.getListingFromList(objectPosition);
+        listing = listingsDatabase.getListingFromList(objectIndex);
 
         googleMap = mapView.getMap();
 
@@ -108,14 +110,46 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         googleMap.setOnMapClickListener(this);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
 
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                    Intent intent = new Intent(getActivity(), DetailsWebView_.class);
+                    intent.putExtra("booliId", listing.getBooliId());
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
 
-        webView.setOnTouchListener(this);
-        mainLayout.setOnTouchListener(this);
+        favorite.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                updateFavorite(true);
+                return false;
+            }
+        });
 
-        setDetails();
         setMap();
+        setDetails();
+        updateFavorite(false);
         setWebView();
         getImage();
+    }
+
+    private void updateFavorite(boolean onTouch) {
+        boolean isFavorite = favoriteDatabase.isFavorite(listing.getBooliId());
+        int resId = R.drawable.btn_star_off_disabled_focused_holo_light;
+
+        if (onTouch) {
+            if (!isFavorite) {
+                resId = R.drawable.btn_rating_star_on_normal_holo_light;
+            }
+            favoriteDatabase.updateFavorite(listing);
+        } else if (isFavorite) {
+            resId = R.drawable.btn_rating_star_on_normal_holo_light;
+        }
+        favorite.setImageResource(resId);
     }
 
     private void setDetails() {
@@ -125,7 +159,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
-        nbrOfObjects.setText((objectPosition + 1) + "/" + listingsDatabase.getNumberOfObject());
+        nbrOfObjects.setText((objectIndex + 1) + "/" + listingsDatabase.getNumberOfObjects());
 
         addDetails(R.string.details_list_price, getString(R.string.details_list_price_text, listing.getListPrice()));
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
@@ -191,16 +225,10 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.webView && event.getAction() == MotionEvent.ACTION_DOWN){
-            startActivity(new Intent(getActivity(), DetailsWebView_.class));
-        }
-        return false;
-    }
-
-    @Override
     public void onMapClick(LatLng latLng) {
-        startActivity(new Intent(getActivity(), DetailsMap_.class));
+        Intent intent = new Intent(getActivity(), DetailsMap_.class);
+        intent.putExtra("booliId", listing.getBooliId());
+        startActivity(intent);
     }
 
     private void setWebView() {

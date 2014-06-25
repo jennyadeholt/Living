@@ -9,6 +9,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
+import android.util.Log;
+
 import com.jd.living.model.Result;
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -17,7 +19,7 @@ public class BooliServer {
     @RestService
     BooliClient restClient;
 
-    public static final String common = "&callerId={id}&time={time}&unique={unique}&hash={hash}&limit={limit}";
+    public static final String common = "&callerId={callerId}&time={time}&unique={unique}&hash={hash}";
 
     private List<ServerConnectionListener> serverConnectionListeners;
 
@@ -36,7 +38,6 @@ public class BooliServer {
 
     @Background
     public void getListings(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
-
         AuthStore authStore = new AuthStore();
 
         Result result = restClient.
@@ -58,12 +59,23 @@ public class BooliServer {
     }
 
     @Background
-    public void getListing(String booliId) {
+    public void getListing(int booliId) {
+        AuthStore authStore = new AuthStore();
+        Log.d("Living", "BooliId " + booliId);
 
+        Result result = restClient.
+                getListing(
+                        booliId,
+                        authStore.getCallerId(),
+                        authStore.getTime(),
+                        authStore.getUnique(),
+                        authStore.getHash()
+                )
+                .getBody();
 
+        notifyListeners(ListingsDatabase.ActionCode.LISTING, result);
 
     }
-
 
     private void notifyListeners(ListingsDatabase.ActionCode actionCode, Result result) {
         for (ServerConnectionListener listener : serverConnectionListeners) {

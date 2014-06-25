@@ -13,7 +13,7 @@ import com.jd.living.R;
 
 
 @EActivity(R.layout.details_map_view)
-public class DetailsMap extends DetailsActivity implements GoogleMap.OnMapLoadedCallback {
+public class DetailsMap extends DetailsActivity {
 
     @FragmentById
     MapFragment detailsMap;
@@ -24,35 +24,27 @@ public class DetailsMap extends DetailsActivity implements GoogleMap.OnMapLoaded
     @Override
     public void onInit() {
         googleMap = detailsMap.getMap();
-        googleMap.setOnMapLoadedCallback(this);
         googleMap.setMyLocationEnabled(true);
     }
 
     @Override
     protected void onUpdate() {
+        googleMap.clear();
 
-            googleMap.clear();
+        target = new LatLng(listing.getLatitude(), listing.getLongitude());
 
-            target = new LatLng(listing.getLatitude(), listing.getLongitude());
+        googleMap.addMarker(
+                new MarkerOptions()
+                        .position(target)
+                        .title(listing.getAddress()));
 
-            googleMap.addMarker(
-                    new MarkerOptions()
-                            .position(target)
-                            .title(listing.getAddress()));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(target)
+                .zoom(13)
+                .bearing(0)
+                .tilt(0)
+                .build();
 
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(target)
-                    .zoom(13)
-                    .bearing(0)
-                    .tilt(0)
-                    .build();
-
-            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-    }
-
-    @Override
-    public void onMapLoaded() {
-        listingsDatabase.addDetailsListener(this);
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

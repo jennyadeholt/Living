@@ -49,6 +49,8 @@
         <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
 
+        <fragment android:name=".activity.favorites.FavoritesList_" />
+
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

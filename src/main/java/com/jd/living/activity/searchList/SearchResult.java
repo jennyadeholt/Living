@@ -25,7 +25,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
 
     @AfterViews
     public void init() {
-        listingsDatabase.addDetailsListener(this);
+        listingsDatabase.registerDetailsListener(this);
 
         detailsView = new DetailsViewPagerFragment_();
         searchMain = new SearchMain_();
@@ -42,7 +42,6 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-
             ft.hide(detailsView);
             ft.hide(searchMain);
             ft.commit();
@@ -53,7 +52,6 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
                 onShowSearch();
             }
         }
-
         super.onHiddenChanged(hidden);
     }
 

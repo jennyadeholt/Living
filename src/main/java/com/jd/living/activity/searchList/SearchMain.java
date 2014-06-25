@@ -7,11 +7,12 @@ import org.androidannotations.annotations.ViewById;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.view.View;
 import android.widget.TabHost;
 
 import com.jd.living.R;
 import com.jd.living.activity.map.ResultMapFragment_;
-import com.jd.living.tabhost.DetailsTabContent;
 
 @EFragment(R.layout.tab_host)
 public class SearchMain extends Fragment {
@@ -50,10 +51,8 @@ public class SearchMain extends Fragment {
 
 
         TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
-
             @Override
             public void onTabChanged(String tabId) {
-
                 updateTab(tabId);
             }
         };
@@ -75,5 +74,19 @@ public class SearchMain extends Fragment {
 
         ft.commit();
 
+    }
+
+
+    private class DetailsTabContent implements TabHost.TabContentFactory {
+        private Context mContext;
+
+        public DetailsTabContent(Context context){
+            mContext = context;
+        }
+
+        @Override
+        public View createTabContent(String tag) {
+            return new View(mContext);
+        }
     }
 }
