@@ -37,7 +37,8 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         preferences = getPreferenceManager().getSharedPreferences();
         preferences.registerOnSharedPreferenceChangeListener(this);
 
-        setSummaryForList(preferences, "preference_build_type");
+        setSummaryForTypeList(preferences);
+        setSummaryForObjectList(preferences);
         setSummary(preferences, "preferences_area_location");
         checkMinMax(preferences, "");
         setSummaryForBuildingTypes(preferences, "preference_building_type");
@@ -58,7 +59,9 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         } else if (key.equals("preference_building_type")) {
             setSummaryForBuildingTypes(sharedPreferences, key);
         } else if (key.equals("preference_build_type")) {
-            setSummaryForList(sharedPreferences, key);
+            setSummaryForTypeList(sharedPreferences);
+        } else if (key.equals("preference_object_type")) {
+            setSummaryForObjectList(sharedPreferences);
         }
     }
 
@@ -99,15 +102,24 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         setSummary(key, sharedPreferences.getString(key, ""));
     }
 
-    private void setSummaryForList(SharedPreferences sharedPreferences, String key) {
 
+    private void setSummaryForObjectList(SharedPreferences sharedPreferences) {
+        String[] names = getResources().getStringArray(R.array.build_object_strings);
+        String[] types = getResources().getStringArray(R.array.build_object);
+        setSummaryForList(sharedPreferences, "preference_object_type", names, types);
+    }
+
+    private void setSummaryForTypeList(SharedPreferences sharedPreferences) {
         String[] names = getResources().getStringArray(R.array.build_types_strings);
         String[] types = getResources().getStringArray(R.array.build_types);
+        setSummaryForList(sharedPreferences, "preference_build_type", names, types);
+    }
 
+    private void setSummaryForList(SharedPreferences sharedPreferences, String key, String[] names, String[] types) {
         String text = names[0];
         String value = sharedPreferences.getString(key, "");
 
-        for (int i = 1; i < types.length ; i++) {
+        for (int i = 0; i < types.length ; i++) {
             if (value.equals(types[i])){
                 text = names[i];
                 break;

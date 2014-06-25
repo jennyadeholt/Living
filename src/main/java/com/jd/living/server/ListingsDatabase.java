@@ -17,6 +17,7 @@ import android.text.TextUtils;
 
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
+import com.jd.living.model.SoldResult;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -66,7 +67,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     public void registerListingsListener(ListingsListener listener) {
         listeners.add(listener);
 
-        if (!result.listings.isEmpty()) {
+        if (!result.getListings().isEmpty()) {
             listener.onUpdate(result);
         } else if (searchInprogress) {
             listener.onSearchStarted();
@@ -105,7 +106,12 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
             searchInprogress = true;
             notifyListerner(ActionCode.SEARCH_STARTED);
-            server.getListings(location, minRooms, maxRooms, types, production);
+
+            if ( preferences.getString("preference_object_type", "0").equals("0")) {
+                server.getListings(location, minRooms, maxRooms, types, production);
+            } else {
+                server.getObjectsSold(location, minRooms, maxRooms, types, production);
+            }
         }
     }
 
@@ -117,6 +123,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         for (ListingsListener listener : listeners) {
             switch (action) {
                 case LISTINGS:
+                case SOLD:
                     listener.onUpdate(result);
                     break;
                 case SEARCH_STARTED:
@@ -130,14 +137,14 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public Listing getListing(int booliId) {
         Listing l = null;
-        for (Listing listing : result.listings) {
+        for (Listing listing : result.getListings()) {
             if (listing.getBooliId() == booliId ) {
                 l = listing;
                 break;
             }
         }
-        if (l == null && !result.listings.isEmpty()) {
-            l = result.listings.get(0);
+        if (l == null && !result.getListings().isEmpty()) {
+            l = result.getListings().get(0);
         }
         return l;
     }
@@ -147,8 +154,8 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     }
 
     public Listing getListingFromList(int location) {
-        if (!result.listings.isEmpty()) {
-            return result.listings.get(location);
+        if (!result.getListings().isEmpty()) {
+            return result.getListings().get(location);
         } else {
             return null;
         }
@@ -156,7 +163,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public int getListLocation(int booliId) {
         Listing l = getListing(booliId);
-        return result.listings.indexOf(l);
+        return result.getListings().indexOf(l);
     }
 
     public void setCurrentId(int booliId) {
@@ -172,7 +179,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     }
 
     @Override
-    public void onResponse(ActionCode action, Result result) {
+    public void onListingsResult(ActionCode action, Result result) {
 
         searchInprogress = false;
         switch (action) {

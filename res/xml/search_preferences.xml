@@ -44,6 +44,13 @@
                 android:entryValues="@array/build_types"
                 android:entries="@array/build_types_strings"
                 android:defaultValue="0" />
+
+        <ListPreference
+                android:title="@string/preferences_type_of_object"
+                android:key="preference_object_type"
+                android:entryValues="@array/build_object"
+                android:entries="@array/build_object_strings"
+                android:defaultValue="0" />
     </PreferenceCategory>
 
 </PreferenceScreen>

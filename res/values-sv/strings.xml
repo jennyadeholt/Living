@@ -33,6 +33,10 @@
     <string name="building_old">Visa inte nyproduktion</string>
     <string name="building">Visa allt</string>
 
+    <string name="preferences_type_of_object">Status</string>
+    <string name="building_on_sale">Till salu</string>
+    <string name="building_sold">Sålda</string>
+
     <string name="preferences_nbr_of_rooms">Antal rum</string>
     <string name="preferences_nbr_of_rooms_min">Minst antal rum</string>
     <string name="preferences_nbr_of_rooms_max">Max antal rum</string>
@@ -42,11 +46,13 @@
     <string name="details_adress">Adress:</string>
     <string name="details_type">Bostadstyp:</string>
     <string name="details_rent">Hyra:</string>
-    <string name="details_list_price">Pris:</string>
+    <string name="details_list_price">Begärt pris:</string>
+    <string name="details_sold_price">Såld för:</string>
     <string name="details_rooms">Antal rum:</string>
     <string name="details_floor">Våning:</string>
     <string name="details_living_area">Boarea:</string>
     <string name="details_published">Publiserad:</string>
+    <string name="details_sold">Såldes:</string>
     <string name="details_construction_year">Byggnadsår:</string>
     <string name="details_source">Källa:</string>
 

@@ -41,20 +41,24 @@ public class ListItem extends LinearLayout {
 
     public void bind(Listing listing) {
         address.setText(listing.getAddress());
-
-        String rooms = getContext().getString(R.string.details_room_text, listing.getRooms());
-        String livingArea = getContext().getString(R.string.details_living_area_text, listing.getLivingArea());
-        info.setText(rooms + ", " + livingArea);
-
         area.setText(listing.getArea());
-
         String listPrice = getContext().getString(R.string.details_list_price_text, listing.getListPrice());
-        if (!listing.getRent().equals("0")) {
-            listPrice += ", " + getContext().getString(R.string.details_rent_text, listing.getRent());
+        if (listing.isSold()) {
+            listPrice = getContext().getString(R.string.details_list_price) + " " +listPrice;
+
+            String soldFor = getContext().getString(R.string.details_sold_price) + " ";
+            soldFor += getContext().getString(R.string.details_list_price_text, listing.getSoldPrice());
+            info.setText(soldFor);
+        } else {
+            String rooms = getContext().getString(R.string.details_room_text, listing.getRooms());
+            String livingArea = getContext().getString(R.string.details_living_area_text, listing.getLivingArea());
+            info.setText(rooms + ", " + livingArea);
+
+            if (!listing.getRent().equals("0")) {
+                listPrice += ", " + getContext().getString(R.string.details_rent_text, listing.getRent());
+            }
         }
-
         price.setText(listPrice);
-
         getImage(listing);
     }
 

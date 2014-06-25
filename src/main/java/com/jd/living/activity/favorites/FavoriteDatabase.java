@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
+import com.jd.living.model.SoldResult;
 import com.jd.living.server.BooliServer;
 import com.jd.living.server.ListingsDatabase;
 
@@ -71,11 +72,11 @@ public class FavoriteDatabase implements BooliServer.ServerConnectionListener {
     }
 
     @Override
-    public void onResponse(ListingsDatabase.ActionCode action, Result result) {
-        Log.d("Living", "FavoriteDatabase.onResponse" + action.name());
+    public void onListingsResult(ListingsDatabase.ActionCode action, Result result) {
+        Log.d("Living", "FavoriteDatabase.onListingsResult" + action.name());
         switch (action) {
             case LISTING:
-                for (Listing listing : result.listings) {
+                for (Listing listing : result.getListings()) {
                     notifyListeners(true, listing);
                 }
                 break;

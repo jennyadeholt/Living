@@ -27,6 +27,9 @@
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
+    <string name="preferences_type_of_object">Status</string>
+    <string name="building_on_sale">For sale</string>
+    <string name="building_sold">Sold</string>
 
     <string name="preferences_type_of_building_title">Building type</string>
     <string name="preferences_type_of_building">Building types:</string>
@@ -55,12 +58,21 @@
         <item>@string/building_old</item>
     </string-array>
 
+    <string-array name="build_object_strings">
+        <item>@string/building_on_sale</item>
+        <item>@string/building_sold</item>
+    </string-array>
 
     <string-array name="build_types">
-    <item>null</item>
-    <item>1</item>
-    <item>0</item>
-</string-array>
+        <item>null</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="build_object">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
     <string-array name="rooms">
         <item>1</item>

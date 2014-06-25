@@ -11,7 +11,9 @@ import org.androidannotations.annotations.rest.RestService;
 
 import android.util.Log;
 
+import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
+import com.jd.living.model.SoldResult;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class BooliServer {
@@ -24,7 +26,7 @@ public class BooliServer {
     private List<ServerConnectionListener> serverConnectionListeners;
 
     public interface ServerConnectionListener {
-        void onResponse(ListingsDatabase.ActionCode action, Result result);
+        void onListingsResult(ListingsDatabase.ActionCode action, Result result);
     }
 
     @AfterInject
@@ -40,7 +42,7 @@ public class BooliServer {
     public void getListings(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
         AuthStore authStore = new AuthStore();
 
-        Result result = restClient.
+        ListingsResult result = restClient.
                 getListings(
                         search,
                         authStore.getCallerId(),
@@ -56,6 +58,28 @@ public class BooliServer {
                 .getBody();
 
         notifyListeners(ListingsDatabase.ActionCode.LISTINGS, result);
+    }
+
+    @Background
+    public void getObjectsSold(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
+        AuthStore authStore = new AuthStore();
+
+        SoldResult result = restClient.
+                getObjectsSold(
+                        search,
+                        authStore.getCallerId(),
+                        authStore.getTime(),
+                        authStore.getUnique(),
+                        authStore.getHash(),
+                        minRoom,
+                        maxRoom,
+                        objectType,
+                        isNewConstruction,
+                        500
+                )
+                .getBody();
+
+        notifyListeners(ListingsDatabase.ActionCode.SOLD, result);
     }
 
     @Background
@@ -79,7 +103,7 @@ public class BooliServer {
 
     private void notifyListeners(ListingsDatabase.ActionCode actionCode, Result result) {
         for (ServerConnectionListener listener : serverConnectionListeners) {
-            listener.onResponse(actionCode, result);
+            listener.onListingsResult(actionCode, result);
         }
     }
 }

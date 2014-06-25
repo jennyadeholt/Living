@@ -1,36 +1,51 @@
 package com.jd.living.model;
 
+import android.text.TextUtils;
+
 public class Listing {
 
-    private int booliId;
+    protected int booliId;
 
-    private double listPrice;
+    protected double listPrice;
 
-    private String published;
+    protected String published;
 
-    private Location location;
+    protected Location location;
 
-    private Source source;
+    protected Source source;
 
-    private String objectType;
+    protected String objectType;
 
-    private double rooms;
+    protected double rooms;
 
-    private double floor;
+    protected double floor;
 
-    private double rent;
+    protected double rent;
 
-    private double livingArea;
+    protected double livingArea;
 
-    private double plotArea;
+    protected double plotArea;
 
-    private int constructionYear;
+    protected int constructionYear;
 
-    private String url;
+    protected String url;
 
-    private boolean favorite;
+    protected String soldDate;
+    protected double soldPrice;
 
-    private class Source {
+    public String getSoldDate() {
+        return soldDate;
+    }
+
+    public String getSoldPrice() {
+        return getFormattedNumber(soldPrice);
+    }
+
+    public boolean isSold() {
+        return !TextUtils.isEmpty(soldDate);
+    }
+
+    protected class Source {
         protected String name;
         protected String url;
         protected String type;
@@ -45,7 +60,7 @@ public class Listing {
     }
 
     public String getPublished() {
-        return published;
+        return published.substring(0, 10);
     }
 
     public String getAddress() {
@@ -74,14 +89,6 @@ public class Listing {
 
     public String getObjectType() {
         return objectType;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
     }
 
     public String getRooms() {
@@ -121,7 +128,7 @@ public class Listing {
         return getAddress();
     }
 
-    private String getFormattedNumber(double number) {
+    protected String getFormattedNumber(double number) {
         String r = String.valueOf((int) number);
 
         if (r.length() > 6) {

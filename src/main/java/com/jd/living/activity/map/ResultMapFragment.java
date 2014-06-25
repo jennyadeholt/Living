@@ -61,7 +61,7 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
         googleMap.clear();
 
         bounds = new LatLngBounds.Builder();
-        for (Listing listing : result.listings) {
+        for (Listing listing : result.getListings()) {
             LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
 
             googleMap.addMarker(
@@ -73,7 +73,7 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
             bounds.include(target);
         }
 
-        if (!result.listings.isEmpty()) {
+        if (!result.getListings().isEmpty()) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 15));
         }
     }

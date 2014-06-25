@@ -141,18 +141,25 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         boolean isFavorite = favoriteDatabase.isFavorite(listing.getBooliId());
         int resId = R.drawable.btn_star_off_disabled_focused_holo_light;
 
-        if (onTouch) {
-            if (!isFavorite) {
+        if (listing.isSold()) {
+            favorite.setVisibility(View.GONE);
+        } else {
+            if (onTouch) {
+                if (!isFavorite) {
+                    resId = R.drawable.btn_rating_star_on_normal_holo_light;
+                }
+                favoriteDatabase.updateFavorite(listing);
+            } else if (isFavorite) {
                 resId = R.drawable.btn_rating_star_on_normal_holo_light;
             }
-            favoriteDatabase.updateFavorite(listing);
-        } else if (isFavorite) {
-            resId = R.drawable.btn_rating_star_on_normal_holo_light;
+            favorite.setVisibility(View.VISIBLE);
+            favorite.setImageResource(resId);
         }
-        favorite.setImageResource(resId);
     }
 
     private void setDetails() {
+
+        boolean isSold = listing.isSold();
 
         tableLayout.removeAllViews();
 
@@ -161,6 +168,9 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
 
         nbrOfObjects.setText((objectIndex + 1) + "/" + listingsDatabase.getNumberOfObjects());
 
+        if (isSold) {
+            addDetails(R.string.details_sold_price, getString(R.string.details_list_price_text, listing.getSoldPrice()));
+        }
         addDetails(R.string.details_list_price, getString(R.string.details_list_price_text, listing.getListPrice()));
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
         addDetails(R.string.details_type, listing.getObjectType());
@@ -174,6 +184,9 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
 
         addDetails(R.string.details_rooms,getString(R.string.details_room_text, listing.getRooms()));
         addDetails(R.string.details_published, listing.getPublished());
+        if (isSold) {
+            addDetails(R.string.details_sold, listing.getSoldDate());
+        }
         addDetails(R.string.details_construction_year, String.valueOf(listing.getConstructionYear()));
         addDetails(R.string.details_source, listing.getSource());
     }
