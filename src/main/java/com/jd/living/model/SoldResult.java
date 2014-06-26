@@ -17,7 +17,7 @@ public class SoldResult extends Result {
     }
 
     @Override
-    public List<Listing> getListings() {
+    public List<Listing> getResult() {
         return sold;
     }
 }

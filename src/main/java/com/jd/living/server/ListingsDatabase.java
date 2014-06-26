@@ -14,10 +14,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.jd.living.model.Area;
+import com.jd.living.model.AreaResult;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.model.SoldResult;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -42,6 +44,10 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         void onDetailsRequested(int booliId);
     }
 
+    public interface AreaListener {
+        void onAreas(AreaResult result);
+    }
+
     @Bean
     BooliServer server;
 
@@ -58,6 +64,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     private List<ListingsListener> listeners = new ArrayList<ListingsListener>();
     private List<DetailsListener> detailsListeners = new ArrayList<DetailsListener>();
+    private List<AreaListener> areaListeners = new ArrayList<AreaListener>();
 
     @AfterInject
     public void init(){
@@ -67,11 +74,15 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     public void registerListingsListener(ListingsListener listener) {
         listeners.add(listener);
 
-        if (!result.getListings().isEmpty()) {
+        if (!result.getResult().isEmpty()) {
             listener.onUpdate(result);
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
+    }
+
+    public void registerAreaListener(AreaListener listener) {
+        areaListeners.add(listener);
     }
 
     public void registerDetailsListener(DetailsListener detailsListener) {
@@ -105,7 +116,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
             String production = preferences.getString("preference_build_type", "null");
 
             searchInprogress = true;
-            notifyListerner(ActionCode.SEARCH_STARTED);
+            notifyListerner(ActionCode.SEARCH_STARTED, null);
 
             if ( preferences.getString("preference_object_type", "0").equals("0")) {
                 server.getListings(location, minRooms, maxRooms, types, production);
@@ -119,7 +130,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         return result.count;
     }
 
-    private void notifyListerner(ActionCode action) {
+    private void notifyListerner(ActionCode action, Result result) {
         for (ListingsListener listener : listeners) {
             switch (action) {
                 case LISTINGS:
@@ -129,6 +140,8 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
                 case SEARCH_STARTED:
                     listener.onSearchStarted();
                     break;
+                case AREA_TEXT:
+
                 default:
                     break;
             }
@@ -137,14 +150,14 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public Listing getListing(int booliId) {
         Listing l = null;
-        for (Listing listing : result.getListings()) {
+        for (Listing listing : result.getResult()) {
             if (listing.getBooliId() == booliId ) {
                 l = listing;
                 break;
             }
         }
-        if (l == null && !result.getListings().isEmpty()) {
-            l = result.getListings().get(0);
+        if (l == null && !result.getResult().isEmpty()) {
+            l = result.getResult().get(0);
         }
         return l;
     }
@@ -154,8 +167,8 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
     }
 
     public Listing getListingFromList(int location) {
-        if (!result.getListings().isEmpty()) {
-            return result.getListings().get(location);
+        if (!result.getResult().isEmpty()) {
+            return result.getResult().get(location);
         } else {
             return null;
         }
@@ -163,7 +176,7 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     public int getListLocation(int booliId) {
         Listing l = getListing(booliId);
-        return result.getListings().indexOf(l);
+        return result.getResult().indexOf(l);
     }
 
     public void setCurrentId(int booliId) {
@@ -171,6 +184,10 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         for (DetailsListener detailsListener : detailsListeners) {
             detailsListener.onDetailsRequested(currentBooliId);
         }
+    }
+
+    public void getAreas(String search) {
+        server.getAreas(search);
     }
 
     public void setCurrentIndex(int index) {
@@ -187,10 +204,15 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
             case SOLD:
                 this.result = result;
                 break;
+            case AREA_TEXT:
+                for (Area area : ((AreaResult) result).getAreas()) {
+                    Log.d("Living", "Area " + area.getName());
+                }
+                break;
             default:
                 break;
         }
 
-        notifyListerner(action);
+        notifyListerner(action, result);
     }
 }

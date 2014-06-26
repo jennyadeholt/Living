@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import com.jd.living.model.AreaResult;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
 import com.jd.living.model.SoldResult;
@@ -28,6 +29,9 @@ public interface BooliClient {
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<SoldResult> getObjectsSold(String search, String callerId, long time, String unique, String hash, String minRooms, String maxRooms, String objectType, String isNewConstruction, int limit);
 
+    @Get("/areas?q={search}&limit={limit}}" + BooliServer.common)
+    @Accept(MediaType.APPLICATION_JSON)
+    ResponseEntity<AreaResult> getAreas(String search, String callerId, long time, String unique, String hash, int limit);
 
     RestTemplate getRestTemplate();
 

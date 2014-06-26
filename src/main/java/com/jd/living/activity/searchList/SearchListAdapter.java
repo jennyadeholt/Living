@@ -74,7 +74,7 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
 
     @Override
     public void onUpdate(Result result) {
-        this.listings = result.getListings();
+        this.listings = result.getResult();
         update();
     }
 

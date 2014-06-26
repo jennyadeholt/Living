@@ -16,7 +16,7 @@ public class Result {
 
     public Result() {}
 
-    public List<Listing> getListings() {
+    public List<Listing> getResult() {
         return new ArrayList<Listing>();
     }
 }

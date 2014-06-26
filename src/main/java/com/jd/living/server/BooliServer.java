@@ -83,6 +83,23 @@ public class BooliServer {
     }
 
     @Background
+    public void getAreas(String search) {
+        AuthStore authStore = new AuthStore();
+
+        Result result = restClient.
+                getAreas(
+                        search,
+                        authStore.getCallerId(),
+                        authStore.getTime(),
+                        authStore.getUnique(),
+                        authStore.getHash(),
+                        10
+                )
+                .getBody();
+        notifyListeners(ListingsDatabase.ActionCode.AREA_TEXT, result);
+    }
+
+    @Background
     public void getListing(int booliId) {
         AuthStore authStore = new AuthStore();
         Log.d("Living", "BooliId " + booliId);

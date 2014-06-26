@@ -17,7 +17,7 @@ public class ListingsResult extends Result {
         this.listings = listings;
     }
 
-    public List<Listing> getListings() {
+    public List<Listing> getResult() {
         return listings;
     }
 }
