@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 
 import com.jd.living.R;
 
@@ -101,7 +102,6 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
     private void setSummary(SharedPreferences sharedPreferences, String key) {
         setSummary(key, sharedPreferences.getString(key, ""));
     }
-
 
     private void setSummaryForObjectList(SharedPreferences sharedPreferences) {
         String[] names = getResources().getStringArray(R.array.build_object_strings);

@@ -16,7 +16,7 @@ import android.widget.ArrayAdapter;
 import com.jd.living.R;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 
 @EBean

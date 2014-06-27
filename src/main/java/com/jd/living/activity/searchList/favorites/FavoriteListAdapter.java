@@ -1,4 +1,4 @@
-package com.jd.living.activity.favorites;
+package com.jd.living.activity.searchList.favorites;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,8 @@ import android.widget.ArrayAdapter;
 import com.jd.living.R;
 import com.jd.living.activity.searchList.ListItem;
 import com.jd.living.activity.searchList.ListItem_;
+import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
-import com.jd.living.server.ListingsDatabase;
 
 @EBean
 public class FavoriteListAdapter extends ArrayAdapter<Listing> implements FavoriteDatabase.FavoriteListener {

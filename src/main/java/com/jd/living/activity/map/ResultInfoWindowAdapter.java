@@ -13,7 +13,7 @@ import android.view.View;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.jd.living.model.Listing;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 @EBean
 public class ResultInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {

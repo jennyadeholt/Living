@@ -13,13 +13,13 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.jd.living.R;
-import com.jd.living.activity.favorites.FavoriteDatabase;
-import com.jd.living.activity.favorites.FavoriteList_;
+import com.jd.living.database.FavoriteDatabase;
+import com.jd.living.activity.searchList.favorites.FavoriteList_;
 import com.jd.living.activity.searchList.SearchListAction;
 import com.jd.living.activity.searchList.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
 import com.jd.living.drawer.DrawerActivity;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 @EActivity
 public class MainActivity extends DrawerActivity {

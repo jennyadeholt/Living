@@ -11,6 +11,7 @@ import org.androidannotations.annotations.rest.RestService;
 
 import android.util.Log;
 
+import com.jd.living.database.ListingsDatabase;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
 import com.jd.living.model.SoldResult;
@@ -21,7 +22,7 @@ public class BooliServer {
     @RestService
     BooliClient restClient;
 
-    public static final String common = "&callerId={callerId}&time={time}&unique={unique}&hash={hash}";
+    public static final String common = "callerId={callerId}&time={time}&unique={unique}&hash={hash}";
 
     private List<ServerConnectionListener> serverConnectionListeners;
 
@@ -80,23 +81,6 @@ public class BooliServer {
                 .getBody();
 
         notifyListeners(ListingsDatabase.ActionCode.SOLD, result);
-    }
-
-    @Background
-    public void getAreas(String search) {
-        AuthStore authStore = new AuthStore();
-
-        Result result = restClient.
-                getAreas(
-                        search,
-                        authStore.getCallerId(),
-                        authStore.getTime(),
-                        authStore.getUnique(),
-                        authStore.getHash(),
-                        10
-                )
-                .getBody();
-        notifyListeners(ListingsDatabase.ActionCode.AREA_TEXT, result);
     }
 
     @Background

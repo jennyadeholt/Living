@@ -9,7 +9,7 @@ import android.app.FragmentTransaction;
 
 import com.jd.living.R;
 import com.jd.living.activity.details.DetailsViewPagerFragment_;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 @EFragment(R.layout.search_main)
 public class SearchResult extends Fragment implements ListingsDatabase.DetailsListener {

@@ -5,7 +5,7 @@ import org.androidannotations.annotations.EApplication;
 
 import android.app.Application;
 
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 
 @EApplication

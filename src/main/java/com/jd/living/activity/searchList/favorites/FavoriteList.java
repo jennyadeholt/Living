@@ -1,4 +1,4 @@
-package com.jd.living.activity.favorites;
+package com.jd.living.activity.searchList.favorites;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -7,7 +7,6 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.ListFragment;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jd.living.R;
+import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
 
 

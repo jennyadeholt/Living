@@ -15,8 +15,9 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.jd.living.R;
+import com.jd.living.activity.details.search.SearchDetailsView;
 import com.jd.living.model.Result;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 @EFragment(R.layout.fragment_pager)
 public class DetailsViewPagerFragment extends Fragment implements ListingsDatabase.ListingsListener, ListingsDatabase.DetailsListener{
@@ -42,10 +43,10 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if (currentPageIndex != i) {
-                    DetailsView view =  mPagerAdapter.getItem(i);
+                    SearchDetailsView view =  mPagerAdapter.getItem(i);
                     view.setSelected();
                     currentPageIndex = i;
-                    database.setCurrentIndex(currentPageIndex % NUM_PAGES);
+                    database.setCurrentIndex(LOOPS_COUNT == 1 ? currentPageIndex : currentPageIndex % NUM_PAGES);
                 }
             }
 
@@ -55,16 +56,20 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+            public void onPageScrollStateChanged(int currentState) {
 
             }
         });
+
+        pager.setOffscreenPageLimit(1);
     }
 
     @UiThread
     @Override
     public void onUpdate(Result result) {
+        LOOPS_COUNT = result.count < 3 ? 1 : 1000;
         NUM_PAGES = result.count;
+
         if (mPagerAdapter == null) {
             mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
             pager.setAdapter(mPagerAdapter);
@@ -82,7 +87,8 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
 
     @Override
     public void onDetailsRequested(int booliId) {
-        int position = database.getListLocation(booliId) + (LOOPS_COUNT * NUM_PAGES) / 2;
+        int position = database.getListLocation(booliId);
+        position += LOOPS_COUNT == 1 ? 0 : (LOOPS_COUNT * NUM_PAGES) / 2;
         pager.setCurrentItem(position, false);
     }
 
@@ -95,23 +101,23 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private Map<Integer, DetailsView> map = new HashMap<Integer, DetailsView>();
+        private Map<Integer, SearchDetailsView> details = new HashMap<Integer, SearchDetailsView>();
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         public void clearContent() {
-            map = new HashMap<Integer, DetailsView>();
+            details = new HashMap<Integer, SearchDetailsView>();
         }
 
         @Override
-        public DetailsView getItem(int position) {
-            position = position % NUM_PAGES;
-            if (!map.containsKey(position)) {
-                map.put(position, DetailsView.newInstance(position));
+        public SearchDetailsView getItem(int position) {
+            position = LOOPS_COUNT == 1 ? position : position % NUM_PAGES;
+            if (!details.containsKey(position)) {
+                details.put(position, SearchDetailsView.newInstance(position));
             }
-            return map.get(position);
+            return details.get(position);
         }
 
         @Override

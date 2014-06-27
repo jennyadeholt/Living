@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 
 @EFragment(R.layout.map)

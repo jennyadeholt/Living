@@ -17,21 +17,17 @@ import com.jd.living.model.SoldResult;
 @Accept(MediaType.APPLICATION_JSON)
 public interface BooliClient {
 
-    @Get("/listings?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}" + BooliServer.common)
+    @Get("/listings?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}&" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<ListingsResult> getListings(String search, String callerId, long time, String unique, String hash, String minRooms, String maxRooms, String objectType, String isNewConstruction, int limit);
 
-    @Get("/listings/{booliId}" + BooliServer.common)
+    @Get("/listings/{booliId}?" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<Result> getListing(int booliId, String callerId, long time, String unique, String hash);
 
-    @Get("/sold?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}" + BooliServer.common)
+    @Get("/sold?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}&" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<SoldResult> getObjectsSold(String search, String callerId, long time, String unique, String hash, String minRooms, String maxRooms, String objectType, String isNewConstruction, int limit);
-
-    @Get("/areas?q={search}&limit={limit}}" + BooliServer.common)
-    @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<AreaResult> getAreas(String search, String callerId, long time, String unique, String hash, int limit);
 
     RestTemplate getRestTemplate();
 

@@ -1,4 +1,4 @@
-package com.jd.living.server;
+package com.jd.living.database;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +20,7 @@ import com.jd.living.model.Area;
 import com.jd.living.model.AreaResult;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
+import com.jd.living.server.BooliServer;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -44,9 +45,6 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         void onDetailsRequested(int booliId);
     }
 
-    public interface AreaListener {
-        void onAreas(AreaResult result);
-    }
 
     @Bean
     BooliServer server;
@@ -64,7 +62,6 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
 
     private List<ListingsListener> listeners = new ArrayList<ListingsListener>();
     private List<DetailsListener> detailsListeners = new ArrayList<DetailsListener>();
-    private List<AreaListener> areaListeners = new ArrayList<AreaListener>();
 
     @AfterInject
     public void init(){
@@ -79,10 +76,6 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
-    }
-
-    public void registerAreaListener(AreaListener listener) {
-        areaListeners.add(listener);
     }
 
     public void registerDetailsListener(DetailsListener detailsListener) {
@@ -184,10 +177,6 @@ public class ListingsDatabase implements BooliServer.ServerConnectionListener {
         for (DetailsListener detailsListener : detailsListeners) {
             detailsListener.onDetailsRequested(currentBooliId);
         }
-    }
-
-    public void getAreas(String search) {
-        server.getAreas(search);
     }
 
     public void setCurrentIndex(int index) {

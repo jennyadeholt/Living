@@ -33,82 +33,64 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
-import com.jd.living.activity.favorites.FavoriteDatabase;
+import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.server.ListingsDatabase;
+import com.jd.living.database.ListingsDatabase;
 
 
 @EFragment
-public class DetailsView extends Fragment implements GoogleMap.OnMapClickListener {
+public abstract class DetailsView extends Fragment implements GoogleMap.OnMapClickListener {
 
     @ViewById
-    View mainLayout;
-
-    @ViewById
-    TableLayout tableLayout;
+    protected TableLayout tableLayout;
 
     @ViewById(R.id.number_of_objects)
-    TextView nbrOfObjects;
+    protected TextView nbrOfObjects;
 
     @ViewById
-    TextView address;
+    protected TextView address;
 
     @ViewById
-    TextView area;
+    protected TextView area;
 
     @ViewById
-    ImageView thumbnail;
+    protected ImageView thumbnail;
 
     @ViewById
-    ImageView favorite;
+    protected ImageView favorite;
 
     @ViewById
-    WebView webView;
+    protected WebView webView;
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    protected ListingsDatabase listingsDatabase;
 
     @Bean
-    FavoriteDatabase favoriteDatabase;
+    protected FavoriteDatabase favoriteDatabase;
 
-    private MapView mapView;
-    private GoogleMap googleMap;
-    private LatLng target;
-    private Listing listing;
+    protected MapView mapView;
+    protected GoogleMap googleMap;
+    protected LatLng target;
+    protected Listing listing;
 
-    private int objectIndex = 0;
+    protected int objectIndex = 0;
 
-    static DetailsView newInstance(int num) {
-        DetailsView f = new DetailsView_();
-        Bundle args = new Bundle();
-        args.putInt("objectIndex", num);
-        f.setArguments(args);
-        return f;
-    }
+
+    protected abstract Listing getListing();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         Log.d("Living", "onCreateView ");
         View v = inflater.inflate(R.layout.details_view, container, false);
         mapView = (MapView) v.findViewById(R.id.mapFragment);
         mapView.onCreate(savedInstanceState);
-
         return v;
     }
 
     @AfterViews
     protected void init(){
         objectIndex = getArguments() != null ? getArguments().getInt("objectIndex") : 1;
-        Log.d("Living", "init " + objectIndex);
-
-        listing = listingsDatabase.getListingFromList(objectIndex);
-
-        googleMap = mapView.getMap();
-
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setOnMapClickListener(this);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
+        listing = getListing();
 
         webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -130,14 +112,14 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             }
         });
 
-        setMap();
-        setDetails();
+        setupMap();
+        setupDetails();
         updateFavorite(false);
-        setWebView();
+        setupWebView();
         getImage();
     }
 
-    private void updateFavorite(boolean onTouch) {
+    protected void updateFavorite(boolean onTouch) {
         boolean isFavorite = favoriteDatabase.isFavorite(listing.getBooliId());
         int resId = R.drawable.btn_star_off_disabled_focused_holo_light;
 
@@ -157,7 +139,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         }
     }
 
-    private void setDetails() {
+    protected void setupDetails() {
 
         boolean isSold = listing.isSold();
 
@@ -191,7 +173,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         addDetails(R.string.details_source, listing.getSource());
     }
 
-    private void addDetails(int nameId, String content) {
+    protected void addDetails(int nameId, String content) {
         View row = getActivity().getLayoutInflater().inflate(R.layout.details_row_table, null);
 
         ((TextView) row.findViewById(R.id.extra_name)).setText(nameId);
@@ -199,7 +181,12 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         tableLayout.addView(row);
     }
 
-    private void setMap() {
+    protected void setupMap() {
+        googleMap = mapView.getMap();
+        googleMap.setMyLocationEnabled(true);
+        googleMap.setOnMapClickListener(this);
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+
         googleMap.clear();
         target = new LatLng(listing.getLatitude(), listing.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -244,7 +231,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         startActivity(intent);
     }
 
-    private void setWebView() {
+    private void setupWebView() {
         String url = listing.getUrl() + "/bilder/";
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
@@ -292,3 +279,4 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         mapView.onLowMemory();
     }
 }
+
