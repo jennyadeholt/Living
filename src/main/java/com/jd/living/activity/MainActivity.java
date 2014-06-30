@@ -8,15 +8,16 @@ import org.androidannotations.annotations.EActivity;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
 import com.jd.living.R;
+import com.jd.living.activity.search.favorites.FavoriteResult_;
 import com.jd.living.database.FavoriteDatabase;
-import com.jd.living.activity.searchList.favorites.FavoriteList_;
-import com.jd.living.activity.searchList.SearchListAction;
-import com.jd.living.activity.searchList.SearchResult_;
+import com.jd.living.activity.search.SearchListAction;
+import com.jd.living.activity.search.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
 import com.jd.living.drawer.DrawerActivity;
 import com.jd.living.database.ListingsDatabase;
@@ -32,7 +33,7 @@ public class MainActivity extends DrawerActivity {
 
     private SearchResult_ searchResult;
     private SearchPreferences_ newSearch;
-    private FavoriteList_ favoriteList;
+    private FavoriteResult_ favoriteResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,12 @@ public class MainActivity extends DrawerActivity {
 
         searchResult = new SearchResult_();
         newSearch = new SearchPreferences_();
-        favoriteList = new FavoriteList_();
+        favoriteResult = new FavoriteResult_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.content_frame, searchResult);
         transaction.add(R.id.content_frame, newSearch);
-        transaction.add(R.id.content_frame, favoriteList);
+        transaction.add(R.id.content_frame, favoriteResult);
         transaction.commit();
 
         setup(savedInstanceState);
@@ -75,19 +76,20 @@ public class MainActivity extends DrawerActivity {
         switch (position) {
             case 0:
                 transaction.hide(newSearch);
-                transaction.hide(favoriteList);
+                transaction.hide(favoriteResult);
                 transaction.show(searchResult);
                 searchResult.onShowSearch();
                 break;
             case 1:
-                transaction.hide(favoriteList);
+                transaction.hide(favoriteResult);
                 transaction.hide(searchResult);
                 transaction.show(newSearch);
                 break;
             case 3:
                 transaction.hide(newSearch);
                 transaction.hide(searchResult);
-                transaction.show(favoriteList);
+                transaction.show(favoriteResult);
+                favoriteResult.onShowSearch();
                 break;
             default:
                 break;
@@ -101,9 +103,15 @@ public class MainActivity extends DrawerActivity {
 
     @Override
     public void onBackPressed() {
+        Log.d("LivingLiving", "MainActivity.onBackPressed()");
         if (searchResult.isVisible() && searchResult.isDetailsShown()) {
+            Log.d("LivingLiving", "MainActivity.onBackPressed() SEARCH");
             selectItem(0);
+        } else if (favoriteResult.isVisible() && favoriteResult.isDetailsShown()) {
+            Log.d("LivingLiving", "MainActivity.onBackPressed() FAVORITE" );
+            selectItem(3);
         } else {
+            Log.d("LivingLiving", "MainActivity.onBackPressed() ELSE");
             super.onBackPressed();
         }
     }

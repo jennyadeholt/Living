@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jd.living.R;
-import com.jd.living.activity.searchList.SearchListAction;
+import com.jd.living.activity.search.SearchListAction;
 
 /**
  * Created by jennynilsson on 2014-06-17.

@@ -11,7 +11,7 @@ import org.androidannotations.annotations.rest.RestService;
 
 import android.util.Log;
 
-import com.jd.living.database.ListingsDatabase;
+import com.jd.living.database.BooliDatabase;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
 import com.jd.living.model.SoldResult;
@@ -27,7 +27,7 @@ public class BooliServer {
     private List<ServerConnectionListener> serverConnectionListeners;
 
     public interface ServerConnectionListener {
-        void onListingsResult(ListingsDatabase.ActionCode action, Result result);
+        void onListingsResult(BooliDatabase.ActionCode action, Result result);
     }
 
     @AfterInject
@@ -58,7 +58,7 @@ public class BooliServer {
                 )
                 .getBody();
 
-        notifyListeners(ListingsDatabase.ActionCode.LISTINGS, result);
+        notifyListeners(BooliDatabase.ActionCode.LISTINGS, result);
     }
 
     @Background
@@ -80,29 +80,30 @@ public class BooliServer {
                 )
                 .getBody();
 
-        notifyListeners(ListingsDatabase.ActionCode.SOLD, result);
+        notifyListeners(BooliDatabase.ActionCode.SOLD, result);
     }
 
     @Background
     public void getListing(int booliId) {
-        AuthStore authStore = new AuthStore();
-        Log.d("Living", "BooliId " + booliId);
+        if (booliId != 0) {
+            AuthStore authStore = new AuthStore();
 
-        Result result = restClient.
-                getListing(
-                        booliId,
-                        authStore.getCallerId(),
-                        authStore.getTime(),
-                        authStore.getUnique(),
-                        authStore.getHash()
-                )
-                .getBody();
+            ListingsResult result = restClient.
+                    getListing(
+                            booliId,
+                            authStore.getCallerId(),
+                            authStore.getTime(),
+                            authStore.getUnique(),
+                            authStore.getHash()
+                    )
+                    .getBody();
 
-        notifyListeners(ListingsDatabase.ActionCode.LISTING, result);
+            notifyListeners(BooliDatabase.ActionCode.FAVORITE, result);
+        }
 
     }
 
-    private void notifyListeners(ListingsDatabase.ActionCode actionCode, Result result) {
+    private void notifyListeners(BooliDatabase.ActionCode actionCode, Result result) {
         for (ServerConnectionListener listener : serverConnectionListeners) {
             listener.onListingsResult(actionCode, result);
         }

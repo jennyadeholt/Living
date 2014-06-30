@@ -1,4 +1,4 @@
-package com.jd.living.activity.searchList;
+package com.jd.living.activity.search;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -42,7 +42,9 @@ public class ListItem extends LinearLayout {
     public void bind(Listing listing) {
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
+
         String listPrice = getContext().getString(R.string.details_list_price_text, listing.getListPrice());
+
         if (listing.isSold()) {
             listPrice = getContext().getString(R.string.details_list_price) + " " +listPrice;
 

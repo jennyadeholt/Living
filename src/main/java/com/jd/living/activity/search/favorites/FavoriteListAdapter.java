@@ -1,4 +1,4 @@
-package com.jd.living.activity.searchList.favorites;
+package com.jd.living.activity.search.favorites;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.jd.living.R;
-import com.jd.living.activity.searchList.ListItem;
-import com.jd.living.activity.searchList.ListItem_;
+import com.jd.living.activity.search.ListItem;
+import com.jd.living.activity.search.ListItem_;
 import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class FavoriteListAdapter extends ArrayAdapter<Listing> implements FavoriteDatabase.FavoriteListener {
 
     @Bean
@@ -73,16 +73,14 @@ public class FavoriteListAdapter extends ArrayAdapter<Listing> implements Favori
     }
 
     @Override
-    public void addedFavorite(Listing listing) {
-        Log.d("Living", "FavoriteListAdapter.addedFavorite");
-        listings.add(listing);
+    public void updatedFavorites(List<Listing> listings) {
+        Log.d("Living", "FavoriteListAdapter.updatedFavorites " + listings.size());
+        this.listings = listings;
         update();
     }
 
     @Override
-    public void removedFavorite(Listing listing) {
-        Log.d("Living", "FavoriteListAdapter.removedFavorite");
-        listings.remove(listing);
-        update();
+    public void onFavoriteClicked(Listing listing) {
+
     }
 }

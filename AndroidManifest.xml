@@ -43,20 +43,25 @@
             </intent-filter>
         </activity>
 
-        <fragment android:name=".activity.searchList.SearchList_" />
-        <fragment android:name=".activity.searchList.SearchResult_" />
+        <fragment android:name=".activity.search.SearchList_" />
+        <fragment android:name=".activity.search.SearchResult_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
-        <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
         <fragment android:name=".activity.details.search.SearchDetailsView_" />
+        <fragment android:name=".activity.details.search.SearchDetailsViewPagerFragment_" />
+
+        <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
         <activity android:name=".activity.details.DetailsMap_" />
         <activity android:name=".activity.details.DetailsWebView_" />
 
         <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
 
+
+        <fragment android:name=".activity.search.favorites.FavoriteResult_"/>
         <fragment android:name=".activity.search.favorites.FavoritesList_"/>
         <fragment android:name=".activity.details.favorites.FavoriteDetailsView_"/>
+        <fragment android:name=".activity.details.favorites.FavoriteDetailsViewPagerFragment_"/>
 
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>

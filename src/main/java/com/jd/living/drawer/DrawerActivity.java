@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.jd.living.R;
-import com.jd.living.activity.searchList.SearchListAction;
+import com.jd.living.activity.search.SearchListAction;
 
 /**
  * Created by jennynilsson on 2014-06-05.
@@ -38,7 +38,7 @@ public abstract class DrawerActivity extends Activity {
     protected CharSequence mTitle;
     protected List<SearchListAction> searchListActions;
 
-    protected int currentPosition = 0;
+    protected int currentPosition = 3;
 
     /* The click listner for ListView in the navigation drawer */
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {

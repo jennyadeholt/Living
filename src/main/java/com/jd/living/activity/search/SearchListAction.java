@@ -1,4 +1,4 @@
-package com.jd.living.activity.searchList;
+package com.jd.living.activity.search;
 
 import com.jd.living.R;
 

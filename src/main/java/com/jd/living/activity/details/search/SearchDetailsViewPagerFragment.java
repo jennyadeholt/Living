@@ -1,4 +1,4 @@
-package com.jd.living.activity.details;
+package com.jd.living.activity.details.search;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +15,11 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.jd.living.R;
-import com.jd.living.activity.details.search.SearchDetailsView;
-import com.jd.living.model.Result;
 import com.jd.living.database.ListingsDatabase;
+import com.jd.living.model.Result;
 
 @EFragment(R.layout.fragment_pager)
-public class DetailsViewPagerFragment extends Fragment implements ListingsDatabase.ListingsListener, ListingsDatabase.DetailsListener{
+public class SearchDetailsViewPagerFragment extends Fragment implements ListingsDatabase.ListingsListener, ListingsDatabase.DetailsListener {
 
     private static int LOOPS_COUNT = 1000;
     private int NUM_PAGES = 0;
@@ -46,7 +45,7 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
                     SearchDetailsView view =  mPagerAdapter.getItem(i);
                     view.setSelected();
                     currentPageIndex = i;
-                    database.setCurrentIndex(LOOPS_COUNT == 1 ? currentPageIndex : currentPageIndex % NUM_PAGES);
+                    database.setCurrentListIndex(LOOPS_COUNT == 1 ? currentPageIndex : currentPageIndex % NUM_PAGES);
                 }
             }
 
@@ -87,7 +86,7 @@ public class DetailsViewPagerFragment extends Fragment implements ListingsDataba
 
     @Override
     public void onDetailsRequested(int booliId) {
-        int position = database.getListLocation(booliId);
+        int position = database.getListIndex(booliId);
         position += LOOPS_COUNT == 1 ? 0 : (LOOPS_COUNT * NUM_PAGES) / 2;
         pager.setCurrentItem(position, false);
     }

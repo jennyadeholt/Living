@@ -23,7 +23,7 @@ public interface BooliClient {
 
     @Get("/listings/{booliId}?" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<Result> getListing(int booliId, String callerId, long time, String unique, String hash);
+    ResponseEntity<ListingsResult> getListing(int booliId, String callerId, long time, String unique, String hash);
 
     @Get("/sold?q={search}&minRooms={minRooms}&maxRooms={maxRooms}&objectType={objectType}&isNewConstruction={isNewConstruction}&limit={limit}}&" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)

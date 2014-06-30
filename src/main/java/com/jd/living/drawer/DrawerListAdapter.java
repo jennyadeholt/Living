@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.jd.living.R;
-import com.jd.living.activity.searchList.SearchListAction;
+import com.jd.living.activity.search.SearchListAction;
 
 
 @EBean

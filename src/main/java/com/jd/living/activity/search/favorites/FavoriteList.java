@@ -1,13 +1,17 @@
-package com.jd.living.activity.searchList.favorites;
+package com.jd.living.activity.search.favorites;
+
+import java.util.List;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +42,7 @@ public class FavoriteList extends ListFragment implements FavoriteDatabase.Favor
     public void init() {
         favoriteDatabase.addFavoriteListener(this);
         setListAdapter(favoriteListAdapter);
-
-        info.setText(
-                getString(R.string.number_of_objects,
-                        favoriteDatabase.getFavorites().size(),
-                        favoriteDatabase.getFavorites().size()));
+        updateNumberOfFavorites();
     }
 
     @Override
@@ -52,19 +52,23 @@ public class FavoriteList extends ListFragment implements FavoriteDatabase.Favor
 
     @ItemClick
     void listItemClicked(Listing listing) {
-
+        Log.d("Living", "FavoriteList.listItemClicked");
+        favoriteDatabase.setCurrentId(listing.getBooliId());
     }
 
     @Override
-    public void addedFavorite(Listing listing) {
-        info.setText(
-                getString(R.string.number_of_objects,
-                        favoriteDatabase.getFavorites().size(),
-                        favoriteDatabase.getFavorites().size()));
+    public void updatedFavorites(List<Listing> listings) {
+        updateNumberOfFavorites();
     }
 
     @Override
-    public void removedFavorite(Listing listing) {
+    public void onFavoriteClicked(Listing listing) {
 
+    }
+
+    @UiThread
+    protected void updateNumberOfFavorites() {
+        int nbrOfFavorites = favoriteListAdapter.getCount();
+        info.setText(getString(R.string.number_of_objects, nbrOfFavorites, nbrOfFavorites));
     }
 }

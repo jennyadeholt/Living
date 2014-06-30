@@ -4,6 +4,9 @@
     <string name="app_name">Living</string>
 
 
+    <string name="toast_added_favorite">Favorite added</string>
+    <string name="toast_removed_favorite">Favorite removed</string>
+
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Save title</string>

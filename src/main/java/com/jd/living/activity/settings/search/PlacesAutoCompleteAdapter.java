@@ -57,7 +57,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
             protected FilterResults performFiltering(CharSequence search) {
                 FilterResults filterResults = new FilterResults();
                 if (search != null) {
-                    resultList = autoCompleteViaGooglePlaces(search.toString());
+                    resultList = autoCompleteViaBooli(search.toString());
                     filterResults.values = resultList;
                     filterResults.count = resultList.size();
                 }

@@ -1,4 +1,4 @@
-package com.jd.living.activity.searchList;
+package com.jd.living.activity.search;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -6,9 +6,11 @@ import org.androidannotations.annotations.EFragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.util.Log;
 
 import com.jd.living.R;
-import com.jd.living.activity.details.DetailsViewPagerFragment_;
+import com.jd.living.activity.details.favorites.FavoriteDetailsViewPagerFragment_;
+import com.jd.living.activity.details.search.SearchDetailsViewPagerFragment_;
 import com.jd.living.database.ListingsDatabase;
 
 @EFragment(R.layout.search_main)
@@ -17,17 +19,16 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     @Bean
     ListingsDatabase listingsDatabase;
 
-    private DetailsViewPagerFragment_ detailsView;
+    private SearchDetailsViewPagerFragment_ detailsView;
     private SearchMain_ searchMain;
 
     private boolean showDetails = false;
-
 
     @AfterViews
     public void init() {
         listingsDatabase.registerDetailsListener(this);
 
-        detailsView = new DetailsViewPagerFragment_();
+        detailsView = new SearchDetailsViewPagerFragment_();
         searchMain = new SearchMain_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -47,6 +48,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
             ft.commit();
         } else {
             if (showDetails) {
+                Log.d("LivingLiving", "SearchResult.onHiddenChanged showDetails" + hidden);
                 onDetailsRequested(0);
             } else {
                 onShowSearch();

@@ -26,7 +26,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -34,8 +33,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
 import com.jd.living.database.FavoriteDatabase;
-import com.jd.living.model.Listing;
 import com.jd.living.database.ListingsDatabase;
+import com.jd.living.model.Listing;
 
 
 @EFragment
@@ -75,15 +74,16 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
 
     protected int objectIndex = 0;
 
-
     protected abstract Listing getListing();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("Living", "onCreateView ");
+        Log.d("LivingLiving", "DetailsView.onCreateView ");
         View v = inflater.inflate(R.layout.details_view, container, false);
+
         mapView = (MapView) v.findViewById(R.id.mapFragment);
         mapView.onCreate(savedInstanceState);
+
         return v;
     }
 
@@ -112,7 +112,7 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
             }
         });
 
-        setupMap();
+        //setupMap();
         setupDetails();
         updateFavorite(false);
         setupWebView();
@@ -120,17 +120,21 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
     }
 
     protected void updateFavorite(boolean onTouch) {
-        boolean isFavorite = favoriteDatabase.isFavorite(listing.getBooliId());
+        boolean isFavorite = favoriteDatabase.isFavorite(listing);
         int resId = R.drawable.btn_star_off_disabled_focused_holo_light;
 
         if (listing.isSold()) {
             favorite.setVisibility(View.GONE);
-        } else {
+        } else  {
             if (onTouch) {
+                int resText = R.string.toast_removed_favorite;
+
                 if (!isFavorite) {
+                    resText = R.string.toast_added_favorite;
                     resId = R.drawable.btn_rating_star_on_normal_holo_light;
                 }
                 favoriteDatabase.updateFavorite(listing);
+                Toast.makeText(getActivity(), resText, Toast.LENGTH_LONG).show();
             } else if (isFavorite) {
                 resId = R.drawable.btn_rating_star_on_normal_holo_light;
             }
@@ -148,7 +152,7 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
-        nbrOfObjects.setText((objectIndex + 1) + "/" + listingsDatabase.getNumberOfObjects());
+        nbrOfObjects.setText((objectIndex + 1) + "/" + listingsDatabase.getResult().size());
 
         if (isSold) {
             addDetails(R.string.details_sold_price, getString(R.string.details_list_price_text, listing.getSoldPrice()));
@@ -200,7 +204,7 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
         marker.position(target);
 
         googleMap.addMarker(marker);
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     @Background

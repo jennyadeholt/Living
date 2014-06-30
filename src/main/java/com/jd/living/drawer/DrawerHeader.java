@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jd.living.R;
-import com.jd.living.activity.searchList.SearchListAction;
+import com.jd.living.activity.search.SearchListAction;
 
 @EViewGroup(R.layout.drawer_list_item_header)
 public class DrawerHeader extends LinearLayout {
