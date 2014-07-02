@@ -2,13 +2,12 @@
 
 <AutoCompleteTextView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/textView"
+        android:id="@+id/amount"
         android:completionThreshold="2"
-        android:hint="@string/preferences_location_hint"
-        android:inputType="textPostalAddress"
+        android:hint="@string/preferences_amount_hint"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <requestFocus />
 </AutoCompleteTextView>
-
 

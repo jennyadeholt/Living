@@ -3,17 +3,16 @@ package com.jd.living.activity.settings;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
-import android.widget.Button;
 
 import com.jd.living.R;
+import com.jd.living.model.Search;
 
 @EFragment
 public class SearchPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -22,6 +21,9 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         void onSettingInvalid();
         void onSettingValid();
     }
+
+    @Bean
+    Search search;
 
     private SharedPreferences preferences;
     private SharedPreferencesListener sharedPreferencesListener;
@@ -38,7 +40,8 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         setSummaryForTypeList(preferences);
         setSummaryForObjectList(preferences);
         setSummary(preferences, SearchPreferenceKey.PREFERENCE_LOCATION);
-        checkMinMax(preferences, "");
+        checkMinMaxAmount("");
+        checkMinMax("");
         setSummaryForBuildingTypes(preferences, SearchPreferenceKey.PREFERENCE_BUILDING_TYPE);
     }
 
@@ -50,11 +53,14 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(SearchPreferenceKey.PREFERENCE_LOCATION)) {
+        if (key.equals(SearchPreferenceKey.PREFERENCE_LOCATION) ) {
             setSummary(sharedPreferences, key);
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS)
                 || key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS)) {
-           checkMinMax(sharedPreferences, key);
+            checkMinMax(key);
+        }  else if ( key.equals(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX)
+                || key.equals(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN)) {
+            checkMinMaxAmount(key);
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE)) {
             setSummaryForBuildingTypes(sharedPreferences, key);
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_BUILD_TYPE)) {
@@ -64,20 +70,35 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         }
     }
 
-    private void checkMinMax(SharedPreferences sharedPreferences, String key) {
+    private void checkMinMaxAmount(String key) {
 
-        sharedPreferences.edit().putString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "5").commit();
+        int max = Integer.valueOf(search.getMaxAmount(true));
+        int min = Integer.valueOf(search.getMinAmount(true));
 
-        int max = Integer.valueOf(sharedPreferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, ""));
-        int min = Integer.valueOf(sharedPreferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, ""));
+        if (min < max) {
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, search.getMinAmount(false));
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, search.getMaxAmount(false) );
+        } else if (key.equals(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX)) {
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, "Max value needs to be bigger then min");
+        } else if (key.equals(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN)) {
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "Min value needs to be smaller then max");
+        } else {
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, "Max value needs to be bigger then min");
+            setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "Min value needs to be smaller then max");
+        }
+
+        notifyListener(min <= max);
+    }
+
+    private void checkMinMax(String key) {
+
+        int max = Integer.valueOf(search.getMaxRooms(false));
+        int min = Integer.valueOf(search.getMinRooms());
 
         if (min <= max) {
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, String.valueOf(min));
-            if (max == 5) {
-                setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "5+");
-            } else {
-                setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, String.valueOf(max));
-            }
+            setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, max == 5 ? "5+" : String.valueOf(max));
+
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS)) {
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "Max value needs to be bigger then min");
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS)) {
@@ -134,7 +155,7 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
     }
 
     private void setSummary(String key, String summary) {
-          findPreference(key).setSummary(summary);
+        findPreference(key).setSummary(summary);
     }
 
     private void setSummaryForBuildingTypes(SharedPreferences sharedPreferences, String key) {

@@ -18,7 +18,12 @@
     <string name="preferences_area_title">Område</string>
     <string name="preferences_area">Sökområde</string>
 
+    <string name="preferences_amount">Pris</string>
+    <string name="preferences_amount_min">Lägsta pris</string>
+    <string name="preferences_amount_max">Max pris</string>
+
     <string name="preferences_location_hint">Sökområde</string>
+    <string name="preferences_amount_hint">Summa</string>
 
 
     <string name="preferences_type_of_building_title">Byggnad</string>

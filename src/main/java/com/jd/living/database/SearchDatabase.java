@@ -15,6 +15,7 @@ import com.jd.living.model.Area;
 import com.jd.living.model.AreaResult;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
+import com.jd.living.model.Search;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -22,6 +23,9 @@ public class SearchDatabase extends BooliDatabase {
 
     @Bean
     FavoriteDatabase database;
+
+    @Bean
+    Search search;
 
     public interface SearchListener {
         void onUpdateSearch(List<Listing> result);
@@ -57,34 +61,13 @@ public class SearchDatabase extends BooliDatabase {
 
     public void launchListingsSearch(){
         if (!searchInprogress) {
-            notifyListener(ActionCode.SEARCH_STARTED, null);
-            Set<String> buildTypes = preferences.getStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, new HashSet<String>());
-            String types = "";
-
-            for (String type : buildTypes.toArray(new String[]{})) {
-                types = types + type + ", ";
-            }
-
-            if (!TextUtils.isEmpty(types)) {
-                types = types.substring(0, types.length() - 2);
-            }
-
-            String minRooms = preferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, "1");
-            String maxRooms = preferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "4");
-            if (maxRooms.equals("5")) {
-                maxRooms = "100";
-            }
-
-            String location = preferences.getString(SearchPreferenceKey.PREFERENCE_LOCATION, "Hörby");
-            String production = preferences.getString(SearchPreferenceKey.PREFERENCE_BUILD_TYPE, "null");
-
             searchInprogress = true;
             notifyListener(BooliDatabase.ActionCode.SEARCH_STARTED, null);
 
-            if ( preferences.getString(SearchPreferenceKey.PREFERENCE_OBJECT_TYPE, "0").equals("0")) {
-                server.getListings(location, minRooms, maxRooms, types, production);
+            if (search.fetchSoldObjects()) {
+                server.getObjectsSold(search);
             } else {
-                server.getObjectsSold(location, minRooms, maxRooms, types, production);
+                server.getListings(search);
             }
         }
     }

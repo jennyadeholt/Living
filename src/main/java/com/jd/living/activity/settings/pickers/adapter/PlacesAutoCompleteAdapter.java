@@ -1,4 +1,4 @@
-package com.jd.living.activity.settings.search;
+package com.jd.living.activity.settings.pickers.adapter;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

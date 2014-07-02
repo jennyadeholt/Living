@@ -14,6 +14,7 @@ import android.util.Log;
 import com.jd.living.database.BooliDatabase;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
+import com.jd.living.model.Search;
 import com.jd.living.model.SoldResult;
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -40,20 +41,22 @@ public class BooliServer {
     }
 
     @Background
-    public void getListings(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
+    public void getListings(Search search) {
         AuthStore authStore = new AuthStore();
 
         ListingsResult result = restClient.
                 getListings(
-                        search,
+                        search.getLocation(),
                         authStore.getCallerId(),
                         authStore.getTime(),
                         authStore.getUnique(),
                         authStore.getHash(),
-                        minRoom,
-                        maxRoom,
-                        objectType,
-                        isNewConstruction,
+                        search.getMinRooms(),
+                        search.getMaxRooms(true),
+                        search.getTypes(),
+                        search.getMinAmount(true),
+                        search.getMaxAmount(true),
+                        search.getProduction(),
                         500
                 )
                 .getBody();
@@ -62,20 +65,22 @@ public class BooliServer {
     }
 
     @Background
-    public void getObjectsSold(String search, String minRoom, String maxRoom, String objectType, String isNewConstruction) {
+    public void getObjectsSold(Search search) {
         AuthStore authStore = new AuthStore();
 
         SoldResult result = restClient.
                 getObjectsSold(
-                        search,
+                        search.getLocation(),
                         authStore.getCallerId(),
                         authStore.getTime(),
                         authStore.getUnique(),
                         authStore.getHash(),
-                        minRoom,
-                        maxRoom,
-                        objectType,
-                        isNewConstruction,
+                        search.getMinRooms(),
+                        search.getMaxRooms(true),
+                        search.getTypes(),
+                        search.getMinAmount(true),
+                        search.getMaxAmount(true),
+                        search.getProduction(),
                         500
                 )
                 .getBody();

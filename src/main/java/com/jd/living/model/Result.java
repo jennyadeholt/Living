@@ -14,6 +14,15 @@ public class Result {
     public int totalCount = 0;
     public int count = 0;
 
+    public SearchParams searchParams;
+
+    public class SearchParams {
+        public String minLivingArea = "";
+        public String areaId = "";
+        public String minListPrice = "";
+        public String maxListPrice = "";
+    }
+
     public Result() {}
 
     public List<Listing> getResult() {
