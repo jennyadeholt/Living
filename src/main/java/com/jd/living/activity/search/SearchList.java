@@ -1,5 +1,7 @@
 package com.jd.living.activity.search;
 
+import java.util.List;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -17,13 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jd.living.R;
+import com.jd.living.database.DatabaseHelper;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
-import com.jd.living.database.ListingsDatabase;
 
 
 @EFragment
-public class SearchList extends ListFragment implements ListingsDatabase.ListingsListener {
+public class SearchList extends ListFragment implements DatabaseHelper.DatabaseListener {
 
     @ViewById
     ListView list;
@@ -32,7 +33,7 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
     TextView info;
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    DatabaseHelper database;
 
     @Bean
     SearchListAdapter searchListAdapter;
@@ -41,7 +42,6 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
 
     @AfterViews
     public void init() {
-        listingsDatabase.registerListingsListener(this);
         setListAdapter(searchListAdapter);
     }
 
@@ -50,27 +50,40 @@ public class SearchList extends ListFragment implements ListingsDatabase.Listing
         return inflater.inflate(R.layout.search_list, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        database.addDatabaseListener(this);
+    }
+
     @ItemClick
     void listItemClicked(Listing listing) {
-        listingsDatabase.setCurrentId(listing.getBooliId());
+        database.setCurrentId(listing.getBooliId());
     }
 
     @Override
-    public void onUpdate(Result result) {
+    public void onUpdate(List<Listing> result) {
         update(result);
     }
 
     @Override
     public void onSearchStarted() {
-        spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
+        //spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
+    }
+
+    @Override
+    public void onDetailsRequested(int booliId) {
+
     }
 
     @UiThread
-    public void update(Result result) {
+    public void update(List<Listing> result) {
+        /*
         if (spinner != null) {
             spinner.dismiss();
         }
-        info.setText(getString(R.string.number_of_objects, result.count, result.totalCount));
+        */
+        info.setText(getString(R.string.number_of_objects, result.size(), result.size()));
     }
 }
 

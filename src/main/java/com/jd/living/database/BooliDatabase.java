@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.jd.living.model.Listing;
+import com.jd.living.model.Result;
 import com.jd.living.server.BooliServer;
 
 @EBean

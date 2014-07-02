@@ -1,5 +1,7 @@
 package com.jd.living.activity.search;
 
+import java.util.List;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -9,15 +11,15 @@ import android.app.FragmentTransaction;
 import android.util.Log;
 
 import com.jd.living.R;
-import com.jd.living.activity.details.favorites.FavoriteDetailsViewPagerFragment_;
 import com.jd.living.activity.details.search.SearchDetailsViewPagerFragment_;
-import com.jd.living.database.ListingsDatabase;
+import com.jd.living.database.DatabaseHelper;
+import com.jd.living.model.Listing;
 
 @EFragment(R.layout.search_main)
-public class SearchResult extends Fragment implements ListingsDatabase.DetailsListener {
+public class SearchResult extends Fragment implements DatabaseHelper.DatabaseListener {
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    DatabaseHelper database;
 
     private SearchDetailsViewPagerFragment_ detailsView;
     private SearchMain_ searchMain;
@@ -26,7 +28,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
 
     @AfterViews
     public void init() {
-        listingsDatabase.registerDetailsListener(this);
+        database.addDatabaseListener(this);
 
         detailsView = new SearchDetailsViewPagerFragment_();
         searchMain = new SearchMain_();
@@ -45,6 +47,7 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.hide(detailsView);
             ft.hide(searchMain);
+
             ft.commit();
         } else {
             if (showDetails) {
@@ -58,10 +61,21 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     }
 
     @Override
+    public void onUpdate(List<Listing> result) {
+
+    }
+
+    @Override
+    public void onSearchStarted() {
+
+    }
+
+    @Override
     public void onDetailsRequested(int booliId) {
         showDetails = true;
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
         transaction.hide(searchMain);
         transaction.show(detailsView);
         transaction.commit();
@@ -81,4 +95,5 @@ public class SearchResult extends Fragment implements ListingsDatabase.DetailsLi
     public boolean isDetailsShown(){
         return showDetails;
     }
+
 }

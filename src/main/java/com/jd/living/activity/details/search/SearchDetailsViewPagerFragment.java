@@ -1,6 +1,7 @@
 package com.jd.living.activity.details.search;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.androidannotations.annotations.AfterViews;
@@ -15,11 +16,13 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.jd.living.R;
-import com.jd.living.database.ListingsDatabase;
-import com.jd.living.model.Result;
+import com.jd.living.activity.details.DetailsView;
+import com.jd.living.activity.details.DetailsView_;
+import com.jd.living.database.DatabaseHelper;
+import com.jd.living.model.Listing;
 
 @EFragment(R.layout.fragment_pager)
-public class SearchDetailsViewPagerFragment extends Fragment implements ListingsDatabase.ListingsListener, ListingsDatabase.DetailsListener {
+public class SearchDetailsViewPagerFragment extends Fragment implements DatabaseHelper.DatabaseListener {
 
     private static int LOOPS_COUNT = 1000;
     private int NUM_PAGES = 0;
@@ -28,21 +31,20 @@ public class SearchDetailsViewPagerFragment extends Fragment implements Listings
     ViewPager pager;
 
     @Bean
-    ListingsDatabase database;
+    DatabaseHelper database;
 
     private ScreenSlidePagerAdapter mPagerAdapter;
     private int currentPageIndex;
 
     @AfterViews
     public void init() {
-        database.registerListingsListener(this);
-        database.registerDetailsListener(this);
+        database.addDatabaseListener(this);
 
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if (currentPageIndex != i) {
-                    SearchDetailsView view =  mPagerAdapter.getItem(i);
+                    DetailsView view =  mPagerAdapter.getItem(i);
                     view.setSelected();
                     currentPageIndex = i;
                     database.setCurrentListIndex(LOOPS_COUNT == 1 ? currentPageIndex : currentPageIndex % NUM_PAGES);
@@ -65,9 +67,9 @@ public class SearchDetailsViewPagerFragment extends Fragment implements Listings
 
     @UiThread
     @Override
-    public void onUpdate(Result result) {
-        LOOPS_COUNT = result.count < 3 ? 1 : 1000;
-        NUM_PAGES = result.count;
+    public void onUpdate(List<Listing> result) {
+        LOOPS_COUNT = result.size() < 3 ? 1 : 1000;
+        NUM_PAGES = result.size();
 
         if (mPagerAdapter == null) {
             mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
@@ -100,21 +102,21 @@ public class SearchDetailsViewPagerFragment extends Fragment implements Listings
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private Map<Integer, SearchDetailsView> details = new HashMap<Integer, SearchDetailsView>();
+        private Map<Integer, DetailsView_> details = new HashMap<Integer, DetailsView_>();
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         public void clearContent() {
-            details = new HashMap<Integer, SearchDetailsView>();
+            details = new HashMap<Integer, DetailsView_>();
         }
 
         @Override
-        public SearchDetailsView getItem(int position) {
+        public DetailsView_ getItem(int position) {
             position = LOOPS_COUNT == 1 ? position : position % NUM_PAGES;
             if (!details.containsKey(position)) {
-                details.put(position, SearchDetailsView.newInstance(position));
+                details.put(position, DetailsView_.newInstance(position));
             }
             return details.get(position);
         }

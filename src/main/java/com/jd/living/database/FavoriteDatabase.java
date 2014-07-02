@@ -1,12 +1,9 @@
 package com.jd.living.database;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -23,15 +20,15 @@ import com.jd.living.model.Result;
 public class FavoriteDatabase extends BooliDatabase {
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    SearchDatabase listingsDatabase;
 
     public interface FavoriteListener {
-        void updatedFavorites(List<Listing> listings);
-        void onFavoriteClicked(Listing listing);
+        void onUpdateFavorites(List<Listing> listings);
+        void onDetailsRequestedForFavorite(int booliId);
     }
 
     private Map<Integer, Listing> map = new HashMap<Integer, Listing>();
-    private List<FavoriteListener> favoriteListeners = new ArrayList<FavoriteListener>();
+    private FavoriteListener favoriteListener;
 
     @Override
     protected void init() {
@@ -48,13 +45,15 @@ public class FavoriteDatabase extends BooliDatabase {
         return new ArrayList<Listing>(map.values());
     }
 
+    public void setFavoriteListener(FavoriteListener listener) {
+        favoriteListener = listener;
+        listener.onUpdateFavorites(getResult());
+    }
+
     @Override
     public void setCurrentId(int booliId) {
         currentBooliId = booliId;
-
-        for (FavoriteListener listener : favoriteListeners) {
-            listener.onFavoriteClicked(getListing(booliId));
-        }
+        favoriteListener.onDetailsRequestedForFavorite(booliId);
     }
 
     public void updateFavorite(Listing listing) {
@@ -103,10 +102,7 @@ public class FavoriteDatabase extends BooliDatabase {
         return map.containsKey(listing.getBooliId());
     }
 
-    public void addFavoriteListener(FavoriteListener listener) {
-        favoriteListeners.add(listener);
-        listener.updatedFavorites(getResult());
-    }
+
 
     @Override
     public void onListingsResult(BooliDatabase.ActionCode action, Result result) {
@@ -123,8 +119,6 @@ public class FavoriteDatabase extends BooliDatabase {
     }
 
     private void notifyListeners() {
-        for (FavoriteListener listener : favoriteListeners) {
-            listener.updatedFavorites(getResult());
-        }
+        favoriteListener.onUpdateFavorites(getResult());
     }
 }

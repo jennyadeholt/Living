@@ -6,14 +6,14 @@ import org.androidannotations.annotations.EActivity;
 
 import android.app.Activity;
 
+import com.jd.living.database.SearchDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.database.ListingsDatabase;
 
 @EActivity
 public abstract class DetailsActivity extends Activity {
 
     @Bean
-    ListingsDatabase listingsDatabase;
+    SearchDatabase listingsDatabase;
 
     protected Listing listing;
 

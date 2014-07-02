@@ -1,10 +1,10 @@
 package com.jd.living.database;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import android.text.TextUtils;
@@ -18,27 +18,26 @@ import com.jd.living.model.Result;
 
 
 @EBean(scope = EBean.Scope.Singleton)
-public class ListingsDatabase extends BooliDatabase {
+public class SearchDatabase extends BooliDatabase {
 
-    public interface ListingsListener {
-        void onUpdate(Result result);
+    @Bean
+    FavoriteDatabase database;
+
+    public interface SearchListener {
+        void onUpdateSearch(List<Listing> result);
         void onSearchStarted();
-    }
-
-    public interface DetailsListener {
-        void onDetailsRequested(int booliId);
+        void onDetailsRequestedForSearch(int booliId);
     }
 
     private boolean searchInprogress = false;
 
     protected Result result = new Result();
 
-    private List<ListingsListener> listingsListeners = new ArrayList<ListingsListener>();
-    private List<DetailsListener> detailsListeners = new ArrayList<DetailsListener>();
+    private SearchListener listingsListener;
+
 
     @Override
     protected void init() {
-
     }
 
     @Override
@@ -46,25 +45,14 @@ public class ListingsDatabase extends BooliDatabase {
         return result.getResult();
     }
 
-    public void registerListingsListener(ListingsListener listener) {
-        listingsListeners.add(listener);
+    public void setListingsListeners(SearchListener listener) {
+        listingsListener = listener;
 
         if (!result.getResult().isEmpty()) {
-            listener.onUpdate(result);
+            listener.onUpdateSearch(result.getResult());
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
-    }
-
-    public void registerDetailsListener(DetailsListener detailsListener) {
-        detailsListeners.add(detailsListener);
-        if (currentBooliId != -1) {
-            detailsListener.onDetailsRequested(currentBooliId);
-        }
-    }
-
-    public void unregisterDetailsListener(DetailsListener detailsListener) {
-        detailsListeners.remove(detailsListener);
     }
 
     public void launchListingsSearch(){
@@ -81,7 +69,11 @@ public class ListingsDatabase extends BooliDatabase {
             }
 
             String minRooms = preferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, "1");
-            String maxRooms = preferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "5");
+            String maxRooms = preferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "4");
+            if (maxRooms.equals("5")) {
+                maxRooms = "100";
+            }
+
             String location = preferences.getString(SearchPreferenceKey.PREFERENCE_LOCATION, "Hörby");
             String production = preferences.getString(SearchPreferenceKey.PREFERENCE_BUILD_TYPE, "null");
 
@@ -97,20 +89,18 @@ public class ListingsDatabase extends BooliDatabase {
     }
 
     private void notifyListener(BooliDatabase.ActionCode action, Result result) {
-        for (ListingsListener listener : listingsListeners) {
-            switch (action) {
-                case LISTINGS:
-                case SOLD:
-                    listener.onUpdate(result);
-                    break;
-                case SEARCH_STARTED:
-                    listener.onSearchStarted();
-                    break;
-                case AREA_TEXT:
-                    break;
-                default:
-                    break;
-            }
+        switch (action) {
+            case LISTINGS:
+            case SOLD:
+                listingsListener.onUpdateSearch(result.getResult());
+                break;
+            case SEARCH_STARTED:
+                listingsListener.onSearchStarted();
+                break;
+            case AREA_TEXT:
+                break;
+            default:
+                break;
         }
     }
 
@@ -136,8 +126,6 @@ public class ListingsDatabase extends BooliDatabase {
     @Override
     public void setCurrentId(int booliId) {
         currentBooliId = booliId;
-        for (DetailsListener detailsListener : detailsListeners) {
-            detailsListener.onDetailsRequested(currentBooliId);
-        }
+        listingsListener.onDetailsRequestedForSearch(currentBooliId);
     }
 }

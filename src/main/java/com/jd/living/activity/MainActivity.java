@@ -10,44 +10,38 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 
 import com.jd.living.R;
-import com.jd.living.activity.search.favorites.FavoriteResult_;
-import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.activity.search.SearchListAction;
 import com.jd.living.activity.search.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
+import com.jd.living.database.DatabaseHelper;
 import com.jd.living.drawer.DrawerActivity;
-import com.jd.living.database.ListingsDatabase;
 
 @EActivity
 public class MainActivity extends DrawerActivity {
 
     @Bean
-    FavoriteDatabase favoriteDatabase;
-
-    @Bean
-    ListingsDatabase listingsDatabase;
+    DatabaseHelper database;
 
     private SearchResult_ searchResult;
-    private SearchPreferences_ newSearch;
-    private FavoriteResult_ favoriteResult;
+    private SearchPreferences_ searchPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("LivingLiving", "MainActivity.onCreate");
         setContentView(R.layout.main);
 
         searchResult = new SearchResult_();
-        newSearch = new SearchPreferences_();
-        favoriteResult = new FavoriteResult_();
+        searchPreferences = new SearchPreferences_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.content_frame, searchResult);
-        transaction.add(R.id.content_frame, newSearch);
-        transaction.add(R.id.content_frame, favoriteResult);
+
+        transaction.add(R.id.content_frame, searchResult, "searchResult");
+        transaction.add(R.id.content_frame, searchPreferences, "searchPreferences");
         transaction.commit();
 
         setup(savedInstanceState);
@@ -55,41 +49,37 @@ public class MainActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mContainer);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     protected void selectItem(int position) {
-
+        Log.d("LivingLiving", "MainActivity.selectItem(" + position + ")");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
         switch (position) {
             case 0:
-                transaction.hide(newSearch);
-                transaction.hide(favoriteResult);
+            case 3:
+                transaction.hide(searchPreferences);
                 transaction.show(searchResult);
+                if (position == 0) {
+                   database.setDatabaseState(DatabaseHelper.DatabaseState.SEARCH);
+                } else {
+                   database.setDatabaseState(DatabaseHelper.DatabaseState.FAVORITE);
+                }
+
                 searchResult.onShowSearch();
+
                 break;
             case 1:
-                transaction.hide(favoriteResult);
                 transaction.hide(searchResult);
-                transaction.show(newSearch);
-                break;
-            case 3:
-                transaction.hide(newSearch);
-                transaction.hide(searchResult);
-                transaction.show(favoriteResult);
-                favoriteResult.onShowSearch();
+                transaction.show(searchPreferences);
                 break;
             default:
                 break;
@@ -97,32 +87,25 @@ public class MainActivity extends DrawerActivity {
 
         transaction.commit();
         currentPosition = position;
-
         super.selectItem(position);
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d("LivingLiving", "MainActivity.onBackPressed()");
-        if (searchResult.isVisible() && searchResult.isDetailsShown()) {
-            Log.d("LivingLiving", "MainActivity.onBackPressed() SEARCH");
-            selectItem(0);
-        } else if (favoriteResult.isVisible() && favoriteResult.isDetailsShown()) {
-            Log.d("LivingLiving", "MainActivity.onBackPressed() FAVORITE" );
-            selectItem(3);
-        } else {
-            Log.d("LivingLiving", "MainActivity.onBackPressed() ELSE");
-            super.onBackPressed();
-        }
-    }
-
     public void doSearch(View v) {
-        listingsDatabase.launchListingsSearch();
+        database.launchSearch();
         selectItem(0);
     }
 
     public void clearSearch(View v) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchResult.isVisible() && searchResult.isDetailsShown()) {
+            searchResult.onShowSearch();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

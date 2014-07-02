@@ -5,6 +5,7 @@ import java.util.List;
 import org.androidannotations.annotations.EActivity;
 
 import android.animation.LayoutTransition;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,10 +21,6 @@ import android.widget.ListView;
 import com.jd.living.R;
 import com.jd.living.activity.search.SearchListAction;
 
-/**
- * Created by jennynilsson on 2014-06-05.
- */
-
 @EActivity
 public abstract class DrawerActivity extends Activity {
 
@@ -38,7 +35,7 @@ public abstract class DrawerActivity extends Activity {
     protected CharSequence mTitle;
     protected List<SearchListAction> searchListActions;
 
-    protected int currentPosition = 3;
+    protected int currentPosition = 0;
 
     /* The click listner for ListView in the navigation drawer */
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -50,6 +47,7 @@ public abstract class DrawerActivity extends Activity {
     }
 
     protected void setup(Bundle savedInstanceState) {
+
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.topList);
@@ -79,11 +77,16 @@ public abstract class DrawerActivity extends Activity {
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close) {
+
             public void onDrawerClosed(View view) {
+                if (getActionBar().getTabCount() > 0) {
+                    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                }
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
             public void onDrawerOpened(View drawerView) {
+                getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 invalidateOptionsMenu();
             }
         };

@@ -26,19 +26,20 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
+import com.jd.living.database.DatabaseHelper;
 import com.jd.living.database.FavoriteDatabase;
-import com.jd.living.database.ListingsDatabase;
 import com.jd.living.model.Listing;
 
 
-@EFragment
-public abstract class DetailsView extends Fragment implements GoogleMap.OnMapClickListener {
+@EFragment(R.layout.details_view)
+public class DetailsView extends Fragment implements GoogleMap.OnMapClickListener {
 
     @ViewById
     protected TableLayout tableLayout;
@@ -62,10 +63,10 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
     protected WebView webView;
 
     @Bean
-    protected ListingsDatabase listingsDatabase;
+    DatabaseHelper database;
 
     @Bean
-    protected FavoriteDatabase favoriteDatabase;
+    FavoriteDatabase favoriteDatabase;
 
     protected MapView mapView;
     protected GoogleMap googleMap;
@@ -74,28 +75,36 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
 
     protected int objectIndex = 0;
 
-    protected abstract Listing getListing();
+    public static DetailsView_ newInstance(int num) {
+        Log.d("LivingLiving", "DetailsView.newInstance("+ num  +")");
+        DetailsView_ f = new DetailsView_();
+        Bundle args = new Bundle();
+        args.putInt("objectIndex", num);
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("LivingLiving", "DetailsView.onCreateView ");
+        Log.d("LivingLiving", "DetailsView.onCreateView() ");
         View v = inflater.inflate(R.layout.details_view, container, false);
 
         mapView = (MapView) v.findViewById(R.id.mapFragment);
         mapView.onCreate(savedInstanceState);
-
         return v;
     }
 
     @AfterViews
-    protected void init(){
+    public void init() {
+        Log.d("LivingLiving", "DetailsView.init() ");
+
         objectIndex = getArguments() != null ? getArguments().getInt("objectIndex") : 1;
-        listing = getListing();
+        listing = database.getListingBasedOnLocation(objectIndex);
 
         webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     Intent intent = new Intent(getActivity(), DetailsWebView_.class);
                     intent.putExtra("booliId", listing.getBooliId());
                     startActivity(intent);
@@ -112,11 +121,12 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
             }
         });
 
-        //setupMap();
+        setupMap();
         setupDetails();
         updateFavorite(false);
         setupWebView();
         getImage();
+
     }
 
     protected void updateFavorite(boolean onTouch) {
@@ -152,11 +162,12 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
-        nbrOfObjects.setText((objectIndex + 1) + "/" + listingsDatabase.getResult().size());
+        nbrOfObjects.setText((objectIndex + 1) + "/" + database.getResult().size());
 
         if (isSold) {
             addDetails(R.string.details_sold_price, getString(R.string.details_list_price_text, listing.getSoldPrice()));
         }
+
         addDetails(R.string.details_list_price, getString(R.string.details_list_price_text, listing.getListPrice()));
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
         addDetails(R.string.details_type, listing.getObjectType());
@@ -170,9 +181,11 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
 
         addDetails(R.string.details_rooms,getString(R.string.details_room_text, listing.getRooms()));
         addDetails(R.string.details_published, listing.getPublished());
+
         if (isSold) {
             addDetails(R.string.details_sold, listing.getSoldDate());
         }
+
         addDetails(R.string.details_construction_year, String.valueOf(listing.getConstructionYear()));
         addDetails(R.string.details_source, listing.getSource());
     }
@@ -194,17 +207,17 @@ public abstract class DetailsView extends Fragment implements GoogleMap.OnMapCli
         googleMap.clear();
         target = new LatLng(listing.getLatitude(), listing.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(target)      // Sets the center of the googleMap to Mountain View
-                .zoom(13)                   // Sets the zoom
-                .bearing(0)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
+                .target(target)
+                .zoom(13)
+                .bearing(0)
+                .tilt(0)
+                .build();
 
         MarkerOptions marker = new MarkerOptions();
         marker.position(target);
 
         googleMap.addMarker(marker);
-        //googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     @Background

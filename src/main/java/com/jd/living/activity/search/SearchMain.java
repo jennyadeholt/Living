@@ -37,7 +37,6 @@ public class SearchMain extends Fragment {
                         .setContent(new DetailsTabContent(getActivity()))
         );
 
-
         list = new SearchList_();
         map = new ResultMapFragment_();
 
@@ -75,7 +74,6 @@ public class SearchMain extends Fragment {
         ft.commit();
 
     }
-
 
     private class DetailsTabContent implements TabHost.TabContentFactory {
         private Context mContext;

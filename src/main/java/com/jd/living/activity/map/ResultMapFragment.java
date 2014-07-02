@@ -2,15 +2,15 @@ package com.jd.living.activity.map;
 
 import static com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
+import java.util.List;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
 
 import android.app.Fragment;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,23 +20,21 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
+import com.jd.living.database.DatabaseHelper;
+import com.jd.living.database.SearchDatabase;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.database.ListingsDatabase;
-
 
 @EFragment(R.layout.map)
-public class ResultMapFragment extends Fragment implements ListingsDatabase.ListingsListener,
+public class ResultMapFragment extends Fragment implements DatabaseHelper.DatabaseListener,
         OnInfoWindowClickListener, GoogleMap.OnMapLoadedCallback{
+
 
     @FragmentById
     MapFragment resultMap;
 
-    @ViewById
-    FrameLayout mapView;
-
     @Bean
-    ListingsDatabase database;
+    DatabaseHelper database;
 
     @Bean
     ResultInfoWindowAdapter adapter;
@@ -44,24 +42,29 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
     private GoogleMap googleMap;
     private LatLngBounds.Builder bounds;
 
+
     @AfterViews
     public void init(){
-
         googleMap = resultMap.getMap();
+        googleMap.setOnMapLoadedCallback(this);
         googleMap.setMyLocationEnabled(true);
         googleMap.setInfoWindowAdapter(adapter);
         googleMap.setOnInfoWindowClickListener(this);
-        googleMap.setOnMapLoadedCallback(this);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @UiThread
     @Override
-    public void onUpdate(Result result) {
+    public void onUpdate(List<Listing> result) {
+
         googleMap.clear();
 
         bounds = new LatLngBounds.Builder();
-        for (Listing listing : result.getResult()) {
+        for (Listing listing : result) {
             LatLng target = new LatLng(listing.getLatitude(), listing.getLongitude());
 
             googleMap.addMarker(
@@ -73,13 +76,19 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
             bounds.include(target);
         }
 
-        if (!result.getResult().isEmpty()) {
+        if (!result.isEmpty()) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 15));
         }
+
     }
 
     @Override
     public void onSearchStarted() {
+
+    }
+
+    @Override
+    public void onDetailsRequested(int booliId) {
 
     }
 
@@ -90,6 +99,6 @@ public class ResultMapFragment extends Fragment implements ListingsDatabase.List
 
     @Override
     public void onMapLoaded() {
-        database.registerListingsListener(this);
+        database.addDatabaseListener(this);
     }
 }

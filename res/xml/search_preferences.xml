@@ -16,15 +16,15 @@
         <ListPreference
                 android:key="preference_min_numbers"
                 android:title="@string/preferences_nbr_of_rooms_min"
-                android:entries="@array/rooms"
+                android:entries="@array/rooms_number"
                 android:defaultValue="3"
-                android:entryValues="@array/rooms" />
+                android:entryValues="@array/rooms_number"/>
         <ListPreference
                 android:key="preference_max_numbers"
                 android:title="@string/preferences_nbr_of_rooms_max"
                 android:entries="@array/rooms"
                 android:defaultValue="4"
-                android:entryValues="@array/rooms" />
+                android:entryValues="@array/rooms_number" />
     </PreferenceCategory>
 
     <PreferenceCategory

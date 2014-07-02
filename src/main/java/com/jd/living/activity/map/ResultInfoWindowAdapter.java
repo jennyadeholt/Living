@@ -12,8 +12,8 @@ import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+import com.jd.living.database.SearchDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.database.ListingsDatabase;
 
 @EBean
 public class ResultInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -22,7 +22,7 @@ public class ResultInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     Context context;
 
     @Bean
-    ListingsDatabase database;
+    SearchDatabase database;
 
     private Map<Marker, InfoWindow> view = new HashMap<Marker, InfoWindow>();
 

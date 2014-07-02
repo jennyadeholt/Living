@@ -47,4 +47,9 @@ public class DetailsMap extends DetailsActivity {
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

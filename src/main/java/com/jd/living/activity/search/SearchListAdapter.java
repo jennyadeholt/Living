@@ -14,16 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.jd.living.R;
+import com.jd.living.database.DatabaseHelper;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
-import com.jd.living.database.ListingsDatabase;
 
 
 @EBean
-public class SearchListAdapter extends ArrayAdapter<Listing> implements ListingsDatabase.ListingsListener {
+public class SearchListAdapter extends ArrayAdapter<Listing> implements DatabaseHelper.DatabaseListener {
 
     @Bean
-    ListingsDatabase database;
+    DatabaseHelper database;
 
     private List<Listing> listings = new ArrayList<Listing>();
 
@@ -33,8 +32,7 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
 
     @AfterInject
     public void init(){
-        database.registerListingsListener(this);
-        database.launchListingsSearch();
+        database.addDatabaseListener(this);
     }
 
     @Override
@@ -73,13 +71,18 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Listings
     }
 
     @Override
-    public void onUpdate(Result result) {
-        this.listings = result.getResult();
+    public void onUpdate(List<Listing> result) {
+        this.listings = result;
         update();
     }
 
     @Override
     public void onSearchStarted() {
+
+    }
+
+    @Override
+    public void onDetailsRequested(int booliId) {
 
     }
 }

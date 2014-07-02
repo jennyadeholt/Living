@@ -66,12 +66,18 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
 
     private void checkMinMax(SharedPreferences sharedPreferences, String key) {
 
+        sharedPreferences.edit().putString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "5").commit();
+
         int max = Integer.valueOf(sharedPreferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, ""));
         int min = Integer.valueOf(sharedPreferences.getString(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, ""));
 
         if (min <= max) {
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, String.valueOf(min));
-            setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, String.valueOf(max));
+            if (max == 5) {
+                setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "5+");
+            } else {
+                setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, String.valueOf(max));
+            }
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS)) {
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "Max value needs to be bigger then min");
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS)) {
