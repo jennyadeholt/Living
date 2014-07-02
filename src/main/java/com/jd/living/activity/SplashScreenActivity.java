@@ -48,7 +48,7 @@ public class SplashScreenActivity extends Activity implements DatabaseHelper.Dat
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
                 finish();
             }
-        }, 0);
+        }, 200);
     }
 
     @Override

@@ -35,7 +35,7 @@ public abstract class DrawerActivity extends Activity {
     protected CharSequence mTitle;
     protected List<SearchListAction> searchListActions;
 
-    protected int currentPosition = 0;
+    protected int currentPosition = 1;
 
     /* The click listner for ListView in the navigation drawer */
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -129,7 +129,6 @@ public abstract class DrawerActivity extends Activity {
     }
 
     protected void selectItem(int position) {
-        //mDrawerList.setItemChecked(position, true);
         mDrawerListAdapter.setSelected(position);
         setTitle(mDrawerListAdapter.getItem(position).getTextRes());
         SearchListAction action = mDrawerListAdapter.getItem(position);

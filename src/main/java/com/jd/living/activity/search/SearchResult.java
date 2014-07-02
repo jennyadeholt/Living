@@ -8,10 +8,9 @@ import org.androidannotations.annotations.EFragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.util.Log;
 
 import com.jd.living.R;
-import com.jd.living.activity.details.search.SearchDetailsViewPagerFragment_;
+import com.jd.living.activity.details.DetailsViewPagerFragment_;
 import com.jd.living.database.DatabaseHelper;
 import com.jd.living.model.Listing;
 
@@ -21,7 +20,7 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
     @Bean
     DatabaseHelper database;
 
-    private SearchDetailsViewPagerFragment_ detailsView;
+    private DetailsViewPagerFragment_ detailsView;
     private SearchMain_ searchMain;
 
     private boolean showDetails = false;
@@ -30,7 +29,7 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
     public void init() {
         database.addDatabaseListener(this);
 
-        detailsView = new SearchDetailsViewPagerFragment_();
+        detailsView = new DetailsViewPagerFragment_();
         searchMain = new SearchMain_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -51,7 +50,6 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
             ft.commit();
         } else {
             if (showDetails) {
-                Log.d("LivingLiving", "SearchResult.onHiddenChanged showDetails" + hidden);
                 onDetailsRequested(0);
             } else {
                 onShowSearch();
@@ -83,6 +81,7 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
 
     public void onShowSearch() {
         if (isAdded()) {
+
             showDetails = false;
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -90,6 +89,7 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
             transaction.show(searchMain);
             transaction.commit();
         }
+
     }
 
     public boolean isDetailsShown(){

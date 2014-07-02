@@ -56,6 +56,12 @@ public class SearchList extends ListFragment implements DatabaseHelper.DatabaseL
         database.addDatabaseListener(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        database.removeDatabaseListener(this);
+    }
+
     @ItemClick
     void listItemClicked(Listing listing) {
         database.setCurrentId(listing.getBooliId());
@@ -78,11 +84,10 @@ public class SearchList extends ListFragment implements DatabaseHelper.DatabaseL
 
     @UiThread
     public void update(List<Listing> result) {
-        /*
         if (spinner != null) {
             spinner.dismiss();
         }
-        */
+
         info.setText(getString(R.string.number_of_objects, result.size(), result.size()));
     }
 }

@@ -43,8 +43,6 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
 
     public void addDatabaseListener(DatabaseListener listener) {
         databaseListeners.add(listener);
-
-
         switch (databaseState) {
             case SEARCH:
                 listener.onUpdate(searchResult);
@@ -53,12 +51,10 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
                 listener.onUpdate(favoriteResult);
                 break;
         }
-
-
     }
 
     public void removeDatabaseListener(DatabaseListener listener) {
-       databaseListeners.remove(listener);
+        databaseListeners.remove(listener);
     }
 
     public void setDatabaseState(DatabaseState state) {
@@ -72,6 +68,10 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
                 onUpdate(state, favoriteResult);
                 break;
         }
+    }
+
+    public DatabaseState getDatabaseState() {
+        return databaseState;
     }
 
     public void setCurrentListIndex(int i) {
@@ -123,7 +123,17 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
             case FAVORITE:
                 return favoriteDatabase.getListIndex(booliId);
         }
-        return 0;
+        return -1;
+    }
+
+    public Listing getListing(int booliId) {
+        switch (databaseState) {
+            case SEARCH:
+                return listingsDatabase.getListing(booliId);
+            case FAVORITE:
+                return favoriteDatabase.getListing(booliId);
+        }
+        return null;
     }
 
     public void launchSearch() {

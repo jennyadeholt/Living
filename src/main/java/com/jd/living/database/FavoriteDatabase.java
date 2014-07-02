@@ -95,7 +95,7 @@ public class FavoriteDatabase extends BooliDatabase {
         editor.putInt(SearchPreferenceKey.PREFERENCE_NBR_OF_FAVORITES, getResult().size());
         editor.commit();
 
-        notifyListeners();
+        notifyListeners(false);
     }
 
     public boolean isFavorite(Listing listing) {
@@ -111,14 +111,14 @@ public class FavoriteDatabase extends BooliDatabase {
                 for (Listing listing : result.getResult()) {
                     map.put(listing.getBooliId(), listing);
                 }
-                notifyListeners();
+                notifyListeners(true);
                 break;
             default:
                 break;
         }
     }
 
-    private void notifyListeners() {
+    private void notifyListeners(boolean listingAdded) {
         favoriteListener.onUpdateFavorites(getResult());
     }
 }

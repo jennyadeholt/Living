@@ -8,7 +8,6 @@ import org.androidannotations.annotations.EActivity;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -32,7 +31,6 @@ public class MainActivity extends DrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("LivingLiving", "MainActivity.onCreate");
         setContentView(R.layout.main);
 
         searchResult = new SearchResult_();
@@ -60,15 +58,14 @@ public class MainActivity extends DrawerActivity {
 
     @Override
     protected void selectItem(int position) {
-        Log.d("LivingLiving", "MainActivity.selectItem(" + position + ")");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         switch (position) {
-            case 0:
-            case 3:
+            case 1:
+            case 4:
                 transaction.hide(searchPreferences);
                 transaction.show(searchResult);
-                if (position == 0) {
+                if (position == 1) {
                    database.setDatabaseState(DatabaseHelper.DatabaseState.SEARCH);
                 } else {
                    database.setDatabaseState(DatabaseHelper.DatabaseState.FAVORITE);
@@ -77,14 +74,13 @@ public class MainActivity extends DrawerActivity {
                 searchResult.onShowSearch();
 
                 break;
-            case 1:
+            case 2:
                 transaction.hide(searchResult);
                 transaction.show(searchPreferences);
                 break;
             default:
                 break;
         }
-
         transaction.commit();
         currentPosition = position;
         super.selectItem(position);
@@ -92,7 +88,7 @@ public class MainActivity extends DrawerActivity {
 
     public void doSearch(View v) {
         database.launchSearch();
-        selectItem(0);
+        selectItem(1);
     }
 
     public void clearSearch(View v) {
@@ -103,6 +99,8 @@ public class MainActivity extends DrawerActivity {
     public void onBackPressed() {
         if (searchResult.isVisible() && searchResult.isDetailsShown()) {
             searchResult.onShowSearch();
+            int index = database.getDatabaseState() == DatabaseHelper.DatabaseState.FAVORITE ? 4 : 1;
+            setTitle(mDrawerListAdapter.getItem(index).getTextRes());
         } else {
             super.onBackPressed();
         }
@@ -111,10 +109,12 @@ public class MainActivity extends DrawerActivity {
     @Override
     protected List<SearchListAction> getActions() {
         List<SearchListAction> actionList = new ArrayList<SearchListAction>();
+        actionList.add(SearchListAction.RESULT_HEADER);
         actionList.add(SearchListAction.SEARCH_RESULT);
         actionList.add(SearchListAction.NEW_SEARCH);
         actionList.add(SearchListAction.SEARCHES);
         actionList.add(SearchListAction.FAVORITES);
+        actionList.add(SearchListAction.SETTINGS_HEADER);
         actionList.add(SearchListAction.SETTINGS);
         actionList.add(SearchListAction.HELP);
         actionList.add(SearchListAction.ABOUT);

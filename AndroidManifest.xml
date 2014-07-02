@@ -50,7 +50,7 @@
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
         <fragment android:name=".activity.details.DetailsView" />
-        <fragment android:name=".activity.details.search.SearchDetailsViewPagerFragment_" />
+        <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
 
         <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
         <activity android:name=".activity.details.DetailsMap_" />

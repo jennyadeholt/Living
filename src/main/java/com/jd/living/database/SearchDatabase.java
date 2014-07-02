@@ -57,6 +57,7 @@ public class SearchDatabase extends BooliDatabase {
 
     public void launchListingsSearch(){
         if (!searchInprogress) {
+            notifyListener(ActionCode.SEARCH_STARTED, null);
             Set<String> buildTypes = preferences.getStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, new HashSet<String>());
             String types = "";
 

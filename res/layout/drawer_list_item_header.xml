@@ -18,15 +18,17 @@
               android:layout_width="match_parent"
               android:layout_height="45dp"
               android:clickable="false"
+              android:paddingLeft="5dp"
+              android:paddingBottom="5dp"
+              android:paddingRight="16dp"
               android:background="@android:color/transparent" >
 
     <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@android:style/TextAppearance.DeviceDefault.Large"
-            android:gravity="center"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:gravity="bottom"
             android:text="Search"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
+            android:textAllCaps="true"/>
 </LinearLayout>

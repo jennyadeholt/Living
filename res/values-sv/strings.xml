@@ -2,8 +2,8 @@
 <resources>
 
     <string name="new_search">Ny sökning</string>
-    <string name="search_result_header"></string>
-    <string name="search_result_header_2"></string>
+    <string name="search_result_header">Sökning</string>
+    <string name="search_result_header_2">Info</string>
     <string name="search_result">Sökresultat</string>
     <string name="update_search">Uppdatera sökning</string>
     <string name="map_result">Karta</string>
