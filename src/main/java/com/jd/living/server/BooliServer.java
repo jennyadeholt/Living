@@ -9,12 +9,10 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
-import android.util.Log;
-
 import com.jd.living.database.BooliDatabase;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
-import com.jd.living.model.Search;
+import com.jd.living.Search;
 import com.jd.living.model.SoldResult;
 
 @EBean(scope = EBean.Scope.Singleton)

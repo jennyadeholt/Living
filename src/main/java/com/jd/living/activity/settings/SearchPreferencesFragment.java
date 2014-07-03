@@ -12,7 +12,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.jd.living.R;
-import com.jd.living.model.Search;
+import com.jd.living.Search;
 
 @EFragment
 public class SearchPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {

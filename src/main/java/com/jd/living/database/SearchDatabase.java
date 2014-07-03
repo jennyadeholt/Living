@@ -1,21 +1,17 @@
 package com.jd.living.database;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.jd.living.activity.settings.SearchPreferenceKey;
 import com.jd.living.model.Area;
 import com.jd.living.model.AreaResult;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.model.Search;
+import com.jd.living.Search;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -33,11 +29,16 @@ public class SearchDatabase extends BooliDatabase {
         void onDetailsRequestedForSearch(int booliId);
     }
 
+    public interface SearchHistoryListener {
+        void onNewSearch(Search search);
+    }
+
     private boolean searchInprogress = false;
 
     protected Result result = new Result();
 
-    private SearchListener listingsListener;
+    private SearchListener searchListener;
+    private SearchHistoryListener searchHistoryListener;
 
 
     @Override
@@ -50,13 +51,18 @@ public class SearchDatabase extends BooliDatabase {
     }
 
     public void setListingsListeners(SearchListener listener) {
-        listingsListener = listener;
+        searchListener = listener;
 
         if (!result.getResult().isEmpty()) {
             listener.onUpdateSearch(result.getResult());
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
+    }
+
+    public void setSearchHistoryListener(SearchHistoryListener listener) {
+        searchHistoryListener = listener;
+        searchHistoryListener.onNewSearch(search);
     }
 
     public void launchListingsSearch(){
@@ -69,6 +75,10 @@ public class SearchDatabase extends BooliDatabase {
             } else {
                 server.getListings(search);
             }
+
+            if (searchHistoryListener != null) {
+                searchHistoryListener.onNewSearch(search);
+            }
         }
     }
 
@@ -76,10 +86,13 @@ public class SearchDatabase extends BooliDatabase {
         switch (action) {
             case LISTINGS:
             case SOLD:
-                listingsListener.onUpdateSearch(result.getResult());
+                if (searchHistoryListener != null) {
+                    searchHistoryListener.onNewSearch(search);
+                }
+                searchListener.onUpdateSearch(result.getResult());
                 break;
             case SEARCH_STARTED:
-                listingsListener.onSearchStarted();
+                searchListener.onSearchStarted();
                 break;
             case AREA_TEXT:
                 break;
@@ -94,6 +107,7 @@ public class SearchDatabase extends BooliDatabase {
         switch (action) {
             case LISTINGS:
             case SOLD:
+                search.setTime(System.currentTimeMillis());
                 this.result = result;
                 break;
             case AREA_TEXT:
@@ -110,6 +124,6 @@ public class SearchDatabase extends BooliDatabase {
     @Override
     public void setCurrentId(int booliId) {
         currentBooliId = booliId;
-        listingsListener.onDetailsRequestedForSearch(currentBooliId);
+        searchListener.onDetailsRequestedForSearch(currentBooliId);
     }
 }

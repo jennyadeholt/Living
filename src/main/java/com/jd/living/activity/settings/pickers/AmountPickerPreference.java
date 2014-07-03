@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -38,7 +37,7 @@ public class AmountPickerPreference extends DialogPreference implements TextWatc
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        adapter = new AmountAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line);
+        adapter = new AmountAutoCompleteAdapter(getContext());
 
         textView = (AutoCompleteTextView) view.findViewById(R.id.amount);
         textView.addTextChangedListener(this);

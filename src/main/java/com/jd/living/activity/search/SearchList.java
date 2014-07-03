@@ -12,6 +12,7 @@ import org.androidannotations.annotations.ViewById;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +54,16 @@ public class SearchList extends ListFragment implements DatabaseHelper.DatabaseL
     @Override
     public void onResume() {
         super.onResume();
+        spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
         database.addDatabaseListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (spinner != null) {
+            spinner.dismiss();
+        }
         database.removeDatabaseListener(this);
     }
 
@@ -69,12 +74,14 @@ public class SearchList extends ListFragment implements DatabaseHelper.DatabaseL
 
     @Override
     public void onUpdate(List<Listing> result) {
+        Log.d("Search.onSearchStarted", "onUpdate");
         update(result);
     }
 
     @Override
     public void onSearchStarted() {
-        //spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
+        Log.d("Search.onSearchStarted", "onSearchStarted");
+        spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
     }
 
     @Override

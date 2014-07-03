@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:padding="10dp"
+              android:background="@drawable/list_item"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="0dp"
+                  android:layout_weight="2"
+                  android:orientation="vertical"
+                  android:layout_gravity="center_vertical"
+                  android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:id="@+id/address"
+                    style="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="Östervärnsgatan 9a"/>
+            <TextView
+                    android:id="@+id/time"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                     android:layout_height="wrap_content"
+                    android:text="2014-07-01 12:34"/>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/type"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:paddingTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lägenhet"/>
+        <TextView
+                android:id="@+id/production"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sålda - Nyproduktion"/>
+        <TextView
+                android:id="@+id/price"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 995 000kr - 5 000 000 kr"/>
+
+        <TextView
+                android:id="@+id/rooms"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+
+                android:layout_height="fill_parent"
+                android:gravity="right"
+                android:text="2 rum - 5 rum"/>
+
+    </LinearLayout>
+</LinearLayout>

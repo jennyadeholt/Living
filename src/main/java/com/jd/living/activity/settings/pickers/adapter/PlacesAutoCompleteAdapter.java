@@ -34,9 +34,8 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
     private ArrayList<String> resultList;
 
-    public PlacesAutoCompleteAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-
+    public PlacesAutoCompleteAdapter(Context context) {
+        super(context, android.R.layout.simple_spinner_dropdown_item);
         resultList = new ArrayList<String>();
     }
 

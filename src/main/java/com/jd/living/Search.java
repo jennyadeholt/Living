@@ -1,4 +1,4 @@
-package com.jd.living.model;
+package com.jd.living;
 
 
 import java.util.HashSet;
@@ -12,24 +12,31 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jd.living.activity.settings.SearchPreferenceKey;
 import com.jd.living.util.StringUtil;
 
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class Search {
 
     @RootContext
     Context context;
 
-
     protected SharedPreferences preferences;
+    protected long timestamp;
 
     @AfterInject
     public void init() {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public void setTime(long timeStamp) {
+        this.timestamp = timeStamp;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public String getTypes() {

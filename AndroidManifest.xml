@@ -49,6 +49,9 @@
         <fragment android:name=".activity.search.SearchResult_" />
         <fragment android:name=".activity.map.ResultMapFragment_" />
 
+        <fragment android:name=".activity.history.HistoryList_" />
+        <fragment android:name=".activity.history.Test_" />
+
         <fragment android:name=".activity.details.DetailsView" />
         <fragment android:name=".activity.details.DetailsViewPagerFragment_" />
 

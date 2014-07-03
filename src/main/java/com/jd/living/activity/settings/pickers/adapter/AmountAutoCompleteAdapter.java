@@ -17,10 +17,17 @@ import com.jd.living.util.StringUtil;
 public class AmountAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
     private List<String> numbers = new ArrayList<String>();
+    private int maxLenght = 9;
+    private int minLenght = 4;
 
-    public AmountAutoCompleteAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
+    public AmountAutoCompleteAdapter(Context context) {
+        this(context, 4, 9);
+    }
 
+    public AmountAutoCompleteAdapter(Context context, int minLenght, int maxLenght) {
+        super(context, android.R.layout.simple_spinner_dropdown_item);
+        this.maxLenght = maxLenght;
+        this.minLenght = minLenght;
     }
 
     @Override
@@ -43,8 +50,8 @@ public class AmountAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
                 if (search != null) {
                     long value;
-                    while (search.length() < 9) {
-                        if (search.length() > 4) {
+                    while (search.length() < maxLenght) {
+                        if (search.length() > minLenght) {
                             value = Long.valueOf(search.toString());
                             numbers.add(StringUtil.getFormattedString(value));
                         }

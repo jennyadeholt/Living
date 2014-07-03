@@ -37,7 +37,7 @@ public class AreaPickerPreference extends DialogPreference implements TextWatche
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        adapter = new PlacesAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line);
+        adapter = new PlacesAutoCompleteAdapter(getContext());
 
         textView = (AutoCompleteTextView) view.findViewById(R.id.textView);
         textView.addTextChangedListener(this);

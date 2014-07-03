@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.View;
 
 import com.jd.living.R;
+import com.jd.living.activity.history.HistoryList_;
+import com.jd.living.activity.history.Test_;
 import com.jd.living.activity.search.SearchListAction;
 import com.jd.living.activity.search.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
@@ -26,6 +28,7 @@ public class MainActivity extends DrawerActivity {
 
     private SearchResult_ searchResult;
     private SearchPreferences_ searchPreferences;
+    private HistoryList_ history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,13 @@ public class MainActivity extends DrawerActivity {
 
         searchResult = new SearchResult_();
         searchPreferences = new SearchPreferences_();
+        history = new HistoryList_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.add(R.id.content_frame, searchResult, "searchResult");
         transaction.add(R.id.content_frame, searchPreferences, "searchPreferences");
+        transaction.add(R.id.content_frame, history, "history");
         transaction.commit();
 
         setup(savedInstanceState);
@@ -63,6 +68,7 @@ public class MainActivity extends DrawerActivity {
         switch (position) {
             case 1:
             case 4:
+                transaction.hide(history);
                 transaction.hide(searchPreferences);
                 transaction.show(searchResult);
                 if (position == 1) {
@@ -72,12 +78,17 @@ public class MainActivity extends DrawerActivity {
                 }
 
                 searchResult.onShowSearch();
-
                 break;
             case 2:
+                transaction.hide(history);
                 transaction.hide(searchResult);
                 transaction.show(searchPreferences);
                 break;
+
+            case 3:
+                transaction.hide(searchResult);
+                transaction.hide(searchPreferences);
+                transaction.show(history);
             default:
                 break;
         }

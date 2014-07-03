@@ -19,7 +19,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     }
 
     @Bean
-    protected SearchDatabase listingsDatabase;
+    protected SearchDatabase searchDatabase;
     @Bean
     protected FavoriteDatabase favoriteDatabase;
 
@@ -37,7 +37,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
 
     @AfterInject
     public void init() {
-        listingsDatabase.setListingsListeners(this);
+        searchDatabase.setListingsListeners(this);
         favoriteDatabase.setFavoriteListener(this);
     }
 
@@ -77,7 +77,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public void setCurrentListIndex(int i) {
         switch (databaseState) {
             case SEARCH:
-                listingsDatabase.setCurrentListIndex(i);
+                searchDatabase.setCurrentListIndex(i);
                 break;
             case FAVORITE:
                 favoriteDatabase.setCurrentListIndex(i);
@@ -88,7 +88,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public void setCurrentId(int i) {
         switch (databaseState) {
             case SEARCH:
-                listingsDatabase.setCurrentId(i);
+                searchDatabase.setCurrentId(i);
                 break;
             case FAVORITE:
                 favoriteDatabase.setCurrentId(i);
@@ -99,7 +99,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public List<Listing> getResult() {
         switch (databaseState) {
             case SEARCH:
-                return listingsDatabase.getResult();
+                return searchDatabase.getResult();
             case FAVORITE:
                 return favoriteDatabase.getResult();
         }
@@ -109,7 +109,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public Listing getListingBasedOnLocation(int objectIndex) {
         switch (databaseState) {
             case SEARCH:
-                return listingsDatabase.getListingBasedOnLocation(objectIndex);
+                return searchDatabase.getListingBasedOnLocation(objectIndex);
             case FAVORITE:
                 return favoriteDatabase.getListingBasedOnLocation(objectIndex);
         }
@@ -119,7 +119,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public int getListIndex(int booliId) {
         switch (databaseState) {
             case SEARCH:
-                return listingsDatabase.getListIndex(booliId);
+                return searchDatabase.getListIndex(booliId);
             case FAVORITE:
                 return favoriteDatabase.getListIndex(booliId);
         }
@@ -129,7 +129,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public Listing getListing(int booliId) {
         switch (databaseState) {
             case SEARCH:
-                return listingsDatabase.getListing(booliId);
+                return searchDatabase.getListing(booliId);
             case FAVORITE:
                 return favoriteDatabase.getListing(booliId);
         }
@@ -139,7 +139,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     public void launchSearch() {
         switch (databaseState) {
             case SEARCH:
-                listingsDatabase.launchListingsSearch();
+                searchDatabase.launchListingsSearch();
                 break;
             case FAVORITE:
                 break;
@@ -177,6 +177,10 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
 
     public FavoriteDatabase getFavoriteDatabase() {
         return favoriteDatabase;
+    }
+
+    public SearchDatabase getSearchDatabase() {
+        return searchDatabase;
     }
 
     private void onUpdate(DatabaseState state, List<Listing> listings) {

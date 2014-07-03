@@ -35,7 +35,7 @@ public abstract class DrawerActivity extends Activity {
     protected CharSequence mTitle;
     protected List<SearchListAction> searchListActions;
 
-    protected int currentPosition = 1;
+    protected int currentPosition = 3;
 
     /* The click listner for ListView in the navigation drawer */
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
