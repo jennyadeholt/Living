@@ -43,13 +43,12 @@ public class ListItem extends LinearLayout {
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
-        String listPrice = getContext().getString(R.string.details_list_price_text, listing.getListPrice());
+        String listPrice = listing.getListPrice();
 
         if (listing.isSold()) {
             listPrice = getContext().getString(R.string.details_list_price) + " " +listPrice;
-
             String soldFor = getContext().getString(R.string.details_sold_price) + " ";
-            soldFor += getContext().getString(R.string.details_list_price_text, listing.getSoldPrice());
+            soldFor += listing.getSoldPrice();
             info.setText(soldFor);
         } else {
             String rooms = getContext().getString(R.string.details_room_text, listing.getRooms());
@@ -57,7 +56,7 @@ public class ListItem extends LinearLayout {
             info.setText(rooms + ", " + livingArea);
 
             if (!listing.getRent().equals("0")) {
-                listPrice += ", " + getContext().getString(R.string.details_rent_text, listing.getRent());
+                listPrice += ", " + listing.getRent();
             }
         }
         price.setText(listPrice);

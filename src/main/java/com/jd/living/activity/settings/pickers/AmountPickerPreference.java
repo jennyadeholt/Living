@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -46,9 +47,12 @@ public class AmountPickerPreference extends DialogPreference implements TextWatc
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        Log.d("Living", "AreaPickerPreference.onDialogClosed " + positiveResult + " search = " + search);
         if (positiveResult) {
-            persistString(textView.getText().toString());
+            if (TextUtils.isEmpty(textView.getText().toString())) {
+                persistString(textView.getText().toString());
+            } else {
+                persistString(search);
+            }
         }
     }
 

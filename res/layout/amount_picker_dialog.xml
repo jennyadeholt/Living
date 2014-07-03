@@ -3,7 +3,8 @@
 <AutoCompleteTextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/amount"
-        android:completionThreshold="2"
+        android:completionThreshold="1"
+        android:maxLength="15"
         android:hint="@string/preferences_amount_hint"
         android:inputType="number"
         android:layout_width="match_parent"

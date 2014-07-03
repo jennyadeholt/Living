@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.jd.living.activity.settings.SearchPreferenceKey;
+import com.jd.living.util.StringUtil;
 
 
 @EBean
@@ -63,8 +64,7 @@ public class Search {
     public String getMinAmount(boolean modify) {
         String minAmount = preferences.getString(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "");
         if (modify) {
-            minAmount = minAmount.replace("kr", "").replaceAll(" ", "");
-            Log.d("Search", "min" + minAmount);
+           minAmount = StringUtil.getStringAsNumber(minAmount);
         }
         return minAmount;
     }
@@ -72,8 +72,7 @@ public class Search {
     public String getMaxAmount(boolean modify) {
         String maxAmount = preferences.getString(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, "");
         if (modify) {
-            maxAmount = maxAmount.replace("kr", "").replaceAll(" ", "");
-            Log.d("Search", "max: " + maxAmount);
+            maxAmount = StringUtil.getStringAsNumber(maxAmount);
         }
         return maxAmount;
     }

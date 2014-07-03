@@ -118,11 +118,6 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             }
         });
 
-        googleMap = mapView.getMap();
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setOnMapClickListener(this);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
-
        update();
     }
 
@@ -184,15 +179,15 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         nbrOfObjects.setText(totalSize == 1 ?  "" : (objectIndex + 1) + "/" + totalSize);
 
         if (isSold) {
-            addDetails(R.string.details_sold_price, getString(R.string.details_list_price_text, listing.getSoldPrice()));
+            addDetails(R.string.details_sold_price, listing.getSoldPrice());
         }
 
-        addDetails(R.string.details_list_price, getString(R.string.details_list_price_text, listing.getListPrice()));
+        addDetails(R.string.details_list_price, listing.getListPrice());
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
         addDetails(R.string.details_type, listing.getObjectType());
 
         if (!listing.getRent().equals("0")) {
-            addDetails(R.string.details_rent, getString(R.string.details_rent_text, listing.getRent()));
+            addDetails(R.string.details_rent, listing.getRent());
         }
         if (listing.getFloor() != 0) {
             addDetails(R.string.details_floor, getString(R.string.details_floor_text, listing.getFloor()));
@@ -218,6 +213,10 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
     }
 
     protected void setupMap() {
+        googleMap = mapView.getMap();
+        googleMap.setMyLocationEnabled(true);
+        googleMap.setOnMapClickListener(this);
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
 
         googleMap.clear();
         target = new LatLng(listing.getLatitude(), listing.getLongitude());

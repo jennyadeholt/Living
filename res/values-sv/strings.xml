@@ -65,9 +65,7 @@
     <string name="details_source">Källa:</string>
 
     <string name="details_living_area_text">%1$d kvm</string>
-    <string name="details_rent_text">%1$s kr</string>
     <string name="details_room_text">%1$s rum</string>
-    <string name="details_list_price_text">%1$s kr</string>
     <string name="details_floor_text">%1$d våningen</string>
 
 

@@ -2,6 +2,8 @@ package com.jd.living.model;
 
 import android.text.TextUtils;
 
+import com.jd.living.util.StringUtil;
+
 public class Listing {
 
     protected int booliId;
@@ -38,7 +40,7 @@ public class Listing {
     }
 
     public String getSoldPrice() {
-        return getFormattedNumber(soldPrice);
+        return StringUtil.getFormattedString(soldPrice);
     }
 
     public boolean isSold() {
@@ -56,7 +58,7 @@ public class Listing {
     }
 
     public String getListPrice() {
-        return getFormattedNumber(listPrice);
+        return StringUtil.getFormattedString(listPrice);
     }
 
     public String getPublished() {
@@ -68,7 +70,7 @@ public class Listing {
     }
 
     public String getRent() {
-        return getFormattedNumber(rent);
+        return StringUtil.getFormattedString(rent);
     }
 
     public double getLatitude() {
@@ -126,19 +128,5 @@ public class Listing {
     @Override
     public String toString() {
         return getAddress();
-    }
-
-    protected String getFormattedNumber(double number) {
-        String r = String.valueOf((int) number);
-
-        if (r.length() > 6) {
-            r = r.substring(0, r.length() - 6) + " " + r.substring(r.length() - 6);
-        }
-
-        if (r.length() > 3) {
-            r = r.substring(0, r.length() - 3) + " " + r.substring(r.length() - 3);
-        }
-
-        return r;
     }
 }
