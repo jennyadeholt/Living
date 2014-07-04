@@ -33,7 +33,7 @@ public class SearchRepository {
         helper.getSearchHistoryDao().delete(searchHistory);
     }
 
-    public void clearDatabase() {
+    public void clearSearchDatabase() {
         List<SearchHistory> searchHistories = getSearchHistories();
         helper.getSearchHistoryDao().delete(getSearchHistories());
     }

@@ -10,11 +10,9 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.jd.living.LivingApplication;
 import com.jd.living.Search;
-import com.jd.living.database.ormlite.OrmLiteDatabaseHelper;
 import com.jd.living.database.ormlite.SearchRepository;
 import com.jd.living.model.ormlite.SearchHistory;
 
@@ -33,7 +31,6 @@ public class SearchHistoryDatabase implements SearchDatabase.SearchHistoryListen
 
     private SearchHistory latestSearchHistory;
     private SearchRepository repository;
-    private OrmLiteDatabaseHelper ormLiteDatabaseHelper;
 
     private List<SearchHistoryDatabaseListener> listeners = new ArrayList<SearchHistoryDatabaseListener>();
 
@@ -66,16 +63,9 @@ public class SearchHistoryDatabase implements SearchDatabase.SearchHistoryListen
         listener.onUpdate(getRepository().getSearchHistories());
     }
 
-    private OrmLiteDatabaseHelper getHelper() {
-        if (ormLiteDatabaseHelper == null) {
-            ormLiteDatabaseHelper = OpenHelperManager.getHelper(context, OrmLiteDatabaseHelper.class);
-        }
-        return ormLiteDatabaseHelper;
-    }
-
     private SearchRepository getRepository() {
         if (repository == null) {
-            repository = new SearchRepository(getHelper());
+            repository = ((LivingApplication) context.getApplicationContext()).getSearchRepository();
         }
         return repository;
     }

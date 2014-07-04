@@ -21,9 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jd.living.R;
 import com.jd.living.database.DatabaseHelper;
-import com.jd.living.database.SearchDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
 
 @EFragment(R.layout.map)
 public class ResultMapFragment extends Fragment implements DatabaseHelper.DatabaseListener,

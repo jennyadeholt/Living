@@ -9,6 +9,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.table.TableUtils;
+import com.jd.living.model.ormlite.Favorite;
 import com.jd.living.model.ormlite.SearchHistory;
 
 
@@ -18,11 +19,12 @@ import com.jd.living.model.ormlite.SearchHistory;
  * classes.
  */
 public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABASE_NAME = "searches.db";
+    private static final String DATABASE_NAME = "living.db";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
-    private RuntimeExceptionDao<SearchHistory, Integer> authorDao = null;
+    private RuntimeExceptionDao<SearchHistory, Integer> searchHistoryDao = null;
+    private RuntimeExceptionDao<Favorite, Integer> favoriteDatabase = null;
 
 
     public OrmLiteDatabaseHelper(Context context) {
@@ -33,6 +35,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase, com.j256.ormlite.support.ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, SearchHistory.class);
+            TableUtils.createTable(connectionSource, Favorite.class);
         } catch (SQLException e) {
             Log.e(OrmLiteDatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -43,6 +46,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, com.j256.ormlite.support.ConnectionSource connectionSource, int i, int i2) {
         try {
             TableUtils.dropTable(connectionSource, SearchHistory.class, true);
+            TableUtils.dropTable(connectionSource, Favorite.class, true);
             onCreate(sqLiteDatabase, connectionSource);
         } catch (SQLException e) {
             Log.e(OrmLiteDatabaseHelper.class.getName(), "Can't drop databases", e);
@@ -51,15 +55,24 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public RuntimeExceptionDao<SearchHistory, Integer> getSearchHistoryDao() {
-        if (authorDao == null) {
-            authorDao = getRuntimeExceptionDao(SearchHistory.class);
+        if (searchHistoryDao == null) {
+            searchHistoryDao = getRuntimeExceptionDao(SearchHistory.class);
         }
-        return authorDao;
+        return searchHistoryDao;
+    }
+
+
+    public RuntimeExceptionDao<Favorite, Integer> getFavoriteDatabase() {
+        if (favoriteDatabase == null) {
+            favoriteDatabase = getRuntimeExceptionDao(Favorite.class);
+        }
+        return favoriteDatabase;
     }
 
     @Override
     public void close() {
         super.close();
-        authorDao = null;
+        searchHistoryDao = null;
+        favoriteDatabase = null;
     }
 }

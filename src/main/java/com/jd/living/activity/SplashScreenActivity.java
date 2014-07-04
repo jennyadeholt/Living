@@ -15,9 +15,7 @@ import android.view.WindowManager;
 
 import com.jd.living.R;
 import com.jd.living.database.DatabaseHelper;
-import com.jd.living.database.SearchDatabase;
 import com.jd.living.model.Listing;
-import com.jd.living.model.Result;
 
 
 @EActivity

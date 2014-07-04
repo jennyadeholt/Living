@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import com.jd.living.model.AreaResult;
 import com.jd.living.model.ListingsResult;
-import com.jd.living.model.Result;
 import com.jd.living.model.SoldResult;
 
 @Rest(rootUrl = "http://api.booli.se", converters = { GsonHttpMessageConverter.class })

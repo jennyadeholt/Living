@@ -9,12 +9,11 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
+import com.jd.living.Search;
 import com.jd.living.database.BooliDatabase;
 import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
-import com.jd.living.Search;
 import com.jd.living.model.SoldResult;
-import com.jd.living.model.ormlite.SearchHistory;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class BooliServer {
@@ -53,8 +52,8 @@ public class BooliServer {
                         search.getMinRooms(),
                         search.getMaxRooms(true),
                         search.getTypes(),
-                        search.getMinAmount(true),
-                        search.getMaxAmount(true),
+                        search.getMinAmount(),
+                        search.getMaxAmount(),
                         search.getProduction(),
                         500
                 )

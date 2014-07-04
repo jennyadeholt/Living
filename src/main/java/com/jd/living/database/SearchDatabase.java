@@ -5,13 +5,9 @@ import java.util.List;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import android.util.Log;
-
-import com.jd.living.model.Area;
-import com.jd.living.model.AreaResult;
+import com.jd.living.Search;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
-import com.jd.living.Search;
 import com.jd.living.model.ormlite.SearchHistory;
 
 

@@ -5,14 +5,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
-import android.content.SharedPreferences;
 import android.text.TextUtils;
-
-import com.jd.living.R;
-import com.jd.living.activity.settings.SearchPreferenceKey;
 
 public class StringUtil {
 

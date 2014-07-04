@@ -1,8 +1,6 @@
 package com.jd.living;
 
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +48,10 @@ public class Search {
                 types.add(type);
             }
         }
+        Log.d("History", "Rooms " + searchHistory.getMaxRooms());
+        Log.d("History", "Max a " + searchHistory.getMaxAmount());
+        Log.d("History", "Min a " + searchHistory.getMinAmount());
+
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, types);
@@ -106,6 +108,16 @@ public class Search {
             maxAmount = StringUtil.getStringAsNumber(maxAmount);
         }
         return maxAmount;
+    }
+
+    public String getMaxAmount() {
+        String max = getMaxAmount(true);
+        return max.equals("0") ? "" : max;
+    }
+
+    public String getMinAmount() {
+        String min = getMinAmount(true);
+        return min.equals("0") ? "" : min;
     }
 
     public String getLocation() {

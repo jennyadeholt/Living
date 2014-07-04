@@ -1,13 +1,6 @@
 package com.jd.living.model.ormlite;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-
-import android.util.Log;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.jd.living.Search;

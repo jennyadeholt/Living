@@ -1,8 +1,5 @@
 package com.jd.living.dialog;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

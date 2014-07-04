@@ -1,6 +1,5 @@
 package com.jd.living.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,8 +1,5 @@
 package com.jd.living.activity.settings.pickers.adapter;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 

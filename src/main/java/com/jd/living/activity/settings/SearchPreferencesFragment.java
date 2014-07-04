@@ -77,11 +77,12 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
     }
 
     private void checkMinMaxAmount(String key) {
-
+        boolean result = false;
         int max = Integer.valueOf(search.getMaxAmount(true));
         int min = Integer.valueOf(search.getMinAmount(true));
 
-        if (min < max) {
+        if (min < max || min == 0 || max == 0) {
+            result = true;
             setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, search.getMinAmount(false));
             setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, search.getMaxAmount(false) );
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX)) {
@@ -93,7 +94,7 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
             setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "Min value needs to be smaller then max");
         }
 
-        notifyListener(min <= max);
+        notifyListener(result);
     }
 
     private void checkMinMax(String key) {
