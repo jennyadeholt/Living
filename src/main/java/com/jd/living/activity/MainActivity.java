@@ -13,15 +13,15 @@ import android.view.View;
 
 import com.jd.living.R;
 import com.jd.living.activity.history.HistoryList_;
-import com.jd.living.activity.history.Test_;
 import com.jd.living.activity.search.SearchListAction;
 import com.jd.living.activity.search.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferences_;
 import com.jd.living.database.DatabaseHelper;
 import com.jd.living.drawer.DrawerActivity;
+import com.jd.living.model.Listing;
 
 @EActivity
-public class MainActivity extends DrawerActivity {
+public class MainActivity extends DrawerActivity implements DatabaseHelper.DatabaseListener {
 
     @Bean
     DatabaseHelper database;
@@ -48,6 +48,14 @@ public class MainActivity extends DrawerActivity {
         transaction.commit();
 
         setup(savedInstanceState);
+
+        database.addDatabaseListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.removeDatabaseListener(this);
     }
 
     @Override
@@ -98,8 +106,8 @@ public class MainActivity extends DrawerActivity {
     }
 
     public void doSearch(View v) {
-        database.launchSearch();
-        selectItem(1);
+       // database.launchSearch();
+        //selectItem(1);
     }
 
     public void clearSearch(View v) {
@@ -135,5 +143,20 @@ public class MainActivity extends DrawerActivity {
     @Override
     protected int getStartPosition() {
         return currentPosition;
+    }
+
+    @Override
+    public void onUpdate(List<Listing> result) {
+
+    }
+
+    @Override
+    public void onSearchStarted() {
+        selectItem(1);
+    }
+
+    @Override
+    public void onDetailsRequested(int booliId) {
+
     }
 }

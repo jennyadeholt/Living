@@ -4,6 +4,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,8 +41,15 @@ public class HistoryListItem extends LinearLayout {
     public void bind(SearchHistory history) {
         address.setText(history.getLocation());
 
-        price.setText(getContext().getString(R.string.preferences_amount_min) + ": " +  history.getMinAmount() +
-                ". "  + getContext().getString(R.string.preferences_amount_max) + ": "+ history.getMaxAmount());
+        String priceString = "";
+        if (!TextUtils.isEmpty(history.getMinAmount())) {
+            priceString = getContext().getString(R.string.preferences_amount_min) + ": " +  history.getMinAmount() + ". ";
+        }
+        if (!TextUtils.isEmpty(history.getMaxAmount())) {
+            priceString += getContext().getString(R.string.preferences_amount_max) + ": " +  history.getMaxAmount() + ". ";
+        }
+
+        price.setText(priceString);
 
         type.setText(StringUtil.startWithUpperCase(history.getTypes()) + ".");
         production.setText(StringUtil.getText(

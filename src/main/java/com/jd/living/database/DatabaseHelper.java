@@ -8,7 +8,10 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import android.util.Log;
+
 import com.jd.living.model.Listing;
+import com.jd.living.model.ormlite.SearchHistory;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDatabase.FavoriteListener {
@@ -137,13 +140,11 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     }
 
     public void launchSearch() {
-        switch (databaseState) {
-            case SEARCH:
-                searchDatabase.launchListingsSearch();
-                break;
-            case FAVORITE:
-                break;
-        }
+        searchDatabase.launchListingsSearch();
+    }
+
+    public void launchSearch(SearchHistory searchHistory) {
+        searchDatabase.launchListingsSearch(searchHistory);
     }
 
     @Override

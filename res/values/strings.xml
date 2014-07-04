@@ -112,5 +112,10 @@
     <string name="details_construction_year">Construction year:</string>
     <string name="details_source">Source:</string>
 
+    <string name="dialog_update_search_title">Run search</string>
+    <string name="dialog_update_search_text">Run the search once more?</string>
+    <string name="preferences_launch_search">Search</string>
+    <string name="preferences_clear_search">Clear</string>
+
 
 </resources>

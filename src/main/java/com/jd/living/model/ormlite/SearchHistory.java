@@ -13,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import com.jd.living.Search;
 
 @DatabaseTable(tableName = "searchHistory")
-public class SearchHistory {
+public class SearchHistory implements Comparable<SearchHistory> {
 
     @DatabaseField(generatedId=true)
     private int id;
@@ -125,5 +125,8 @@ public class SearchHistory {
     }
 
 
-
+    @Override
+    public int compareTo(SearchHistory another) {
+        return (timestamp > another.getTimestamp()) ? -1 : 1;
+    }
 }

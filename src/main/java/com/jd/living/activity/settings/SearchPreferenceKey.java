@@ -11,7 +11,7 @@ public class SearchPreferenceKey {
 
     public static final String PREFERENCE_OBJECT_TYPE = "preference_object_type";
     public static final String PREFERENCE_BUILD_TYPE = "preference_build_type";
-    public static final String PREFERENCE_BUILDING_TYPE = "preference_building_type";
+    public static final String PREFERENCE_BUILDING_TYPE = "preference_type_of_building";
 
     public static final String PREFERENCE_ROOM_MIN_NUMBERS = "preference_min_numbers";
     public static final String PREFERENCE_ROOM_MAX_NUMBERS = "preference_max_numbers";

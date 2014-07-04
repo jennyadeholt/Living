@@ -1,6 +1,8 @@
 package com.jd.living.activity.history;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.androidannotations.annotations.AfterInject;
@@ -9,7 +11,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -33,7 +34,6 @@ public class HistoryListAdapter extends ArrayAdapter<SearchHistory> implements S
 
     @AfterInject
     public void init(){
-        Log.d("History", "HistoryListAdapter.init");
         database.registerSearchHistoryDatabaseListener(this);
     }
 
@@ -74,7 +74,14 @@ public class HistoryListAdapter extends ArrayAdapter<SearchHistory> implements S
 
     @Override
     public void onUpdate(List<SearchHistory> searchHistories) {
+        Collections.sort(searchHistories, COMPARE_BY_TIMESTAMP);
         this.searchHistories = searchHistories;
         update();
     }
+
+    private static Comparator<SearchHistory> COMPARE_BY_TIMESTAMP = new Comparator<SearchHistory>() {
+        public int compare(SearchHistory one, SearchHistory other) {
+            return one.compareTo(other);
+        }
+    };
 }

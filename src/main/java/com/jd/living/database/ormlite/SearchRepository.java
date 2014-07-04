@@ -25,11 +25,16 @@ public class SearchRepository {
         helper.getSearchHistoryDao().createIfNotExists(searchHistory);
     }
 
+    public void updateSearchHistory(SearchHistory searchHistory) {
+        helper.getSearchHistoryDao().update(searchHistory);
+    }
+
     public void deleteSeachHistory(SearchHistory searchHistory) {
         helper.getSearchHistoryDao().delete(searchHistory);
     }
 
     public void clearDatabase() {
+        List<SearchHistory> searchHistories = getSearchHistories();
         helper.getSearchHistoryDao().delete(getSearchHistories());
     }
 

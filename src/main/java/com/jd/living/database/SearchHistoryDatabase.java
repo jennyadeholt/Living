@@ -49,14 +49,12 @@ public class SearchHistoryDatabase implements SearchDatabase.SearchHistoryListen
         SearchHistory searchHistory = new SearchHistory(search);
 
         if (searchHistory.equals(latestSearchHistory)) {
-            Log.d("history", "equals");
             latestSearchHistory.setTimestamp(searchHistory.getTimestamp());
+            getRepository().updateSearchHistory(latestSearchHistory);
         } else {
-            Log.d("history", "!equals");
             latestSearchHistory = searchHistory;
+            getRepository().addSearchHistory(searchHistory);
         }
-
-        getRepository().addSearchHistory(latestSearchHistory);
 
         for (SearchHistoryDatabaseListener listener : listeners) {
             listener.onUpdate(getRepository().getSearchHistories());

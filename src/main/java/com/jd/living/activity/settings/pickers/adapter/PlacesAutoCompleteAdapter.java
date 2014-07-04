@@ -93,8 +93,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
             URL url = new URL(sb.toString());
 
-            Log.d("Living", "URL " + url.toString());
-            Log.d("Living", "URL " + url.toExternalForm());
             conn = (HttpURLConnection) url.openConnection();
             conn.addRequestProperty("Accept:" , "application/vnd.booli-v2+json");
             InputStreamReader in = new InputStreamReader(conn.getInputStream());

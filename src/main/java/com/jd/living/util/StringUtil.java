@@ -69,7 +69,11 @@ public class StringUtil {
     }
 
     public static String startWithUpperCase(String text) {
-        return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+        if (text.length() >= 2) {
+            return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+        } else {
+            return text;
+        }
     }
 
     public static String getText(String value, String[] names, String[] types) {

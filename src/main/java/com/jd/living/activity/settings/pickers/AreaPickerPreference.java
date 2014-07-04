@@ -7,7 +7,6 @@ import android.preference.DialogPreference;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -46,7 +45,6 @@ public class AreaPickerPreference extends DialogPreference implements TextWatche
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        Log.d("Living", "AreaPickerPreference.onDialogClosed "  + positiveResult + " search = " + search);
         if (positiveResult) {
             persistString(search);
         }

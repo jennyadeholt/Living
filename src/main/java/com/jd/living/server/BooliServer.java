@@ -14,6 +14,7 @@ import com.jd.living.model.ListingsResult;
 import com.jd.living.model.Result;
 import com.jd.living.Search;
 import com.jd.living.model.SoldResult;
+import com.jd.living.model.ormlite.SearchHistory;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class BooliServer {

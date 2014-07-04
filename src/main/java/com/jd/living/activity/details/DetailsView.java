@@ -14,7 +14,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,7 +75,6 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
     protected int objectIndex = 0;
 
     public static DetailsView_ newInstance(int num) {
-        Log.d("LivingLiving2", "DetailsView.newInstance("+ num  +")");
         DetailsView_ f = new DetailsView_();
         Bundle args = new Bundle();
         args.putInt("objectIndex", num);
@@ -118,11 +116,14 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             }
         });
 
-       update();
+        if(listing != null) {
+            update();
+        } else {
+            getActivity().onBackPressed();
+        }
     }
 
     public void update(int booliId) {
-        Log.d("LivingLiving2", "DetailsView.update( " + booliId + ")");
         this.listing = database.getListing(booliId);
         objectIndex = database.getListIndex(booliId);
 

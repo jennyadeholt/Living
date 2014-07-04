@@ -12,6 +12,7 @@ import com.jd.living.model.AreaResult;
 import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
 import com.jd.living.Search;
+import com.jd.living.model.ormlite.SearchHistory;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -82,6 +83,25 @@ public class SearchDatabase extends BooliDatabase {
         }
     }
 
+    public void launchListingsSearch(SearchHistory searchHistory){
+        if (!searchInprogress) {
+            searchInprogress = true;
+            notifyListener(BooliDatabase.ActionCode.SEARCH_STARTED, null);
+
+            search.updateSearch(searchHistory);
+
+            if (search.fetchSoldObjects()) {
+                server.getObjectsSold(search);
+            } else {
+                server.getListings(search);
+            }
+
+            if (searchHistoryListener != null) {
+                searchHistoryListener.onNewSearch(search);
+            }
+        }
+    }
+
     private void notifyListener(BooliDatabase.ActionCode action, Result result) {
         switch (action) {
             case LISTINGS:
@@ -111,9 +131,6 @@ public class SearchDatabase extends BooliDatabase {
                 this.result = result;
                 break;
             case AREA_TEXT:
-                for (Area area : ((AreaResult) result).getAreas()) {
-                    Log.d("Living", "Area " + area.getName());
-                }
                 break;
             default:
                 break;

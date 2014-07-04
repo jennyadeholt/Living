@@ -46,7 +46,7 @@
             android:title="@string/preferences_type_of_building_title">
 
         <MultiSelectListPreference
-                android:key="preference_building_type"
+                android:key="preference_type_of_building"
                 android:title="@string/preferences_type_of_building"
                 android:entries="@array/building"
                 android:defaultValue="@array/building_types"

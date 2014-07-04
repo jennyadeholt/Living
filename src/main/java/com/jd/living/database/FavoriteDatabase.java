@@ -69,11 +69,9 @@ public class FavoriteDatabase extends BooliDatabase {
         SharedPreferences.Editor editor = preferences.edit();
 
         int nbrOfFavorites = preferences.getInt(SearchPreferenceKey.PREFERENCE_NBR_OF_FAVORITES, 0);
-        Log.d("living" , "add " + nbrOfFavorites);
         editor.putInt(SearchPreferenceKey.PREFERENCE_FAVORITE + (nbrOfFavorites + 1), listing.getBooliId() );
         editor.putInt(SearchPreferenceKey.PREFERENCE_NBR_OF_FAVORITES, nbrOfFavorites + 1);
         editor.commit();
-
     }
 
     private void removeFavorite(Listing listing) {

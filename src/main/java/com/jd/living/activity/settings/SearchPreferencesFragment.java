@@ -37,6 +37,12 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         preferences = getPreferenceManager().getSharedPreferences();
         preferences.registerOnSharedPreferenceChangeListener(this);
 
+        /*
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, new HashSet<String>());
+        editor.commit();
+        */
+
         setSummaryForTypeList(preferences);
         setSummaryForObjectList(preferences);
         setSummary(preferences, SearchPreferenceKey.PREFERENCE_LOCATION);

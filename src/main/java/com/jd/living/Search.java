@@ -1,6 +1,8 @@
 package com.jd.living;
 
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,10 +14,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.jd.living.activity.settings.SearchPreferenceKey;
+import com.jd.living.model.ormlite.SearchHistory;
 import com.jd.living.util.StringUtil;
-
 
 @EBean(scope = EBean.Scope.Singleton)
 public class Search {
@@ -37,6 +40,27 @@ public class Search {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public void updateSearch(SearchHistory searchHistory) {
+
+        Set<String> types = new HashSet<String>();
+        for (String type : context.getResources().getStringArray(R.array.building_types)) {
+            if (searchHistory.getTypes().contains(type)) {
+                types.add(type);
+            }
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, types);
+        editor.putString(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, searchHistory.getMinRooms());
+        editor.putString(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, searchHistory.getMaxRooms());
+        editor.putString(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, searchHistory.getMinAmount());
+        editor.putString(SearchPreferenceKey.PREFERENCE_AMOUNT_MAX, searchHistory.getMaxAmount());
+        editor.putString(SearchPreferenceKey.PREFERENCE_LOCATION, searchHistory.getLocation());
+        editor.putString(SearchPreferenceKey.PREFERENCE_BUILD_TYPE, searchHistory.getProduction());
+        editor.putString(SearchPreferenceKey.PREFERENCE_OBJECT_TYPE, searchHistory.isSold() ? "1" : "0");
+        editor.commit();
     }
 
     public String getTypes() {
@@ -71,7 +95,7 @@ public class Search {
     public String getMinAmount(boolean modify) {
         String minAmount = preferences.getString(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "");
         if (modify) {
-           minAmount = StringUtil.getStringAsNumber(minAmount);
+            minAmount = StringUtil.getStringAsNumber(minAmount);
         }
         return minAmount;
     }

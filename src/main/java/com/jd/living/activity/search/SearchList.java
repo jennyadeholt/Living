@@ -74,13 +74,11 @@ public class SearchList extends ListFragment implements DatabaseHelper.DatabaseL
 
     @Override
     public void onUpdate(List<Listing> result) {
-        Log.d("Search.onSearchStarted", "onUpdate");
         update(result);
     }
 
     @Override
     public void onSearchStarted() {
-        Log.d("Search.onSearchStarted", "onSearchStarted");
         spinner = ProgressDialog.show(getActivity(), "", "Loading..", true);
     }
 

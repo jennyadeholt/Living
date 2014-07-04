@@ -27,19 +27,17 @@
                 android:layout_margin="0dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:onClick="clearSearch"
                 android:drawableLeft="@drawable/ic_notification_clear_all"
                 android:layout_height="fill_parent"
-                android:text="Clear"/>
+                android:text="@string/preferences_clear_search"/>
         <Button
                 android:id="@+id/search"
                 android:layout_margin="0dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:onClick="doSearch"
                 android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/ic_menu_search"
-                android:text="Search"/>
+                android:text="@string/preferences_launch_search"/>
     </LinearLayout>
 
 
