@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.jd.living.util.StringUtil;
 
-public class Listing {
+public class Listing implements Comparable<Listing> {
 
     protected int booliId;
 
@@ -128,5 +128,19 @@ public class Listing {
     @Override
     public String toString() {
         return getAddress();
+    }
+
+    @Override
+    public int compareTo(Listing another) {
+        return getAddress().compareToIgnoreCase(another.getAddress());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Listing) {
+            Listing listing = (Listing) o;
+            return listing.getBooliId() == this.getBooliId();
+        }
+        return super.equals(o);
     }
 }

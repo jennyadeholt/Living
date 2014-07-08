@@ -4,21 +4,24 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jd.living.R;
+import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
 
 @EViewGroup(R.layout.list_item)
-public class ListItem extends LinearLayout {
+public class SearchListItem extends LinearLayout {
 
     @ViewById
     TextView address;
@@ -35,11 +38,22 @@ public class ListItem extends LinearLayout {
     @ViewById
     ImageView image;
 
-    public ListItem(Context context) {
+    @ViewById
+    ImageView favorite;
+
+
+    @Bean
+    FavoriteDatabase database;
+
+    private Listing listing;
+
+    public SearchListItem(Context context) {
         super(context);
     }
 
     public void bind(Listing listing) {
+        this.listing = listing;
+
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
 
@@ -61,6 +75,28 @@ public class ListItem extends LinearLayout {
         }
         price.setText(listPrice);
         getImage(listing);
+
+        updateFavorite(false);
+    }
+
+    protected void updateFavorite(boolean onTouch) {
+        boolean isFavorite = database.isFavorite(listing);
+        int resId = R.drawable.btn_star_off_disabled_focused_holo_light;
+
+        if (listing.isSold()) {
+            favorite.setVisibility(View.GONE);
+        } else  {
+            if (onTouch) {
+                if (!isFavorite) {
+                    resId = R.drawable.btn_rating_star_on_normal_holo_light;
+                }
+                database.updateFavorite(listing);
+            } else if (isFavorite) {
+                resId = R.drawable.btn_rating_star_on_normal_holo_light;
+            }
+            favorite.setVisibility(View.VISIBLE);
+            favorite.setImageResource(resId);
+        }
     }
 
     @Background

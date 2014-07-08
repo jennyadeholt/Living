@@ -1,5 +1,6 @@
 package com.jd.living.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.androidannotations.annotations.AfterInject;
@@ -38,6 +39,8 @@ public abstract class BooliDatabase implements BooliServer.ServerConnectionListe
     protected int currentBooliId = -1;
     protected int currentListIndex = -1;
 
+    protected List<Listing> result = new ArrayList<Listing>();
+
     @AfterInject
     public void onInit(){
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -46,8 +49,15 @@ public abstract class BooliDatabase implements BooliServer.ServerConnectionListe
     }
 
     protected abstract void init();
-    public abstract List<Listing> getResult();
     public abstract void setCurrentId(int booliId);
+
+    public List<Listing> getResult(){
+        return result;
+    }
+
+    protected void setResult(List<Listing> result) {
+        this.result = result;
+    }
 
     public Listing getListing(int booliId) {
         Listing l = null;

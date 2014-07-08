@@ -85,6 +85,11 @@ public class DetailsViewPagerFragment extends Fragment implements DatabaseHelper
     }
 
     @Override
+    public void onFavoriteUpdated() {
+
+    }
+
+    @Override
     public void onDetailsRequested(int booliId) {
         int position = database.getListIndex(booliId);
         position += LOOPS_COUNT == 1 ? 0 : (LOOPS_COUNT * NUM_PAGES) / 2;

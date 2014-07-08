@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jd.living.activity.settings.SearchPreferenceKey;
 import com.jd.living.model.ormlite.SearchHistory;
@@ -48,10 +47,6 @@ public class Search {
                 types.add(type);
             }
         }
-        Log.d("History", "Rooms " + searchHistory.getMaxRooms());
-        Log.d("History", "Max a " + searchHistory.getMaxAmount());
-        Log.d("History", "Min a " + searchHistory.getMinAmount());
-
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, types);

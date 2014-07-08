@@ -58,4 +58,9 @@ public class SplashScreenActivity extends Activity implements DatabaseHelper.Dat
     public void onDetailsRequested(int booliId) {
 
     }
+
+    @Override
+    public void onFavoriteUpdated() {
+
+    }
 }

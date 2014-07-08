@@ -1,6 +1,8 @@
 package com.jd.living.activity.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.androidannotations.annotations.AfterInject;
@@ -38,21 +40,26 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Database
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ListItem listItem;
+        SearchListItem searchListItem;
         if (convertView == null) {
-            listItem = ListItem_.build(getContext());
+            searchListItem = SearchListItem_.build(getContext());
         } else {
-            listItem = (ListItem) convertView;
+            searchListItem = (SearchListItem) convertView;
         }
 
-        listItem.bind(getItem(position));
+        searchListItem.bind(getItem(position));
 
-        return listItem;
+        return searchListItem;
     }
 
     @UiThread
     public void update() {
         notifyDataSetChanged();
+    }
+
+    @UiThread
+    public void updateInBackground() {
+        notifyDataSetInvalidated();
     }
 
     @Override
@@ -72,6 +79,7 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Database
 
     @Override
     public void onUpdate(List<Listing> result) {
+        Collections.sort(result, COMPARE_BY_ADDRESS);
         this.listings = result;
         update();
     }
@@ -82,7 +90,18 @@ public class SearchListAdapter extends ArrayAdapter<Listing> implements Database
     }
 
     @Override
+    public void onFavoriteUpdated() {
+        update();
+    }
+
+    @Override
     public void onDetailsRequested(int booliId) {
 
     }
+
+    private static Comparator<Listing> COMPARE_BY_ADDRESS = new Comparator<Listing>() {
+        public int compare(Listing one, Listing other) {
+            return one.compareTo(other);
+        }
+    };
 }

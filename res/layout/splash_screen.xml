@@ -4,6 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:gravity="center"
+              android:animateLayoutChanges="true"
               android:background="@drawable/drawer_background"
               android:layout_height="match_parent">
 

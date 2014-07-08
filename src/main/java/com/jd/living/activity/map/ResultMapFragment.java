@@ -99,4 +99,9 @@ public class ResultMapFragment extends Fragment implements DatabaseHelper.Databa
     public void onMapLoaded() {
         database.addDatabaseListener(this);
     }
+
+    @Override
+    public void onFavoriteUpdated() {
+
+    }
 }

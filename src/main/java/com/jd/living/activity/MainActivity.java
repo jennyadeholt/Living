@@ -15,7 +15,7 @@ import com.jd.living.R;
 import com.jd.living.activity.history.HistoryList_;
 import com.jd.living.activity.search.SearchListAction;
 import com.jd.living.activity.search.SearchResult_;
-import com.jd.living.activity.settings.SearchPreferences_;
+import com.jd.living.activity.settings.SearchPreferencesFragment_;
 import com.jd.living.database.DatabaseHelper;
 import com.jd.living.drawer.DrawerActivity;
 import com.jd.living.model.Listing;
@@ -27,7 +27,7 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
     DatabaseHelper database;
 
     private SearchResult_ searchResult;
-    private SearchPreferences_ searchPreferences;
+    private SearchPreferencesFragment_ searchPreferences;
     private HistoryList_ history;
 
     @Override
@@ -37,7 +37,7 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
         setContentView(R.layout.main);
 
         searchResult = new SearchResult_();
-        searchPreferences = new SearchPreferences_();
+        searchPreferences = new SearchPreferencesFragment_();
         history = new HistoryList_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -81,7 +81,7 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
                 transaction.show(searchResult);
                 if (position == 1) {
                    database.setDatabaseState(DatabaseHelper.DatabaseState.SEARCH);
-                } else {
+                } else if (position == 4) {
                    database.setDatabaseState(DatabaseHelper.DatabaseState.FAVORITE);
                 }
 
@@ -157,6 +157,11 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
 
     @Override
     public void onDetailsRequested(int booliId) {
+
+    }
+
+    @Override
+    public void onFavoriteUpdated() {
 
     }
 }

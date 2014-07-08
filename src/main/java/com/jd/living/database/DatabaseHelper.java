@@ -28,6 +28,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
         void onUpdate(List<Listing> result);
         void onSearchStarted();
         void onDetailsRequested(int booliId);
+        void onFavoriteUpdated();
     }
 
     private List<DatabaseListener> databaseListeners = new ArrayList<DatabaseListener>();
@@ -60,15 +61,7 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
 
     public void setDatabaseState(DatabaseState state) {
         this.databaseState = state;
-
-        switch (databaseState) {
-            case SEARCH:
-                onUpdate(state, searchResult);
-                break;
-            case FAVORITE:
-                onUpdate(state, favoriteResult);
-                break;
-        }
+         onUpdate(state);
     }
 
     public DatabaseState getDatabaseState() {
@@ -146,15 +139,15 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
     }
 
     @Override
-    public void onUpdateFavorites(List<Listing> listings) {
-        favoriteResult = listings;
-        onUpdate(DatabaseState.FAVORITE, listings);
+    public void onUpdateFavorites() {
+        favoriteResult = favoriteDatabase.getResult();
+        onUpdate(DatabaseState.FAVORITE);
     }
 
     @Override
-    public void onUpdateSearch(List<Listing> result) {
-        searchResult = result;
-        onUpdate(DatabaseState.SEARCH, result);
+    public void onUpdateSearch() {
+        searchResult = searchDatabase.getResult();
+        onUpdate(DatabaseState.SEARCH);
     }
 
     @Override
@@ -182,11 +175,29 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
         return searchDatabase;
     }
 
-    private void onUpdate(DatabaseState state, List<Listing> listings) {
-        if (databaseState == state) {
-            for (DatabaseListener listener : databaseListeners) {
-                listener.onUpdate(listings);
-            }
+    private void onUpdate(DatabaseState state) {
+
+        switch (state) {
+            case FAVORITE:
+                if (databaseState == state) {
+                    for (DatabaseListener listener : databaseListeners) {
+                        listener.onUpdate(favoriteResult);
+                    }
+                } else {
+                    for (DatabaseListener listener : databaseListeners) {
+                        listener.onFavoriteUpdated();
+                    }
+                }
+                break;
+            case SEARCH:
+                if (databaseState == state) {
+                    for (DatabaseListener listener : databaseListeners) {
+                        listener.onUpdate(searchResult);
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -197,5 +208,4 @@ public class DatabaseHelper implements SearchDatabase.SearchListener, FavoriteDa
             }
         }
     }
-
 }

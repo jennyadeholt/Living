@@ -117,7 +117,6 @@ public class SearchHistory implements Comparable<SearchHistory> {
         return super.equals(o);
     }
 
-
     @Override
     public int compareTo(SearchHistory another) {
         return (timestamp > another.getTimestamp()) ? -1 : 1;

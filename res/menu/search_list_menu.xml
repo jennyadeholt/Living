@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:icon="@drawable/ic_menu_search"
+            android:id="@+id/action_view"
+            android:title="View details" />
+    <item
+            android:icon="@drawable/ic_menu_star"
+            android:id="@+id/action_add"
+
+            android:title="Add to Favorites" />
+    <item
+            android:icon="@drawable/ic_menu_star"
+            android:id="@+id/action_remove"
+            android:title="Remove from Favorites" />
+</menu>

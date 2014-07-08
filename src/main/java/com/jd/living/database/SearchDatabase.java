@@ -1,12 +1,9 @@
 package com.jd.living.database;
 
-import java.util.List;
-
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import com.jd.living.Search;
-import com.jd.living.model.Listing;
 import com.jd.living.model.Result;
 import com.jd.living.model.ormlite.SearchHistory;
 
@@ -21,7 +18,7 @@ public class SearchDatabase extends BooliDatabase {
     Search search;
 
     public interface SearchListener {
-        void onUpdateSearch(List<Listing> result);
+        void onUpdateSearch();
         void onSearchStarted();
         void onDetailsRequestedForSearch(int booliId);
     }
@@ -42,16 +39,11 @@ public class SearchDatabase extends BooliDatabase {
     protected void init() {
     }
 
-    @Override
-    public List<Listing> getResult() {
-        return result.getResult();
-    }
-
     public void setListingsListeners(SearchListener listener) {
         searchListener = listener;
 
-        if (!result.getResult().isEmpty()) {
-            listener.onUpdateSearch(result.getResult());
+        if (!getResult().isEmpty()) {
+            listener.onUpdateSearch();
         } else if (searchInprogress) {
             listener.onSearchStarted();
         }
@@ -105,7 +97,9 @@ public class SearchDatabase extends BooliDatabase {
                 if (searchHistoryListener != null) {
                     searchHistoryListener.onNewSearch(search);
                 }
-                searchListener.onUpdateSearch(result.getResult());
+                setResult(result.getResult());
+
+                searchListener.onUpdateSearch();
                 break;
             case SEARCH_STARTED:
                 searchListener.onSearchStarted();

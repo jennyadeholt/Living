@@ -59,7 +59,6 @@
         <activity android:name=".activity.details.DetailsMap_" />
         <activity android:name=".activity.details.DetailsWebView_" />
 
-        <fragment android:name=".activity.settings.SearchPreferences_" />
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
 
         <activity android:name=".remote.DemoAppWidgetConfigureActivity" >

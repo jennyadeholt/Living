@@ -73,6 +73,9 @@
     <string name="preferences_launch_search">Sök</string>
     <string name="preferences_clear_search">Rensa</string>
 
+
+    <string name="action_delete_favorite">Rensa favorit</string>
+    <string name="action_delete_all_favorite">Rensa alla favoriter</string>
     <string name="action_delete_history">Rensa historik</string>
     <string name="action_delete_all_history">Rensa all historik</string>
     <string name="action_save_search">Bevaka</string>

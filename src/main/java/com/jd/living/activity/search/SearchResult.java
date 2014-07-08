@@ -69,6 +69,11 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
     }
 
     @Override
+    public void onFavoriteUpdated() {
+
+    }
+
+    @Override
     public void onDetailsRequested(int booliId) {
         showDetails = true;
 
@@ -89,7 +94,6 @@ public class SearchResult extends Fragment implements DatabaseHelper.DatabaseLis
             transaction.show(searchMain);
             transaction.commit();
         }
-
     }
 
     public boolean isDetailsShown(){

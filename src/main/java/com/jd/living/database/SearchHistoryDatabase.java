@@ -63,6 +63,15 @@ public class SearchHistoryDatabase implements SearchDatabase.SearchHistoryListen
         listener.onUpdate(getRepository().getSearchHistories());
     }
 
+    public void clearSearchHistoryDatabase() {
+        getRepository().clearSearchDatabase();
+
+        for (SearchHistoryDatabaseListener listener : listeners) {
+            listener.onUpdate(getRepository().getSearchHistories());
+        }
+        latestSearchHistory = null;
+    }
+
     private SearchRepository getRepository() {
         if (repository == null) {
             repository = ((LivingApplication) context.getApplicationContext()).getSearchRepository();

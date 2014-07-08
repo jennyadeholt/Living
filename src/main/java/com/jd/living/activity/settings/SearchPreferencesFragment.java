@@ -10,38 +10,35 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.jd.living.R;
 import com.jd.living.Search;
+import com.jd.living.database.DatabaseHelper;
 
 @EFragment
 public class SearchPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public interface SharedPreferencesListener {
-        void onSettingInvalid();
-        void onSettingValid();
-    }
+    @Bean
+    DatabaseHelper databaseHelper;
 
     @Bean
     Search search;
 
     private SharedPreferences preferences;
-    private SharedPreferencesListener sharedPreferencesListener;
+    private boolean isValid = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         addPreferencesFromResource(R.xml.search_preferences);
 
         preferences = getPreferenceManager().getSharedPreferences();
         preferences.registerOnSharedPreferenceChangeListener(this);
-
-        /*
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putStringSet(SearchPreferenceKey.PREFERENCE_BUILDING_TYPE, new HashSet<String>());
-        editor.commit();
-        */
 
         setSummaryForTypeList(preferences);
         setSummaryForObjectList(preferences);
@@ -49,6 +46,27 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         checkMinMaxAmount("");
         checkMinMax("");
         setSummaryForBuildingTypes(preferences, SearchPreferenceKey.PREFERENCE_BUILDING_TYPE);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_preferences, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actions_start_search:
+                if (isValid) {
+                    databaseHelper.launchSearch();
+                }
+                return true;
+            case R.id.action_clear_search:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -94,7 +112,7 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
             setSummary(SearchPreferenceKey.PREFERENCE_AMOUNT_MIN, "Min value needs to be smaller then max");
         }
 
-        notifyListener(result);
+        isValid = result;
     }
 
     private void checkMinMax(String key) {
@@ -114,22 +132,9 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS, "Max value needs to be bigger then min");
             setSummary(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS, "Min value needs to be smaller then max");
         }
-        notifyListener(min <= max);
+        isValid = (min <= max);
     }
 
-    private void notifyListener(boolean valid) {
-        if (sharedPreferencesListener != null) {
-            if (valid){
-                sharedPreferencesListener.onSettingValid();
-            } else {
-                sharedPreferencesListener.onSettingInvalid();
-            }
-        }
-    }
-
-    public void setSharedPreferencesListener(SharedPreferencesListener listener) {
-        sharedPreferencesListener = listener;
-    }
 
     private void setSummary(SharedPreferences sharedPreferences, String key) {
         setSummary(key, sharedPreferences.getString(key, ""));
