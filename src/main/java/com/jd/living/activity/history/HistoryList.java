@@ -56,7 +56,7 @@ public class HistoryList extends ListFragment implements SearchHistoryDatabase.S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.history_list, container, false);
+        return inflater.inflate(R.layout.list, container, false);
     }
 
     @Override

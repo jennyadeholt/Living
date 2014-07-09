@@ -3,10 +3,6 @@ package com.jd.living.activity.settings;
 
 public class SearchPreferenceKey {
 
-    public static final String PREFERENCE_FAVORITES = "favorites_preferences";
-    public static final String PREFERENCE_NBR_OF_FAVORITES = "number";
-    public static final String PREFERENCE_FAVORITE = "favorite";
-
     public static final String PREFERENCE_LOCATION = "preferences_area_location";
 
     public static final String PREFERENCE_OBJECT_TYPE = "preference_object_type";
@@ -19,5 +15,6 @@ public class SearchPreferenceKey {
     public static final String PREFERENCE_AMOUNT_MIN = "preference_amount_min";
     public static final String PREFERENCE_AMOUNT_MAX = "preferences_max_amount";
 
-
+    public static final String PREFERENCE_SORT_LIST_ON = "preference_sort_list";
+    public static final String PREFERENCE_SORT_ORDER = "preference_sort_list_order";
 }

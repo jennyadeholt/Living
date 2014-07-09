@@ -76,8 +76,8 @@ public class BooliServer {
                         search.getMinRooms(),
                         search.getMaxRooms(true),
                         search.getTypes(),
-                        search.getMinAmount(true),
-                        search.getMaxAmount(true),
+                        search.getMinAmount(),
+                        search.getMaxAmount(),
                         search.getProduction(),
                         500
                 )

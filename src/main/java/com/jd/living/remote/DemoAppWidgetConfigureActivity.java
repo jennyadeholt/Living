@@ -115,6 +115,3 @@ public class DemoAppWidgetConfigureActivity extends Activity {
         prefs.commit();
     }
 }
-
-
-

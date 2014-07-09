@@ -60,14 +60,15 @@
         <activity android:name=".activity.details.DetailsWebView_" />
 
         <fragment android:name=".activity.settings.SearchPreferencesFragments_" />
+        <fragment android:name=".activity.settings.SettingsPreferencesFragments_" />
 
-        <activity android:name=".remote.DemoAppWidgetConfigureActivity" >
+        <activity android:name="com.jd.living.remote.DemoAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
-        <receiver android:name=".remote.RemoteAppWidgetProvider" >
+        <receiver android:name="com.jd.living.remote.RemoteAppWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

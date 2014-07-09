@@ -1,5 +1,8 @@
 package com.jd.living.remote;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EProvider;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -8,6 +11,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.jd.living.R;
+import com.jd.living.database.SearchHistoryDatabase;
 
 
 /**
@@ -50,7 +54,7 @@ public class RemoteAppWidgetProvider extends AppWidgetProvider {
         CharSequence widgetText = DemoAppWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.demo_app_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.address, widgetText);
         //views.setOnClickPendingIntent(R.id.appwidget_button, createButtonPendingIntent(context, ACTION_BUTTON, appWidgetId));
 
         // Instruct the widget manager to update the widget
@@ -58,7 +62,7 @@ public class RemoteAppWidgetProvider extends AppWidgetProvider {
     }
 
     /**
-     * Creates a pending intent for using the
+     * Creates a pending intent for {@link com.jayway.com.remoteviews_demo.DemoAppWidgetConfigureActivity} using the
      * provided action and request code.
      *
      * @param buttonAction The intent action for the button.

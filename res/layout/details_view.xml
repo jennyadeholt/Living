@@ -8,7 +8,7 @@
         android:animateLayoutChanges="true"
         android:background="@drawable/list_item">
 
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/basic_info"
             android:orientation="horizontal"
             android:paddingTop="20dp"
@@ -19,30 +19,53 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background">
 
-        <ImageView
-                android:id="@+id/thumbnail"
-                android:layout_width="70dp"
-                android:layout_height="47dp"
-                android:src="@drawable/icon" />
+        <TextView
+                android:id="@+id/address"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Östervärnsgatan 9a"/>
 
-        <LinearLayout android:layout_width="0dp"
-                      android:layout_weight="2"
-                      android:paddingLeft="10dp"
+        <FrameLayout
+                android:id="@+id/imageFrame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address"
+                android:paddingTop="7dp">
+            <ImageView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="70dp"
+                    android:layout_height="47dp"
+                    android:src="@drawable/icon" />
+        </FrameLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:paddingTop="5dp"
+                      android:paddingLeft="15dp"
                       android:orientation="vertical"
-                      android:layout_gravity="center_vertical"
-                      android:layout_height="wrap_content">
-            <TextView
-                    android:id="@+id/address"
-                    style="@android:style/TextAppearance.DeviceDefault.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Östervärnsgatan 9a"/>
+                      android:layout_below="@id/address"
+                      android:layout_toRightOf="@id/imageFrame">
             <TextView
                     android:id="@+id/area"
                     style="@android:style/TextAppearance.DeviceDefault.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Östervärn"/>
+
+            <TextView
+                    android:id="@+id/type"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lägenhet"/>
+
+            <TextView
+                    android:id="@+id/price"
+                    style="@android:style/TextAppearance.DeviceDefault.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 999 000kr"/>
         </LinearLayout>
 
         <TextView
@@ -50,11 +73,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1/3"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 style="@android:style/TextAppearance.DeviceDefault.Small"
-                android:paddingTop="10dp"
                 android:paddingRight="10dp"/>
 
-    </LinearLayout>
+        <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="3dp"
+                android:layout_below="@id/number_of_objects"
+                android:layout_alignParentRight="true">
+
+            <ImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/btn_star_off_disabled_focused_holo_light" />
+        </FrameLayout>
+
+
+    </RelativeLayout>
+
     <ScrollView
             android:layout_height="match_parent"
             android:layout_width="match_parent"
@@ -63,71 +105,35 @@
             android:id="@+id/mainLayout">
 
         <LinearLayout
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 android:orientation="vertical">
 
-            <RelativeLayout
+            <TableLayout
+                    android:id="@+id/tableLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                <TableLayout
-                        android:id="@+id/tableLayout"
-                        android:layout_width="wrap_content"
-                        android:padding="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_height="wrap_content" />
-
-                <ImageView
-                        android:id="@+id/favorite"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/btn_star_off_disabled_focused_holo_light" />
-            </RelativeLayout>
-
-            <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_below="@id/basic_info"
-                    android:layout_height="wrap_content">
-
-                <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapFragment"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:layout_margin="10dp"
-                        android:apiKey="AIzaSyDPGgizbgjQe2SeXnZ_8Z_wmd_jM4EXhII" />
-
-                <TextView
-                        android:text="@string/map_result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="200dp">
 
+                <com.google.android.gms.maps.MapView
+                        android:id="@+id/mapFragment"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_margin="15dp"
+                        android:layout_height="150dp"
+                        android:apiKey="AIzaSyDPGgizbgjQe2SeXnZ_8Z_wmd_jM4EXhII" />
                 <WebView
                         android:id="@+id/webView"
-                        android:layout_width="200dp"
-                        android:layout_margin="10dp"
-                        android:layout_height="200dp"/>
-
-                <TextView
-                        android:text="@string/images"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_margin="15dp"
+                        android:clickable="true"
+                        android:layout_height="150dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

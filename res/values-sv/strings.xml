@@ -58,13 +58,16 @@
     <string name="details_sold_price">Såld för:</string>
     <string name="details_rooms">Antal rum:</string>
     <string name="details_floor">Våning:</string>
-    <string name="details_living_area">Boarea:</string>
+    <string name="details_plot_area">Tomt:</string>
+    <string name="details_living_area">Boyta:</string>
     <string name="details_published">Publiserad:</string>
     <string name="details_sold">Såldes:</string>
+    <string name="details_sold_after">%1$s efter %2$s</string>
     <string name="details_construction_year">Byggnadsår:</string>
     <string name="details_source">Källa:</string>
 
     <string name="details_living_area_text">%1$d kvm</string>
+    <string name="details_plot_area_text">%1$s kvm</string>
     <string name="details_room_text">%1$s rum</string>
     <string name="details_floor_text">%1$d våningen</string>
 
@@ -79,5 +82,32 @@
     <string name="action_delete_history">Rensa historik</string>
     <string name="action_delete_all_history">Rensa all historik</string>
     <string name="action_save_search">Bevaka</string>
+
+    <string name="days_available_zero">Idag</string>
+
+    <string-array name="sort_strings">
+        <item>Publiserad</item>
+        <item>Adress</item>
+        <item>Pris</item>
+        <item>Boyta</item>
+        <item>Område</item>
+    </string-array>
+
+    <string-array name="sort_order_strings">
+        <item>Stigande</item>
+        <item>Fallande</item>
+    </string-array>
+
+    <plurals name="daysAvailable">
+        <item quantity="zero">Idag</item>
+        <item quantity="one">Igår</item>
+        <item quantity="two">Iförregår</item>
+        <item quantity="other">%d dagar sedan</item>
+    </plurals>
+
+    <plurals name="daysPublished">
+        <item quantity="one">1 dag </item>
+        <item quantity="other">%d dagar</item>
+    </plurals>
 
 </resources>

@@ -71,6 +71,32 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="sort_types">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="sort_types_strings">
+        <item>Published</item>
+        <item>Address</item>
+        <item>Price</item>
+        <item>Area</item>
+        <item>Number of rooms</item>
+    </string-array>
+
+    <string-array name="sort_order_types">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="sort_order_strings">
+        <item>Stigande</item>
+        <item>Fallande</item>
+    </string-array>
+
     <string-array name="build_object">
         <item>0</item>
         <item>1</item>
@@ -119,6 +145,14 @@
 
     <string name="action_delete_history">Delete history</string>
     <string name="action_websearch">Web search</string>
+
+
+    <plurals name="daysAvailable">
+        <item quantity="zero">Today</item>
+        <item quantity="one">One day ago</item>
+        <item quantity="two">%d days ago</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
 
 
 </resources>

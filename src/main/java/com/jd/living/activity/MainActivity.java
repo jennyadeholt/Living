@@ -16,6 +16,7 @@ import com.jd.living.activity.history.HistoryList_;
 import com.jd.living.activity.search.SearchListAction;
 import com.jd.living.activity.search.SearchResult_;
 import com.jd.living.activity.settings.SearchPreferencesFragment_;
+import com.jd.living.activity.settings.SettingsPreferenceFragment_;
 import com.jd.living.database.DatabaseHelper;
 import com.jd.living.drawer.DrawerActivity;
 import com.jd.living.model.Listing;
@@ -28,6 +29,7 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
 
     private SearchResult_ searchResult;
     private SearchPreferencesFragment_ searchPreferences;
+    private SettingsPreferenceFragment_ settingsPreferences;
     private HistoryList_ history;
 
     @Override
@@ -39,12 +41,14 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
         searchResult = new SearchResult_();
         searchPreferences = new SearchPreferencesFragment_();
         history = new HistoryList_();
+        settingsPreferences = new SettingsPreferenceFragment_();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.add(R.id.content_frame, searchResult, "searchResult");
         transaction.add(R.id.content_frame, searchPreferences, "searchPreferences");
         transaction.add(R.id.content_frame, history, "history");
+        transaction.add(R.id.content_frame, settingsPreferences, "settingsPreferences");
         transaction.commit();
 
         setup(savedInstanceState);
@@ -78,6 +82,7 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
             case 4:
                 transaction.hide(history);
                 transaction.hide(searchPreferences);
+                transaction.hide(settingsPreferences);
                 transaction.show(searchResult);
                 if (position == 1) {
                    database.setDatabaseState(DatabaseHelper.DatabaseState.SEARCH);
@@ -90,13 +95,20 @@ public class MainActivity extends DrawerActivity implements DatabaseHelper.Datab
             case 2:
                 transaction.hide(history);
                 transaction.hide(searchResult);
+                transaction.hide(settingsPreferences);
                 transaction.show(searchPreferences);
                 break;
-
             case 3:
                 transaction.hide(searchResult);
                 transaction.hide(searchPreferences);
+                transaction.hide(settingsPreferences);
                 transaction.show(history);
+                break;
+            case 6:
+                transaction.hide(searchResult);
+                transaction.hide(searchPreferences);
+                transaction.hide(history);
+                transaction.show(settingsPreferences);
             default:
                 break;
         }

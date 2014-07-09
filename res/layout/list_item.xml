@@ -7,7 +7,6 @@
         android:padding="10dp"
         android:background="@drawable/list_item"
         android:layout_width="fill_parent"
-        android:animateLayoutChanges="true"
         android:layout_height="wrap_content">
 
     <ImageView
@@ -31,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/address"
-            android:paddingRight="5dp"
             android:paddingTop="7dp">
         <ImageView
                 android:id="@+id/image"
@@ -45,6 +43,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
             android:layout_toRightOf="@id/imageFrame"
             android:layout_below="@id/address">
         <TextView

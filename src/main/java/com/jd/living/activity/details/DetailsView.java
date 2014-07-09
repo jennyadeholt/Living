@@ -35,6 +35,7 @@ import com.jd.living.R;
 import com.jd.living.database.DatabaseHelper;
 import com.jd.living.database.FavoriteDatabase;
 import com.jd.living.model.Listing;
+import com.jd.living.util.StringUtil;
 
 
 @EFragment(R.layout.details_view)
@@ -51,6 +52,12 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
 
     @ViewById
     protected TextView area;
+
+    @ViewById
+    protected TextView type;
+
+    @ViewById
+    protected TextView price;
 
     @ViewById
     protected ImageView thumbnail;
@@ -175,6 +182,10 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         tableLayout.removeAllViews();
         address.setText(listing.getAddress());
         area.setText(listing.getArea());
+        type.setText(listing.getObjectType());
+        if (!listing.getListPrice().equals("0")) {
+            price.setText(listing.getListPrice());
+        }
 
         int totalSize = database.getResult().size();
         nbrOfObjects.setText(totalSize == 1 ?  "" : (objectIndex + 1) + "/" + totalSize);
@@ -183,9 +194,10 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             addDetails(R.string.details_sold_price, listing.getSoldPrice());
         }
 
-        addDetails(R.string.details_list_price, listing.getListPrice());
         addDetails(R.string.details_living_area, getString(R.string.details_living_area_text, listing.getLivingArea()));
-        addDetails(R.string.details_type, listing.getObjectType());
+        if (!listing.getPlotArea().equals("0")) {
+            addDetails(R.string.details_plot_area, getString(R.string.details_plot_area_text, listing.getPlotArea()));
+        }
 
         if (!listing.getRent().equals("0")) {
             addDetails(R.string.details_rent, listing.getRent());
@@ -194,14 +206,19 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             addDetails(R.string.details_floor, getString(R.string.details_floor_text, listing.getFloor()));
         }
 
-        addDetails(R.string.details_rooms,getString(R.string.details_room_text, listing.getRooms()));
-        addDetails(R.string.details_published, listing.getPublished());
+        addDetails(R.string.details_rooms,getString(R.string.details_room_text, listing.getRoomsAsString()));
 
         if (isSold) {
-            addDetails(R.string.details_sold, listing.getSoldDate());
+            String after = StringUtil.getDaysSince(getActivity(), listing.getPublished(), listing.getSoldDate());
+            addDetails(R.string.details_sold, getString(R.string.details_sold_after, listing.getSoldDate(), after));
+        } else {
+            addDetails(R.string.details_published, StringUtil.getDaysSince(getActivity(), listing.getPublished(), ""));
         }
 
-        addDetails(R.string.details_construction_year, String.valueOf(listing.getConstructionYear()));
+        if (listing.getConstructionYear() != 0) {
+            addDetails(R.string.details_construction_year, String.valueOf(listing.getConstructionYear()));
+        }
+
         addDetails(R.string.details_source, listing.getSource());
     }
 
@@ -218,6 +235,8 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnMapClickListener(this);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
 
         googleMap.clear();
         target = new LatLng(listing.getLatitude(), listing.getLongitude());

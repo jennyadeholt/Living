@@ -4,34 +4,21 @@ import android.text.TextUtils;
 
 import com.jd.living.util.StringUtil;
 
-public class Listing implements Comparable<Listing> {
+public class Listing {
 
     protected int booliId;
-
     protected double listPrice;
-
     protected String published;
-
     protected Location location;
-
     protected Source source;
-
     protected String objectType;
-
     protected double rooms;
-
     protected double floor;
-
     protected double rent;
-
     protected double livingArea;
-
     protected double plotArea;
-
     protected int constructionYear;
-
     protected String url;
-
     protected String soldDate;
     protected double soldPrice;
 
@@ -40,7 +27,7 @@ public class Listing implements Comparable<Listing> {
     }
 
     public String getSoldPrice() {
-        return StringUtil.getFormattedString(soldPrice);
+        return StringUtil.getCurrencyFormattedString(soldPrice);
     }
 
     public boolean isSold() {
@@ -58,7 +45,11 @@ public class Listing implements Comparable<Listing> {
     }
 
     public String getListPrice() {
-        return StringUtil.getFormattedString(listPrice);
+        return StringUtil.getCurrencyFormattedString(listPrice);
+    }
+
+    public double getPrice() {
+        return isSold() ? soldPrice : listPrice;
     }
 
     public String getPublished() {
@@ -70,7 +61,7 @@ public class Listing implements Comparable<Listing> {
     }
 
     public String getRent() {
-        return StringUtil.getFormattedString(rent);
+        return StringUtil.getCurrencyFormattedString(rent);
     }
 
     public double getLatitude() {
@@ -93,12 +84,16 @@ public class Listing implements Comparable<Listing> {
         return objectType;
     }
 
-    public String getRooms() {
+    public String getRoomsAsString() {
         String result = String.valueOf(rooms);
         if (rooms % 1 == 0) {
             result = String.valueOf((int) rooms);
         }
         return result;
+    }
+
+    public double getRooms() {
+        return rooms;
     }
 
     public long getFloor() {
@@ -109,8 +104,8 @@ public class Listing implements Comparable<Listing> {
         return Math.round(livingArea);
     }
 
-    public double getPlotArea() {
-        return plotArea % 1 == 0 ? Math.abs(plotArea) : plotArea;
+    public String getPlotArea() {
+        return StringUtil.getNumberFormattedString(plotArea);
     }
 
     public int getConstructionYear() {
@@ -128,11 +123,6 @@ public class Listing implements Comparable<Listing> {
     @Override
     public String toString() {
         return getAddress();
-    }
-
-    @Override
-    public int compareTo(Listing another) {
-        return getAddress().compareToIgnoreCase(another.getAddress());
     }
 
     @Override

@@ -65,12 +65,19 @@ public class SearchListItem extends LinearLayout {
             soldFor += listing.getSoldPrice();
             info.setText(soldFor);
         } else {
-            String rooms = getContext().getString(R.string.details_room_text, listing.getRooms());
+            String rooms = getContext().getString(R.string.details_room_text, listing.getRoomsAsString());
             String livingArea = getContext().getString(R.string.details_living_area_text, listing.getLivingArea());
             info.setText(rooms + ", " + livingArea);
 
-            if (!listing.getRent().equals("0")) {
-                listPrice += ", " + listing.getRent();
+            if (listing.getListPrice().equals("0")) {
+                listPrice = "N/A";
+                if (!listing.getRent().equals("0")) {
+                    listPrice = listing.getRent();
+                }
+            } else {
+                if (!listing.getRent().equals("0")) {
+                    listPrice += ", " + listing.getRent();
+                }
             }
         }
         price.setText(listPrice);

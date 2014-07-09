@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+            android:title="Sorteringsalternativ ">
+
+        <ListPreference
+                android:title="Sortera på: "
+                android:key="preference_sort_list"
+                android:entryValues="@array/sort_types"
+                android:entries="@array/sort_strings"
+                android:defaultValue="0" />
+
+        <ListPreference
+                android:title="Sorteringsordning: "
+                android:key="preference_sort_list_order"
+                android:entryValues="@array/sort_order_types"
+                android:entries="@array/sort_order_strings"
+                android:defaultValue="0" />
+   </PreferenceCategory>
+
+</PreferenceScreen>

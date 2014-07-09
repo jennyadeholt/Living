@@ -50,7 +50,7 @@ public class AmountAutoCompleteAdapter extends ArrayAdapter<String> implements F
                     while (search.length() < maxLenght) {
                         if (search.length() > minLenght) {
                             value = Long.valueOf(search.toString());
-                            numbers.add(StringUtil.getFormattedString(value));
+                            numbers.add(StringUtil.getCurrencyFormattedString(value));
                         }
                         search = search + "0";
                     }
