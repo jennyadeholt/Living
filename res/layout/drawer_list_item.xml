@@ -14,10 +14,8 @@
             android:src="@drawable/action_search"/>
     <TextView
             android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:gravity="center"
+            style="@style/DrawerHeader"
+            android:layout_gravity="center_vertical"
             android:text="Search"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"/>

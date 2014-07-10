@@ -2,13 +2,13 @@
 
 <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@android:style/TextAppearance.DeviceDefault.Small"
+        style="@style/Text"
         android:id="@+id/text"
-        android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="bottom"
         android:text="Search"
         android:paddingBottom="5dp"
         android:paddingRight="16dp"
+        android:paddingLeft="5dp"
         android:background="@android:color/transparent"
         android:textAllCaps="true"/>

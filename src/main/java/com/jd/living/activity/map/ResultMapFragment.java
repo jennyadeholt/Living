@@ -27,7 +27,6 @@ import com.jd.living.model.Listing;
 public class ResultMapFragment extends Fragment implements DatabaseHelper.DatabaseListener,
         OnInfoWindowClickListener, GoogleMap.OnMapLoadedCallback{
 
-
     @FragmentById
     MapFragment resultMap;
 
@@ -53,6 +52,7 @@ public class ResultMapFragment extends Fragment implements DatabaseHelper.Databa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
     }
 
     @UiThread

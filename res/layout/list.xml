@@ -9,10 +9,8 @@
 
     <TextView
             android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Text"
             android:padding="10dp"
-            style="@android:style/TextAppearance.DeviceDefault.Small"
             android:text="@string/number_of_objects"/>
 
     <ListView

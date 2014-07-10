@@ -50,7 +50,18 @@ public class HistoryList extends ListFragment implements SearchHistoryDatabase.S
     @AfterViews
     public void init() {
         setListAdapter(historyListAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         database.registerSearchHistoryDatabaseListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        database.unregisterSearchHistoryDatabaseListener(this);
     }
 
     @Override
@@ -83,7 +94,7 @@ public class HistoryList extends ListFragment implements SearchHistoryDatabase.S
         VerificationDialogFragment dialogFragment = new VerificationDialogFragment(new VerificationDialogFragment.NoticeDialogListener() {
             @Override
             public void onDialogPositiveClick(DialogFragment dialog) {
-               databaseHelper.launchSearch(searchHistory);
+                databaseHelper.launchSearch(searchHistory);
             }
 
             @Override
@@ -96,9 +107,7 @@ public class HistoryList extends ListFragment implements SearchHistoryDatabase.S
 
     @UiThread
     public void update(List<SearchHistory> result) {
-        if (!isDetached()) {
-            info.setText(getString(R.string.number_of_objects, result.size(), result.size()));
-        }
+        info.setText(getString(R.string.number_of_objects, result.size(), result.size()));
     }
 
     @Override

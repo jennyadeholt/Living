@@ -63,6 +63,10 @@ public class SearchHistoryDatabase implements SearchDatabase.SearchHistoryListen
         listener.onUpdate(getRepository().getSearchHistories());
     }
 
+    public void unregisterSearchHistoryDatabaseListener(SearchHistoryDatabaseListener listener) {
+        listeners.remove(listener);
+    }
+
     public void clearSearchHistoryDatabase() {
         getRepository().clearSearchDatabase();
 

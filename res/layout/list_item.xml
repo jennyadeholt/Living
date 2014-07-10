@@ -19,11 +19,8 @@
 
     <TextView
             android:id="@+id/address"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Header"
             android:text="Östervärnsgatan 9a"/>
-
 
     <FrameLayout
             android:id="@+id/imageFrame"
@@ -49,23 +46,17 @@
             android:layout_below="@id/address">
         <TextView
                 android:id="@+id/area"
-                style="@android:style/TextAppearance.DeviceDefault.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Text"
                 android:text="Östervärnsgatan 9a"/>
 
         <TextView
                 android:id="@+id/price"
-                style="@android:style/TextAppearance.DeviceDefault.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Text"
                 android:text="1 995 000kr, 2345kr/månad"/>
 
         <TextView
                 android:id="@+id/info"
-                style="@android:style/TextAppearance.DeviceDefault.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                style="@style/Text"
                 android:text="2,5rum, 82kvm, 2 våningen"/>
 
     </LinearLayout>

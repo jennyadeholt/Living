@@ -5,7 +5,9 @@ import org.androidannotations.annotations.ViewById;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.jd.living.R;
@@ -19,19 +21,10 @@ public class HistoryListItem extends LinearLayout {
     TextView address;
 
     @ViewById
-    TextView rooms;
-
-    @ViewById
     TextView time;
 
     @ViewById
-    TextView type;
-
-    @ViewById
-    TextView price;
-
-    @ViewById
-    TextView production;
+    TableLayout tableLayout;
 
 
     public HistoryListItem(Context context) {
@@ -39,6 +32,8 @@ public class HistoryListItem extends LinearLayout {
     }
 
     public void bind(SearchHistory history) {
+        tableLayout.removeAllViews();
+
         address.setText(history.getLocation());
 
         String priceString = "";
@@ -48,19 +43,32 @@ public class HistoryListItem extends LinearLayout {
         if (!TextUtils.isEmpty(history.getMaxAmount())) {
             priceString += getContext().getString(R.string.preferences_amount_max) + ": " +  history.getMaxAmount() + ". ";
         }
+        if (TextUtils.isEmpty(priceString)) {
+            priceString = " - ";
+        }
 
-        price.setText(priceString);
+        addDetails(R.string.preferences_amount, priceString);
 
-        type.setText(StringUtil.startWithUpperCase(history.getTypes()) + ".");
-        production.setText(StringUtil.getText(
+        addDetails(R.string.preferences_type_of_building, StringUtil.startWithUpperCase(history.getTypes()) + ".");
+
+        addDetails(R.string.preferences_type_of_object, StringUtil.getText(
                 history.getProduction(),
                 getResources().getStringArray(R.array.build_types_strings),
                 getResources().getStringArray(R.array.build_types)) + ". "  +
-                (history.isSold() ? getContext().getString(R.string.building_sold) : getContext().getString(R.string.building_on_sale)));
+                (history.isSold() ? getContext().getString(R.string.building_sold) : getContext().getString(R.string.building_on_sale)) + ".");
 
         time.setText(StringUtil.getTimeStampAsString(history.getTimestamp()));
 
-        rooms.setText(getContext().getString(R.string.details_room_text, history.getMinRooms()) + " - "
+        addDetails(R.string.preferences_nbr_of_rooms, getContext().getString(R.string.details_room_text, history.getMinRooms()) + " - "
                 +  getContext().getString(R.string.details_room_text, history.getMaxRooms()));
+    }
+
+    protected void addDetails(int nameId, String content) {
+
+        View row = inflate(getContext(), R.layout.table_row, null);
+
+        ((TextView) row.findViewById(R.id.extra_name)).setText(nameId);
+        ((TextView) row.findViewById(R.id.content)).setText(content);
+        tableLayout.addView(row);
     }
 }

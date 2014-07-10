@@ -223,7 +223,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
     }
 
     protected void addDetails(int nameId, String content) {
-        View row = getActivity().getLayoutInflater().inflate(R.layout.details_row_table, null);
+        View row = getActivity().getLayoutInflater().inflate(R.layout.table_row, null);
 
         ((TextView) row.findViewById(R.id.extra_name)).setText(nameId);
         ((TextView) row.findViewById(R.id.content)).setText(content);
