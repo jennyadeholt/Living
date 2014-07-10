@@ -110,7 +110,7 @@ public class SearchHistory implements Comparable<SearchHistory> {
                     searchHistory.getMaxAmount().equals(this.getMaxAmount()) &&
                     searchHistory.getMaxRooms().equals(this.getMaxRooms()) &&
                     searchHistory.getMinRooms().equals(this.getMinRooms()) &&
-                    searchHistory.getTypes().equals(this.getTypes()) &&
+                    searchHistory.getTypes().equals(this.getTypes()) && //TODO fixes if types are in different order
                     searchHistory.isSold() == this.isSold() &&
                     searchHistory.getProduction().equals(this.getProduction());
         }

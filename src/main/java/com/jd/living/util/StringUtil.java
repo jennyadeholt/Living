@@ -10,7 +10,6 @@ import java.util.Date;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jd.living.R;
 
@@ -18,8 +17,9 @@ public class StringUtil {
 
     private static DecimalFormat currencyFormatter;
     private static DecimalFormat numberFormatter;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private static DecimalFormat getCurrencyFormatter() {
         if (currencyFormatter == null) {
@@ -84,14 +84,21 @@ public class StringUtil {
     }
 
     public static String getTimeStampAsString(long timestamp) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(timestamp);
-            return sdf.format(calendar.getTime());
-        } catch (Exception e) {
+        String result = "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        long currentTimeStamp = System.currentTimeMillis();
 
+        long diffHours = (currentTimeStamp - timestamp) / (60 * 60 * 1000);
+
+
+        if (diffHours < 24 && diffHours < calendar.get(Calendar.HOUR_OF_DAY)) {
+            result = timeFormat.format(calendar.getTime());
+        } else {
+            result = dateFormat.format(calendar.getTime());
         }
-        return "";
+
+        return result;
     }
 
     public static String startWithUpperCase(String text) {
@@ -115,12 +122,10 @@ public class StringUtil {
         long diffDays = 0;
 
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date start = formatter.parse(startDate);
+            Date start = dateFormat.parse(startDate);
             Date end = new Date();
             if (!TextUtils.isEmpty(endDate)) {
-                end = formatter.parse(endDate);
+                end = dateFormat.parse(endDate);
             }
             diffDays = (end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000);
 

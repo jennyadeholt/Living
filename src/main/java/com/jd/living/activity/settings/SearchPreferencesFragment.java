@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.jd.living.R;
 import com.jd.living.Search;
 import com.jd.living.database.DatabaseHelper;
+import com.jd.living.util.StringUtil;
 
 @EFragment
 public class SearchPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -153,16 +154,7 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
     }
 
     private void setSummaryForList(SharedPreferences sharedPreferences, String key, String[] names, String[] types) {
-        String text = names[0];
-        String value = sharedPreferences.getString(key, "");
-
-        for (int i = 0; i < types.length ; i++) {
-            if (value.equals(types[i])){
-                text = names[i];
-                break;
-            }
-
-        }
+        String text = StringUtil.getText(sharedPreferences.getString(key, ""), names, types);
         setSummary(key, text);
     }
 
