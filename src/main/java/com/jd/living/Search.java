@@ -126,4 +126,17 @@ public class Search {
     public boolean fetchSoldObjects() {
         return !preferences.getString(SearchPreferenceKey.PREFERENCE_OBJECT_TYPE, "0").equals("0");
     }
+
+    public String getMaxRent(boolean modify) {
+        String maxAmount = preferences.getString(SearchPreferenceKey.PREFERENCE_RENT_MAX, "");
+        if (modify) {
+            maxAmount = StringUtil.getStringAsNumber(maxAmount);
+        }
+        return maxAmount;
+    }
+
+    public String getMaxRent() {
+       String rent = getMaxRent(true);
+       return rent.equals("0") ? "" : rent;
+    }
 }

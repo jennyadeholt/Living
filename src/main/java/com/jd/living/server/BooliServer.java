@@ -55,6 +55,7 @@ public class BooliServer {
                         search.getMinAmount(),
                         search.getMaxAmount(),
                         search.getProduction(),
+                        search.getMaxRent(),
                         500
                 )
                 .getBody();
@@ -79,6 +80,7 @@ public class BooliServer {
                         search.getMinAmount(),
                         search.getMaxAmount(),
                         search.getProduction(),
+                        search.getMaxRent(),
                         500
                 )
                 .getBody();

@@ -15,28 +15,28 @@ import com.jd.living.model.SoldResult;
 @Accept(MediaType.APPLICATION_JSON)
 public interface BooliClient {
 
-    @Get("/listings?q={search}&maxListPrice={maxA}&minListPrice={minA}&minRooms={minR}&maxRooms={maxR}&objectType={objectType}&isNewConstruction={isNew}&limit={limit}&" + BooliServer.common)
+    @Get("/listings?q={search}&maxListPrice={maxA}&minListPrice={minA}&minRooms={minR}&maxRooms={maxR}&objectType={objectType}&isNewConstruction={isNew}&&maxRent={rent}&limit={limit}&" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<ListingsResult> getListings(String search, String callerId, long time,
                                                String unique, String hash,
                                                String minR, String maxR,
                                                String objectType,
                                                String minA, String maxA,
-                                               String isNew, int limit);
+                                               String isNew, String rent, int limit );
 
     @Get("/listings/{booliId}?" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<ListingsResult> getListing(int booliId, String callerId, long time,
                                               String unique, String hash);
 
-    @Get("/sold?q={search}&maxListPrice={maxA}&minListPrice={minA}&minRooms={minR}&maxRooms={maxR}&objectType={objectType}&isNewConstruction={isNew}&limit={limit}&" + BooliServer.common)
+    @Get("/sold?q={search}&maxListPrice={maxA}&minListPrice={minA}&minRooms={minR}&maxRooms={maxR}&objectType={objectType}&isNewConstruction={isNew}&maxRent={rent}&limit={limit}&" + BooliServer.common)
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<SoldResult> getObjectsSold(String search, String callerId, long time,
                                               String unique, String hash,
                                               String minR, String maxR,
                                               String objectType,
                                               String minA, String maxA,
-                                              String isNew, int limit);
+                                              String isNew, String rent, int limit);
 
     RestTemplate getRestTemplate();
 

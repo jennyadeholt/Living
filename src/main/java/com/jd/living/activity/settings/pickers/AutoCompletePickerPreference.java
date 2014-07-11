@@ -1,13 +1,11 @@
 package com.jd.living.activity.settings.pickers;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -15,14 +13,14 @@ import android.widget.AutoCompleteTextView;
 import com.jd.living.R;
 
 
-public abstract class PickerPreference extends DialogPreference implements TextWatcher {
+public abstract class AutoCompletePickerPreference extends DialogPreference implements TextWatcher {
 
     private ArrayAdapter<String> adapter;
     private AutoCompleteTextView textView;
     private String search = "";
     private boolean textChanged = false;
 
-    public PickerPreference(Context context, AttributeSet attrs) {
+    public AutoCompletePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setDialogLayoutResource(getDialogResource());

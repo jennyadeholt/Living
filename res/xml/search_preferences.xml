@@ -4,10 +4,30 @@
     <PreferenceCategory
             android:title="@string/preferences_area_title">
 
-        <com.jd.living.activity.settings.pickers.AreaPickerPreference
+        <com.jd.living.activity.settings.pickers.AreaAutoCompletePickerPreference
                 android:key="preferences_area_location"
                 android:title="@string/preferences_area"
                 android:defaultValue="Centrum Malmö" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/preferences_amount">
+
+        <com.jd.living.activity.settings.pickers.AmountAutoCompletePickerPreference
+                android:key="preference_amount_min"
+                android:title="@string/preferences_amount_min"
+                android:defaultValue="" />
+
+        <com.jd.living.activity.settings.pickers.AmountAutoCompletePickerPreference
+                android:key="preferences_max_amount"
+                android:title="@string/preferences_amount_max"
+                android:defaultValue="" />
+
+        <com.jd.living.activity.settings.pickers.NumberPickerPreference
+                android:key="preferences_max_rent"
+                android:title="@string/preferences_rent_max"
+                android:defaultValue="6" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -25,21 +45,6 @@
                 android:entries="@array/rooms"
                 android:defaultValue="4"
                 android:entryValues="@array/rooms_number" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-            android:title="@string/preferences_amount">
-
-        <com.jd.living.activity.settings.pickers.AmountPickerPreference
-                android:key="preference_amount_min"
-                android:title="@string/preferences_amount_min"
-                android:defaultValue="" />
-
-        <com.jd.living.activity.settings.pickers.AmountPickerPreference
-                android:key="preferences_max_amount"
-                android:title="@string/preferences_amount_max"
-                android:defaultValue="" />
-
     </PreferenceCategory>
 
     <PreferenceCategory

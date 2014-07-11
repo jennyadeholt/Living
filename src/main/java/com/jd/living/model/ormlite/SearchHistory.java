@@ -30,6 +30,9 @@ public class SearchHistory implements Comparable<SearchHistory> {
     private String maxAmount;
 
     @DatabaseField(canBeNull = false)
+    private String maxRent;
+
+    @DatabaseField(canBeNull = false)
     private String production;
 
     @DatabaseField(canBeNull = false)
@@ -51,6 +54,7 @@ public class SearchHistory implements Comparable<SearchHistory> {
         this.maxAmount = search.getMaxAmount(false);
         this.production = search.getProduction();
         this.isSold = search.fetchSoldObjects();
+        this.maxRent = search.getMaxRent(false);
         this.timestamp = search.getTimestamp();
     }
 

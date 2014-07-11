@@ -21,7 +21,7 @@ import com.jd.living.model.ormlite.SearchHistory;
 public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "living.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private RuntimeExceptionDao<SearchHistory, Integer> searchHistoryDao = null;
     private RuntimeExceptionDao<Favorite, Integer> favoriteDatabase = null;

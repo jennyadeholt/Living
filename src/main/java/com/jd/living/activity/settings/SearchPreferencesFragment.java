@@ -41,9 +41,11 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
         preferences = getPreferenceManager().getSharedPreferences();
         preferences.registerOnSharedPreferenceChangeListener(this);
 
+
         setSummaryForTypeList(preferences);
         setSummaryForObjectList(preferences);
         setSummary(preferences, SearchPreferenceKey.PREFERENCE_LOCATION);
+        setSummary(preferences, SearchPreferenceKey.PREFERENCE_RENT_MAX);
         checkMinMaxAmount("");
         checkMinMax("");
         setSummaryForBuildingTypes(preferences, SearchPreferenceKey.PREFERENCE_BUILDING_TYPE);
@@ -78,7 +80,8 @@ public class SearchPreferencesFragment extends PreferenceFragment implements Sha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(SearchPreferenceKey.PREFERENCE_LOCATION) ) {
+        if (key.equals(SearchPreferenceKey.PREFERENCE_LOCATION) ||
+                key.equals(SearchPreferenceKey.PREFERENCE_RENT_MAX)) {
             setSummary(sharedPreferences, key);
         } else if (key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MIN_NUMBERS)
                 || key.equals(SearchPreferenceKey.PREFERENCE_ROOM_MAX_NUMBERS)) {

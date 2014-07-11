@@ -15,6 +15,8 @@ public class SearchPreferenceKey {
     public static final String PREFERENCE_AMOUNT_MIN = "preference_amount_min";
     public static final String PREFERENCE_AMOUNT_MAX = "preferences_max_amount";
 
+    public static final String PREFERENCE_RENT_MAX = "preferences_max_rent";
+
     public static final String PREFERENCE_SORT_LIST_ON = "preference_sort_list";
     public static final String PREFERENCE_SORT_ORDER = "preference_sort_list_order";
 }
