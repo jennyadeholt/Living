@@ -2,11 +2,12 @@
 
 <AutoCompleteTextView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/amount"
+        android:id="@+id/textView"
         android:completionThreshold="1"
         android:maxLength="15"
         android:hint="@string/preferences_amount_hint"
         android:inputType="number"
+        android:dropDownHeight="150dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <requestFocus />

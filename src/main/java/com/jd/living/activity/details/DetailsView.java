@@ -123,7 +123,7 @@ public class DetailsView extends Fragment implements GoogleMap.OnMapClickListene
             }
         });
 
-        if(listing != null) {
+        if (listing != null) {
             update();
         } else {
             getActivity().onBackPressed();

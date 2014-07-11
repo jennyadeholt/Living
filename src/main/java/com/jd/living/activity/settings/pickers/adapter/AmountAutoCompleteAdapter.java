@@ -45,7 +45,8 @@ public class AmountAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
                 numbers.clear();
 
-                if (search != null) {
+                if (search != null && !search.equals("0")) {
+                    search = StringUtil.getStringAsNumber(search.toString());
                     long value;
                     while (search.length() < maxLenght) {
                         if (search.length() > minLenght) {

@@ -25,7 +25,8 @@ import com.jd.living.model.Listing;
 
 @EFragment(R.layout.map)
 public class ResultMapFragment extends Fragment implements DatabaseHelper.DatabaseListener,
-        OnInfoWindowClickListener, GoogleMap.OnMapLoadedCallback{
+        OnInfoWindowClickListener, GoogleMap.OnMapLoadedCallback {
+
 
     @FragmentById
     MapFragment resultMap;
@@ -47,12 +48,6 @@ public class ResultMapFragment extends Fragment implements DatabaseHelper.Databa
         googleMap.setMyLocationEnabled(true);
         googleMap.setInfoWindowAdapter(adapter);
         googleMap.setOnInfoWindowClickListener(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
     }
 
     @UiThread

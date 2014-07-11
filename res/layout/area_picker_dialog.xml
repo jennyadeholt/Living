@@ -6,6 +6,7 @@
         android:completionThreshold="2"
         android:hint="@string/preferences_location_hint"
         android:inputType="textPostalAddress"
+        android:dropDownHeight="150dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <requestFocus />

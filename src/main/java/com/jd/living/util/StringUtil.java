@@ -79,7 +79,7 @@ public class StringUtil {
         if (TextUtils.isEmpty(value)) {
             return "0";
         } else {
-            return value.replace("kr", "").replaceAll("\\s","");
+            return value.replace("kr", "").replace("k", "").replaceAll("\\s","");
         }
     }
 
